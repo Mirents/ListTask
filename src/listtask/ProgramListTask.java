@@ -1,5 +1,5 @@
 package listtask;
-/* Version 0.01
+/* Final version 0.01
  * Программа создает список задач и сортирует их по выбранному параметру - приоритет или влияние.
  * Приоритет варьируется от 1 до 4 и основывается на матрице Эйзенхауэра, в которой значения
  * принимают следующий вид:
@@ -84,8 +84,8 @@ public class ProgramListTask {
 		}
     }
     
-    // Вывод всех задач на экран
     public static void printTask() {
+    	// Вывод всех задач на экран
     	for(int i=0;i<NUM_TASK;i++) {
 			System.out.println(Priority[i] + " - " + Influence[i] + " - " + Description[i]);
 		}
