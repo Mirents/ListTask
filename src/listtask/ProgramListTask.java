@@ -16,7 +16,7 @@ public class ProgramListTask {
     static String[] Description; // Список задач
     static int[] Priority;       // Приоритет каждой задачи, от 1 до 4
     static int[] Influence;      // Влияние каждой задачи, от 1 до 3
-    static String SortMethod;
+    //static String SortMethod;
     
     final static int NUM_TASK = 6;       // Статическое количество элементов задач
     final static String METHOD_PRIORITY = "METHOD_PRIORITY";
@@ -29,6 +29,7 @@ public class ProgramListTask {
     	ProgramListTask.Influence[NumTask] = Influence;
     }
     
+    // Метод замены друг с другом двух задач для сортировки
     public static void swapTask(int NumTask1, int NumTask2) {
     	// Временные переменные для сохранения значения
     	String D;
@@ -49,6 +50,48 @@ public class ProgramListTask {
     	ProgramListTask.Influence[NumTask2] = I;
     }
     
+    // Метод сортировки задач, сначала по главному методу, а потом по дополнительному
+    public static void sortTask(String SortMethod) {
+    	// Если главный метод - METHOD_PRIORITY
+    	if (SortMethod == METHOD_PRIORITY) {
+    		// Проходим по всему списку задач
+			for(int i=0; i<NUM_TASK-1; i++) {
+				// Сначала сортируем задачи по главному методу
+				for(int d=0; d<(NUM_TASK-i-1); d++) {
+					// Выделяем большее значение и меняем местами
+					if(Priority[d]>Priority[d+1]) swapTask(d, d+1);
+				}
+				
+				// Затем сортируем элементы по оставшемуся методу
+				for(int z=0; z<NUM_TASK-1;z++) {
+					// Выделяем большее и меняем местами
+					if(Priority[z] == Priority[z+1])
+						if(Influence[z] > Influence[z+1]) swapTask(z, z+1);
+				}
+			}
+		// В противном случае сортируем сначала по дополнительному методу, а затем по главному
+		} else if(SortMethod == METHOD_INFLUENCE) {
+			for(int i=0; i<NUM_TASK-1; i++) {
+				for(int d=0; d<(NUM_TASK-i-1); d++) {
+					if(Influence[d]>Influence[d+1]) swapTask(d, d+1);
+				}
+				
+				for(int z=0; z<NUM_TASK-1;z++) {
+					if(Influence[z] == Influence[z+1])
+						if(Priority[z] > Priority[z+1]) swapTask(z, z+1);
+				}
+			}
+		}
+    }
+    
+    // Вывод всех задач на экран
+    public static void printTask() {
+    	for(int i=0;i<NUM_TASK;i++) {
+			System.out.println(Priority[i] + "-" + Influence[i] + "-" + Description[i]);
+		}
+    	System.out.println("");
+    }
+    
 	public static void main(String[] args) {
 		// Создание переменных
 		Description = new String[NUM_TASK];
@@ -62,35 +105,14 @@ public class ProgramListTask {
 		setTask(3, "Clean the conate.", 1, 1);
 		setTask(4, "Collect old things.", 3, 2);
 		setTask(5, "Mow the lawn.", 4, 3);
-		SortMethod = METHOD_PRIORITY;
+
+		// Сортировка и вывод с главным методом - METHOD_INFLUENCE
+		sortTask(METHOD_INFLUENCE);
+		printTask();
 		
-		if (SortMethod == METHOD_PRIORITY) {
-			for(int i=0; i<NUM_TASK-1; i++) {
-				for(int d=0; d<(NUM_TASK-i-1); d++) {
-					if(Priority[d]>Priority[d+1]) swapTask(d, d+1);
-				}
-				
-				for(int z=0; z<NUM_TASK-1;z++) {
-					if(Priority[z] == Priority[z+1])
-						if(Influence[z] > Influence[z+1]) swapTask(z, z+1);
-				}
-			}
-		} else {
-			for(int i=0; i<NUM_TASK-1; i++) {
-				for(int d=0; d<(NUM_TASK-i-1); d++) {
-					if(Influence[d]>Influence[d+1]) swapTask(d, d+1);
-				}
-				
-				for(int z=0; z<NUM_TASK-1;z++) {
-					if(Influence[z] == Influence[z+1])
-						if(Priority[z] > Priority[z+1]) swapTask(z, z+1);
-				}
-			}
-		}
-		
-		for(int i=0;i<NUM_TASK;i++) {
-			System.out.println(Priority[i] + "-" + Influence[i] + "-" + Description[i]);
-		}
+		// Сортировка и вывод с главным методом - METHOD_PRIORITY
+		sortTask(METHOD_PRIORITY);
+		printTask();
 		
 		// Тестовый вывод строки на экран
 		System.out.print("It`s Ok!");
