@@ -7,15 +7,39 @@ public class MyTask {
 	
 	// Конструктор класса с параметрами
 	MyTask(String description, int priority, int influence) {
-		this.description = description;
-		this.priority = priority;
-		this.influence = influence;
+		this.setDescription(description);
+		this.setPriority(priority);
+		this.setInfluence(influence);
 	}
 
 	// Конструктор класса без параметров
 	MyTask() {
-		this.description = "";
-		this.priority = 0;
-		this.influence = 0;
+		this.setDescription("");
+		this.setPriority(0);
+		this.setInfluence(0);
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public int getPriority() {
+		return priority;
+	}
+
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
+
+	public int getInfluence() {
+		return influence;
+	}
+
+	public void setInfluence(int influence) {
+		this.influence = influence;
 	}
 }
