@@ -23,25 +23,6 @@ public class ProgramListTask {
 		
 		MyGUI app = new MyGUI();
 		app.setVisible(true);
-		
-		// Создание списка задач
-		/*listTask = new MyListTask(MyListTask.METHOD_INFLUENCE);
-		// Заполнение списка
-		listTask.openListTaskFromFile();
-		
-		// Вывод на экран до сортировки
-		System.out.println("Task under sort");
-		listTask.showAllTask();
-		
-		// Вывод на экран после сортировки методом по умолчанию - METHOD_PRIORITY
-		System.out.println("\nTask before sort");
-		listTask.sortTask();
-		listTask.showAllTask();
-		
-		// Вывод на экран после сортировки вторым методом - METHOD_INFLUENCE
-		System.out.println("\nTask before sort");
-		listTask.setSortMethod(MyListTask.METHOD_PRIORITY);
-		listTask.sortTask();
-		listTask.showAllTask();*/
+
 	}
 }
