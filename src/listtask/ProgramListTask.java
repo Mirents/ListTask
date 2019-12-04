@@ -1,6 +1,5 @@
 package listtask;
 
-
 /* Version 0.04
  * Программа создает список задач в виде динамического массива LinkedList из классов MyTask и
  * сортирует их по выбранному параметру - приоритет или влияние.
@@ -21,6 +20,10 @@ public class ProgramListTask {
 	static MyListTask listTask;
         
 	public static void main(String[] args) {
+		
+		MyGUI app = new MyGUI();
+		app.setVisible(true);
+		
 		// Создание списка задач
 		listTask = new MyListTask(MyListTask.METHOD_INFLUENCE);
 		// Заполнение списка
