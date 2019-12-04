@@ -1,9 +1,10 @@
 package listtask;
 
 
-/* Version 0.03
+/* Version 0.04
  * Программа создает список задач в виде динамического массива LinkedList из классов MyTask и
  * сортирует их по выбранному параметру - приоритет или влияние.
+ * Все данные о задачах считываются из файла.
  * Приоритет варьируется от 1 до 4 и основывается на матрице Эйзенхауэра, в которой значения
  * принимают следующий вид:
  * 1 - срочные и важные дела;
@@ -23,12 +24,7 @@ public class ProgramListTask {
 		// Создание списка задач
 		listTask = new MyListTask(MyListTask.METHOD_INFLUENCE);
 		// Заполнение списка
-		listTask.addTask("Read a book.", 2, 1);
-		listTask.addTask("Go to the shop.", 1, 3);
-		listTask.addTask("Play with the dog.", 2, 3);
-		listTask.addTask("Clean the conate.", 1, 1);
-		listTask.addTask("Collect old things.", 3, 2);
-		listTask.addTask("Mow the lawn.", 4, 3);
+		listTask.openListTaskFromFile();
 		
 		// Вывод на экран до сотировки
 		System.out.println("Task under sort");
@@ -45,5 +41,4 @@ public class ProgramListTask {
 		listTask.sortTask();
 		listTask.showAllTask();
 	}
-
 }
