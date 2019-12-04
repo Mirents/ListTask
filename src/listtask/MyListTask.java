@@ -1,23 +1,24 @@
 package listtask;
-/* Принцип действия программы заключается в создании статического класса MyListTask с массивом из max
- * количества элементов другого класса - MyTask.
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+
+/* Принцип действия программы заключается в создании динамического массива LinkedList из класса MyTask.
  * Функция сортировки использует ключевые слова - по приоритете или влиянию.*/
 
 public class MyListTask {
-	private MyTask[] list;
-	private int elem;
-	private int max;
+	private LinkedList<MyTask> listLL;
 	private String sortMethod;
 	
     final public static String METHOD_PRIORITY = "METHOD_PRIORITY";
     final public static String METHOD_INFLUENCE = "METHOD_INFLUENCE";
     
-    // Конструктор класса, создающий начальный массив из maxколичества элементов
-    MyListTask(int max, String sortMethod) {
-    	this.list = new MyTask[max];
-    	this.elem = 0;
-    	this.max = max;
+    // Конструктор класса, создающий начальный массив из max количества элементов
+    MyListTask(String sortMethod) {
     	this.setSortMethod(sortMethod);
+    	this.listLL = new LinkedList<MyTask>();
     }
 
     // Геттеры и Сеттеры переменной sortMethod
@@ -31,60 +32,51 @@ public class MyListTask {
 	
 	// Добавление новой задачи
 	public void addTask(String description, int priority, int influence) {
-		this.list[this.elem] = new MyTask(description, priority, influence);
-		this.elem++;
+		this.listLL.add(new MyTask(description, priority, influence));
 	}
 	
 	// Вывод всех задач на экран с приоритетным методом сортировки
 	public void showAllTask() {
 		System.out.println("This Sort Method: "+this.getSortMethod());
-		for (int i=0; i<this.elem; i++)
-			System.out.println("Priority " + this.list[i].getPriority() +
-					" Influence " + this.list[i].getInfluence() +
-					" - " + this.list[i].getDescription());
+		for (int i=0; i<this.listLL.size(); i++)
+			System.out.println("Priority " + this.listLL.get(i).getPriority() +
+					" Influence " + this.listLL.get(i).getInfluence() +
+					" - " + this.listLL.get(i).getDescription());
 	}
 	
 	// Смена задач местами для метода сортировки
-	public void swapTask(MyTask TaskOne, MyTask TaskTwo) {
+	/*public void swapTask(MyTask TaskOne, MyTask TaskTwo) {
 		MyTask TaskTemp = new MyTask(TaskOne);
 		TaskOne.setAll(TaskTwo);
 		TaskTwo.setAll(TaskTemp);
-	}
+	}*/
 	
 	public void sortTask() {
-		// Если главный метод - METHOD_PRIORITY
+		// Дополнительная сортировка, непонятно для чего нужна, без нее первый раз неправильно сортирует
+		Collections.sort(listLL, new Comparator<MyTask>() {
+			@Override
+			public int compare(MyTask T1, MyTask T2)
+			{
+				return T1.getPriority() - T2.getPriority();
+			}
+	    });
+		// Сортировка первым и вторым методом
     	if (this.getSortMethod() == METHOD_PRIORITY) {
-    		// Проходим по всему списку задач
-			for(int i=0; i<this.elem-1; i++) {
-				// Сначала сортируем задачи по главному методу
-				for(int d=0; d<(this.elem-i-1); d++) {
-					// Выделяем большее значение и меняем местами
-					if(this.list[d].getPriority()>this.list[d+1].getPriority())
-						swapTask(this.list[d], this.list[d+1]);
-				}
-				
-				// Затем сортируем элементы по оставшемуся методу
-				for(int z=0; z<this.elem-1;z++) {
-					// Выделяем большее и меняем местами
-					if(this.list[z].getPriority() == this.list[z+1].getPriority())
-						if(this.list[z].getInfluence() > this.list[z+1].getInfluence())
-							swapTask(this.list[z], this.list[z+1]);
-				}
-			}
-		// В противном случае сортируем сначала по дополнительному методу, а затем по главному
+    		Collections.sort(listLL, new Comparator<MyTask>() {
+    			@Override
+    			public int compare(MyTask T1, MyTask T2)
+    			{
+    				return T1.getPriority() - T2.getPriority();
+    			}
+    	    });
 		} else if(this.getSortMethod() == METHOD_INFLUENCE) {
-			for(int i=0; i<this.elem-1; i++) {
-				for(int d=0; d<(this.elem-i-1); d++) {
-					if(this.list[d].getInfluence()>this.list[d+1].getInfluence())
-						swapTask(this.list[d], this.list[d+1]);
+			Collections.sort(listLL, new Comparator<MyTask>() {
+				@Override
+				public int compare(MyTask T1, MyTask T2)
+				{
+					return T1.getInfluence() - T2.getInfluence();
 				}
-				
-				for(int z=0; z<this.elem-1;z++) {
-					if(this.list[z].getInfluence() == this.list[z+1].getInfluence())
-						if(this.list[z].getPriority() > this.list[z+1].getPriority())
-							swapTask(this.list[z], this.list[z+1]);
-				}
-			}
+			});
 		}
 	}
 }
