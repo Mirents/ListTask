@@ -9,8 +9,8 @@ public class MyListTask {
 	private int max;
 	private String sortMethod;
 	
-    final static String METHOD_PRIORITY = "METHOD_PRIORITY";
-    final static String METHOD_INFLUENCE = "METHOD_INFLUENCE";
+    final public static String METHOD_PRIORITY = "METHOD_PRIORITY";
+    final public static String METHOD_INFLUENCE = "METHOD_INFLUENCE";
     
     // Конструктор класса, создающий начальный массив из maxколичества элементов
     MyListTask(int max, String sortMethod) {
@@ -37,7 +37,7 @@ public class MyListTask {
 	
 	// Вывод всех задач на экран с приоритетным методом сортировки
 	public void showAllTask() {
-		System.out.println("This Sotr Merhod: "+this.getSortMethod());
+		System.out.println("This Sort Method: "+this.getSortMethod());
 		for (int i=0; i<this.elem; i++)
 			System.out.println("Priority " + this.list[i].getPriority() +
 					" Influence " + this.list[i].getInfluence() +
