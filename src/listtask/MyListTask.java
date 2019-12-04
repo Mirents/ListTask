@@ -52,6 +52,7 @@ public class MyListTask {
 	}*/
 	
 	public void sortTask() {
+		// Sort Bug
 		// Дополнительная сортировка, непонятно для чего нужна, без нее первый раз неправильно сортирует
 		Collections.sort(listLL, new Comparator<MyTask>() {
 			@Override
