@@ -43,4 +43,48 @@ public class MyListTask {
 					" Influence " + this.list[i].getInfluence() +
 					" - " + this.list[i].getDescription());
 	}
+	
+	// Смена задач местами для метода сортировки
+	public void swapTask(MyTask TaskOne, MyTask TaskTwo) {
+		MyTask TaskTemp = new MyTask(TaskOne);
+		TaskOne.setAll(TaskTwo);
+		TaskTwo.setAll(TaskTemp);
+	}
+	
+	public void sortTask() {
+		// Если главный метод - METHOD_PRIORITY
+    	if (this.getSortMethod() == METHOD_PRIORITY) {
+    		// Проходим по всему списку задач
+			for(int i=0; i<this.elem-1; i++) {
+				// Сначала сортируем задачи по главному методу
+				for(int d=0; d<(this.elem-i-1); d++) {
+					// Выделяем большее значение и меняем местами
+					if(this.list[d].getPriority()>this.list[d+1].getPriority())
+						swapTask(this.list[d], this.list[d+1]);
+				}
+				
+				// Затем сортируем элементы по оставшемуся методу
+				for(int z=0; z<this.elem-1;z++) {
+					// Выделяем большее и меняем местами
+					if(this.list[z].getPriority() == this.list[z+1].getPriority())
+						if(this.list[z].getInfluence() > this.list[z+1].getInfluence())
+							swapTask(this.list[z], this.list[z+1]);
+				}
+			}
+		// В противном случае сортируем сначала по дополнительному методу, а затем по главному
+		} else if(this.getSortMethod() == METHOD_INFLUENCE) {
+			for(int i=0; i<this.elem-1; i++) {
+				for(int d=0; d<(this.elem-i-1); d++) {
+					if(this.list[d].getInfluence()>this.list[d+1].getInfluence())
+						swapTask(this.list[d], this.list[d+1]);
+				}
+				
+				for(int z=0; z<this.elem-1;z++) {
+					if(this.list[z].getInfluence() == this.list[z+1].getInfluence())
+						if(this.list[z].getPriority() > this.list[z+1].getPriority())
+							swapTask(this.list[z], this.list[z+1]);
+				}
+			}
+		}
+	}
 }

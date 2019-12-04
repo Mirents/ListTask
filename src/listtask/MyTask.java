@@ -19,6 +19,12 @@ public class MyTask {
 		this.setInfluence(0);
 	}
 
+	MyTask(MyTask T) {
+		this.description = T.getDescription();
+		this.influence = T.getInfluence();
+		this.priority = T.getPriority();
+	}
+	
 	public String getDescription() {
 		return description;
 	}
@@ -41,5 +47,11 @@ public class MyTask {
 
 	public void setInfluence(int influence) {
 		this.influence = influence;
+	}
+	
+	public void setAll(MyTask taskTemp) {
+		this.setDescription(taskTemp.getDescription());
+		this.setInfluence(taskTemp.getInfluence());
+		this.setPriority(taskTemp.getPriority());
 	}
 }
