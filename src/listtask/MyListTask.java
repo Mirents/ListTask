@@ -50,6 +50,15 @@ public class MyListTask {
 					" - " + this.listLL.get(i).getDescription());
 	}
 	
+	public String getAllText() {
+		String text = "";
+		for (int i=0; i<this.listLL.size(); i++)
+			text += "Priority " + this.listLL.get(i).getPriority() +
+					" Influence " + this.listLL.get(i).getInfluence() +
+					" - " + this.listLL.get(i).getDescription() + "\n";
+		return text;
+	}
+	
 	// Смена задач местами для метода сортировки
 	/*public void swapTask(MyTask TaskOne, MyTask TaskTwo) {
 		MyTask TaskTemp = new MyTask(TaskOne);

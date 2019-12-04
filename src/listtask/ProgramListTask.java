@@ -17,7 +17,7 @@ package listtask;
  * 3 - все то, что беспокоит, но при этом не зависит от человека.*/
 
 public class ProgramListTask {
-	static MyListTask listTask;
+	//static MyListTask listTask;
         
 	public static void main(String[] args) {
 		
@@ -25,11 +25,11 @@ public class ProgramListTask {
 		app.setVisible(true);
 		
 		// Создание списка задач
-		listTask = new MyListTask(MyListTask.METHOD_INFLUENCE);
+		/*listTask = new MyListTask(MyListTask.METHOD_INFLUENCE);
 		// Заполнение списка
 		listTask.openListTaskFromFile();
 		
-		// Вывод на экран до сотировки
+		// Вывод на экран до сортировки
 		System.out.println("Task under sort");
 		listTask.showAllTask();
 		
@@ -42,6 +42,6 @@ public class ProgramListTask {
 		System.out.println("\nTask before sort");
 		listTask.setSortMethod(MyListTask.METHOD_PRIORITY);
 		listTask.sortTask();
-		listTask.showAllTask();
+		listTask.showAllTask();*/
 	}
 }
