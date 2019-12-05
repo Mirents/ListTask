@@ -22,9 +22,10 @@ public class MyListTask {
     final private String FILE_LIST_TASK = "fileListTask.txt"; // Константа файла с данными задач
     
     // Конструктор класса, создающий начальный массив из max количества элементов
-    MyListTask(String sortMethod) {
-    	this.setSortMethod(sortMethod);
+    MyListTask() {
+    	//this.setSortMethod(METHOD_INFLUENCE);
     	this.listLL = new LinkedList<MyTask>();
+    	//this.openListTaskFromFile();
     }
 
     // Геттеры и Сеттеры переменной sortMethod
@@ -100,7 +101,7 @@ public class MyListTask {
 		// Создание переменной для чтения файла
 		BufferedReader reader = null;
 		try {
-			// Сощдание файла и проверка его наличия
+			// Создание файла и проверка его наличия
 			File file = new File(this.FILE_LIST_TASK);
 			if (file.exists()) file.createNewFile();
 
@@ -110,15 +111,23 @@ public class MyListTask {
 			// Считать данные построчно, выделить строку и две цифры
 			while ((line = reader.readLine()) != null) {
 				String[] mass = line.split(",");
-				int priority = Integer.parseInt(mass[1].trim());
-				int influence = Integer.parseInt(mass[2].trim());
-					
-				// Добавить новую задачу
-				this.addTask(mass[0], priority, influence);
+				if(mass[0].trim().equals(METHOD_INFLUENCE))
+					this.setSortMethod(METHOD_INFLUENCE);
+				else if(mass[0].trim().equals(METHOD_PRIORITY))
+					this.setSortMethod(METHOD_PRIORITY);
+				else {
+					int priority = Integer.parseInt(mass[1].trim());
+					int influence = Integer.parseInt(mass[2].trim());	
+					// Добавить новую задачу
+					this.addTask(mass[0], priority, influence);
+				}
 			}
 			// Завершить поток чтения
 			reader.close();
 		} catch(IOException e) {
+			// TODO В случае изменения файла не обрабатывается это исключение,
+			// а сразу выходит на исключение в файле ProgramListTask.java
+			
 			// В случае возникноения ошибки вывести ее в консоль
 			System.out.println("Error " + e);
 		}
@@ -133,6 +142,7 @@ public class MyListTask {
 			// Создание буфера для записи данных
 			PrintWriter pw = new PrintWriter(file);
 			
+			pw.println(this.getSortMethod()+",,");
 			// Построчная запись данных в файл
 			for(int i=0; i<this.listLL.size(); i++)
 				pw.println(this.listLL.get(i).getDescription()+","+
@@ -150,7 +160,7 @@ public class MyListTask {
 	
 	public String deleteTask(int number) {
 		try {
-				return "Delete task: " + this.listLL.remove(number).getDescription();
+				return "Задача удалена: " + this.listLL.remove(number).getDescription();
 			} catch(Exception e) {
 				return e.toString();
 			}

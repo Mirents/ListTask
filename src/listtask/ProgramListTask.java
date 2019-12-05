@@ -28,7 +28,8 @@ public class ProgramListTask {
 					MyGUI app = new MyGUI();
 			app.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					//e.printStackTrace();
+					System.out.println("Error " + e);
 				}
 			}
 		});
