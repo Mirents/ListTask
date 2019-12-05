@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextPane;
 import javax.swing.JTextField;
+import javax.swing.JRadioButton;
 
 public class MyGUI extends JFrame {
 	private MyListTask listTask; // Список задач
@@ -18,7 +19,23 @@ public class MyGUI extends JFrame {
 	private JButton addTaskButton;      // Кнопка добавления задачи в список
 	private JPanel contentPane;  // Основное полотно для элементов управления
 	private ButtonEventListener buttonEventListener; // Обработчик событий нажатия кнопок
-	private JTextField numberDeleteTaskTextField;
+	private JTextField numberDeleteTaskTextField; // Текстовое поле для ввода номера удаляемого поля
+	private JTextField newTaskDescriptionTextField; // Текстовое поле для описания новой задачи
+	
+	// Группа переключателей для выбора параметра Intluence
+	JRadioButton influenceOneRadioButton;
+	JRadioButton influenceTwoRadioButton;
+	JRadioButton influenceTreeRadioButton;
+	
+	// Группа переключателей для выбора параметра Priority
+	JRadioButton priotityOneRadioButton;
+	JRadioButton priotityTwoRadioButton;
+	JRadioButton priotityThreeRadioButton;
+	JRadioButton priotityFourRadioButton;
+	private JButton safeTaskToFileButton;
+	private JButton sortTaskButton;
+	private JRadioButton setSortPriorityRadioButton;
+	private JRadioButton setSortInfluenceRadioButton;
 	
 	public MyGUI() {		
 		super("Test");
@@ -33,26 +50,74 @@ public class MyGUI extends JFrame {
 		this.setContentPane(contentPane);
 		
 		textPane = new JTextPane();
-		textPane.setBounds(12, 43, 218, 368);
+		textPane.setBounds(12, 88, 218, 323);
 		contentPane.add(textPane);
 		
-		loadFromFileButton = new JButton("Load List Task");
-		loadFromFileButton.setBounds(12, 12, 134, 25);
-		contentPane.add(loadFromFileButton);
-		
-		deleteTaskButton = new JButton("Delete Task");
-		deleteTaskButton.setBounds(242, 12, 134, 25);
-		contentPane.add(deleteTaskButton);
-		
-		addTaskButton  = new JButton("Add Task");
-		addTaskButton.setBounds(242, 43, 134, 25);
-		contentPane.add(addTaskButton);
-		
 		numberDeleteTaskTextField = new JTextField();
-		numberDeleteTaskTextField.setBounds(387, 12, 48, 25);
+		numberDeleteTaskTextField.setBounds(387, 6, 48, 25);
 		contentPane.add(numberDeleteTaskTextField);
 		numberDeleteTaskTextField.setColumns(10);
-
+		
+		newTaskDescriptionTextField = new JTextField();
+		newTaskDescriptionTextField.setBounds(242, 90, 193, 19);
+		contentPane.add(newTaskDescriptionTextField);
+		newTaskDescriptionTextField.setColumns(10);
+		
+		influenceOneRadioButton = new JRadioButton("Зависит");
+		influenceOneRadioButton.setBounds(238, 116, 144, 23);
+		contentPane.add(influenceOneRadioButton);
+		
+		influenceTwoRadioButton = new JRadioButton("Мало зависит");
+		influenceTwoRadioButton.setBounds(238, 143, 144, 23);
+		contentPane.add(influenceTwoRadioButton);
+		
+		influenceTreeRadioButton = new JRadioButton("Не зависит");
+		influenceTreeRadioButton.setBounds(238, 170, 144, 23);
+		contentPane.add(influenceTreeRadioButton);
+		
+		priotityOneRadioButton = new JRadioButton("Priotity 1");
+		priotityOneRadioButton.setBounds(238, 210, 144, 23);
+		contentPane.add(priotityOneRadioButton);
+		
+		priotityTwoRadioButton = new JRadioButton("Priotity 2");
+		priotityTwoRadioButton.setBounds(238, 240, 144, 23);
+		contentPane.add(priotityTwoRadioButton);
+		
+		priotityThreeRadioButton = new JRadioButton("Priotity 3");
+		priotityThreeRadioButton.setBounds(238, 269, 144, 23);
+		contentPane.add(priotityThreeRadioButton);
+		
+		priotityFourRadioButton = new JRadioButton("Priotity 4");
+		priotityFourRadioButton.setBounds(238, 296, 144, 23);
+		contentPane.add(priotityFourRadioButton);
+		
+		setSortPriorityRadioButton = new JRadioButton("Сортировать по важности");
+		setSortPriorityRadioButton.setBounds(12, 39, 218, 23);
+		contentPane.add(setSortPriorityRadioButton);
+		
+		setSortInfluenceRadioButton = new JRadioButton("Сортировать по влиянию");
+		setSortInfluenceRadioButton.setBounds(12, 57, 218, 23);
+		contentPane.add(setSortInfluenceRadioButton);
+		
+		loadFromFileButton = new JButton("Загрузить");
+		loadFromFileButton.setBounds(253, 386, 134, 25);
+		contentPane.add(loadFromFileButton);
+		
+		deleteTaskButton = new JButton("Удалить задачу");
+		deleteTaskButton.setBounds(221, 6, 154, 25);
+		contentPane.add(deleteTaskButton);
+		
+		addTaskButton  = new JButton("Добавить задачу");
+		addTaskButton.setBounds(242, 53, 193, 25);
+		contentPane.add(addTaskButton);
+		
+		safeTaskToFileButton = new JButton("Сохранить");
+		safeTaskToFileButton.setBounds(252, 355, 134, 25);
+		contentPane.add(safeTaskToFileButton);
+		
+		sortTaskButton = new JButton("Сортировать задачи");
+		sortTaskButton.setBounds(12, 6, 197, 25);
+		contentPane.add(sortTaskButton);
 		
 		buttonEventListener = new ButtonEventListener();
 		loadFromFileButton.addActionListener(buttonEventListener);
