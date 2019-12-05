@@ -10,10 +10,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextPane;
+import javax.swing.Timer;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
+import javax.swing.JLabel;
 
 public class MyGUI extends JFrame {
 	private MyListTask listTask; // Список задач
@@ -21,6 +23,8 @@ public class MyGUI extends JFrame {
 	private JButton loadFromFileButton; // Кнопка загрузки списка из файла
 	private JButton deleteTaskButton;   // Кнопка удаления задачи из списка
 	private JButton addTaskButton;      // Кнопка добавления задачи в список
+	private JButton startTimerButton;
+	private JButton stopTimerButton;
 	private JButton safeTaskToFileButton;
 	private JPanel contentPane;  // Основное полотно для элементов управления
 	private ButtonEventListener buttonEventListener; // Обработчик событий нажатия кнопок
@@ -29,6 +33,10 @@ public class MyGUI extends JFrame {
 	private ButtonGroup methodSortRadioButtonGroup;
 	private ButtonGroup influenceRadioButtonGroup;
 	private ButtonGroup priorityRadioButtonGroup;
+	
+	JLabel timerLabel;
+	private Timer timer;
+	private int intTimer = 100000;
 	
 	private JRadioButton setSortPriorityRadioButton;
 	private JRadioButton setSortInfluenceRadioButton;
@@ -158,6 +166,18 @@ public class MyGUI extends JFrame {
 		contentPane.add(setSortInfluenceRadioButton);
 		setSortInfluenceRadioButton.setSelected((listTask.getSortMethod().equals(MyListTask.METHOD_INFLUENCE)) ?
 				true : false);
+		
+		startTimerButton = new JButton("Start");
+		startTimerButton.setBounds(90, 335, 114, 25);
+		contentPane.add(startTimerButton);
+		
+		stopTimerButton = new JButton("Stop");
+		stopTimerButton.setBounds(90, 365, 114, 25);
+		contentPane.add(stopTimerButton);
+		
+		timerLabel = new JLabel("New label");
+		timerLabel.setBounds(230, 356, 66, 15);
+		contentPane.add(timerLabel);
 
 		// 
 		buttonEventListener = new ButtonEventListener();
@@ -174,6 +194,8 @@ public class MyGUI extends JFrame {
 		influenceOneRadioButton.addActionListener(buttonEventListener);
 		influenceTwoRadioButton.addActionListener(buttonEventListener);
 		influenceTreeRadioButton.addActionListener(buttonEventListener);
+		startTimerButton.addActionListener(buttonEventListener);
+		stopTimerButton.addActionListener(buttonEventListener);
 	}
 	
 	class ButtonEventListener implements ActionListener {
@@ -238,6 +260,21 @@ public class MyGUI extends JFrame {
 			}
 			if (e.getSource() == influenceTreeRadioButton) {
 				influenceAddNewTask = 3;
+			}
+			if (e.getSource() == startTimerButton) {
+				timer = new Timer(1000, new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						timerLabel.setText(String.valueOf(intTimer));
+						intTimer--;
+					}
+				});
+				timer.start();
+			}
+			if (e.getSource() == stopTimerButton) {
+				timer.stop();
+				intTimer = 0;
 			}
 			} catch(Exception eX) {
 				JOptionPane.showMessageDialog(null, "Error!");				
