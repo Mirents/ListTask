@@ -53,7 +53,7 @@ public class MyListTask {
 	public String getAllText() {
 		String text = "";
 		for (int i=0; i<this.listLL.size(); i++)
-			text += "Priority " + this.listLL.get(i).getPriority() +
+			text += (i+1) + ". Priority " + this.listLL.get(i).getPriority() +
 					" Influence " + this.listLL.get(i).getInfluence() +
 					" - " + this.listLL.get(i).getDescription() + "\n";
 		return text;
