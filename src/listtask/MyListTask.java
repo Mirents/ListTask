@@ -147,4 +147,12 @@ public class MyListTask {
 			System.out.println("Error " + e);
 		}
 	}
+	
+	public String deleteTask(int number) {
+		try {
+				return "Delete task: " + this.listLL.remove(number).getDescription();
+			} catch(Exception e) {
+				return e.toString();
+			}
+	}
 }

@@ -1,27 +1,24 @@
 package listtask;
 
-import java.awt.Container;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextPane;
-import javax.swing.DropMode;
-import javax.swing.JList;
+import javax.swing.JTextField;
 
 public class MyGUI extends JFrame {
-	private MyListTask listTask;
-	private JTextPane textPane;
-	private JButton myButton;
-	private JPanel contentPane;
-	private ButtonEventListener buttonEventListener;
+	private MyListTask listTask; // Список задач
+	private JTextPane textPane;  // Текстовое поле для вывода списка
+	private JButton loadFromFileButton; // Кнопка загрузки списка из файла
+	private JButton deleteTaskButton;   // Кнопка удаления задачи из списка
+	private JButton addTaskButton;      // Кнопка добавления задачи в список
+	private JPanel contentPane;  // Основное полотно для элементов управления
+	private ButtonEventListener buttonEventListener; // Обработчик событий нажатия кнопок
+	private JTextField numberDeleteTaskTextField;
 	
 	public MyGUI() {		
 		super("Test");
@@ -35,16 +32,32 @@ public class MyGUI extends JFrame {
 		contentPane.setLayout(null);
 		this.setContentPane(contentPane);
 		
-		myButton = new JButton("Open List Task");
-		myButton.setBounds(12, 12, 134, 25);
-		contentPane.add(myButton);
-		
 		textPane = new JTextPane();
 		textPane.setBounds(12, 43, 218, 368);
 		contentPane.add(textPane);
 		
+		loadFromFileButton = new JButton("Load List Task");
+		loadFromFileButton.setBounds(12, 12, 134, 25);
+		contentPane.add(loadFromFileButton);
+		
+		deleteTaskButton = new JButton("Delete Task");
+		deleteTaskButton.setBounds(242, 12, 134, 25);
+		contentPane.add(deleteTaskButton);
+		
+		addTaskButton  = new JButton("Add Task");
+		addTaskButton.setBounds(242, 43, 134, 25);
+		contentPane.add(addTaskButton);
+		
+		numberDeleteTaskTextField = new JTextField();
+		numberDeleteTaskTextField.setBounds(387, 12, 48, 25);
+		contentPane.add(numberDeleteTaskTextField);
+		numberDeleteTaskTextField.setColumns(10);
+
+		
 		buttonEventListener = new ButtonEventListener();
-		myButton.addActionListener(buttonEventListener);
+		loadFromFileButton.addActionListener(buttonEventListener);
+		deleteTaskButton.addActionListener(buttonEventListener);
+		addTaskButton.addActionListener(buttonEventListener);
 		
 		// Создание списка задач
 				listTask = new MyListTask(MyListTask.METHOD_INFLUENCE);
@@ -56,7 +69,7 @@ public class MyGUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			try {
-			if (e.getSource() == myButton) {
+			if (e.getSource() == loadFromFileButton) {
 				String str = "";
 				
 				// Вывод на экран до сортировки
@@ -79,6 +92,13 @@ public class MyGUI extends JFrame {
 				listTask.showAllTask();
 				str += ("\nTask before sort - METHOD_INFLUENCE\n" + listTask.getAllText());
 				textPane.setText(str);
+			}
+			if (e.getSource() == deleteTaskButton) {
+				int num = Integer.parseInt(numberDeleteTaskTextField.getText());
+				JOptionPane.showMessageDialog(null, listTask.deleteTask(num-1));
+			}
+			if (e.getSource() == addTaskButton) {
+				JOptionPane.showMessageDialog(null, "Press addTaskButton");
 			}
 			// else JOptionPane.showMessageDialog(null, "Add Done", "Output", JOptionPane.PLAIN_MESSAGE);
 			} catch(Exception eX) {
