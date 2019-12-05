@@ -196,6 +196,8 @@ public class MyGUI extends JFrame {
 		influenceTreeRadioButton.addActionListener(buttonEventListener);
 		startTimerButton.addActionListener(buttonEventListener);
 		stopTimerButton.addActionListener(buttonEventListener);
+		
+		//timer = new Timer(1000, buttonEventListener);
 	}
 	
 	class ButtonEventListener implements ActionListener {
@@ -264,7 +266,7 @@ public class MyGUI extends JFrame {
 			if (e.getSource() == startTimerButton) {
 				timer = new Timer(1000, new ActionListener() {
 					
-					@Override
+				    @Override
 					public void actionPerformed(ActionEvent arg0) {
 						timerLabel.setText(String.valueOf(intTimer));
 						intTimer--;
@@ -274,8 +276,14 @@ public class MyGUI extends JFrame {
 			}
 			if (e.getSource() == stopTimerButton) {
 				timer.stop();
-				intTimer = 0;
+				intTimer = 100000;
+				timerLabel.setText(String.valueOf(intTimer));
 			}
+			/*if (e.getSource() == timer) {
+				timerLabel.setText(String.valueOf(intTimer));
+				intTimer--;
+			}*/
+			
 			} catch(Exception eX) {
 				JOptionPane.showMessageDialog(null, "Error!");				
 			}
