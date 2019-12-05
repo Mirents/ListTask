@@ -38,8 +38,9 @@ public class MyListTask {
 	}
 	
 	// Добавление новой задачи
-	public void addTask(String description, int priority, int influence) {
-		this.listLL.add(new MyTask(description, priority, influence));
+	public void addTask(String description, int priority,
+			int influence, boolean complete) {
+		this.listLL.add(new MyTask(description, priority, influence, complete));
 	}
 	
 	// Вывод всех задач на экран с приоритетным методом сортировки
@@ -48,18 +49,20 @@ public class MyListTask {
 		for (int i=0; i<this.listLL.size(); i++)
 			System.out.println("Priority " + this.listLL.get(i).getPriority() +
 					" Influence " + this.listLL.get(i).getInfluence() +
-					" - " + this.listLL.get(i).getDescription());
+					" - " + this.listLL.get(i).getDescription() +
+					" - " + this.listLL.get(i).isComplete());
 	}
-	
+
 	public String getAllText() {
 		String text = "";
 		for (int i=0; i<this.listLL.size(); i++)
 			text += (i+1) + ". Priority " + this.listLL.get(i).getPriority() +
 					" Influence " + this.listLL.get(i).getInfluence() +
-					" - " + this.listLL.get(i).getDescription() + "\n";
+					" - " + this.listLL.get(i).getDescription() +
+					" - " + this.listLL.get(i).isComplete()+ "\n";
 		return text;
 	}
-	
+
 	// Смена задач местами для метода сортировки
 	/*public void swapTask(MyTask TaskOne, MyTask TaskTwo) {
 		MyTask TaskTemp = new MyTask(TaskOne);
@@ -97,7 +100,7 @@ public class MyListTask {
 		}
 	}
 	
-	public void openListTaskFromFile() {
+	public void openListTaskFromFile(boolean isReopen) {
 		// Создание переменной для чтения файла
 		BufferedReader reader = null;
 		try {
@@ -105,6 +108,8 @@ public class MyListTask {
 			File file = new File(this.FILE_LIST_TASK);
 			if (file.exists()) file.createNewFile();
 
+			if(isReopen) this.listLL.clear();
+			
 			// Если файл существует
 			reader = new BufferedReader(new FileReader(this.FILE_LIST_TASK));
 			String line;
@@ -117,9 +122,10 @@ public class MyListTask {
 					this.setSortMethod(METHOD_PRIORITY);
 				else {
 					int priority = Integer.parseInt(mass[1].trim());
-					int influence = Integer.parseInt(mass[2].trim());	
+					int influence = Integer.parseInt(mass[2].trim());
+					boolean complete = Integer.parseInt(mass[3].trim()) == 1 ? true : false;
 					// Добавить новую задачу
-					this.addTask(mass[0], priority, influence);
+					this.addTask(mass[0], priority, influence, complete);
 				}
 			}
 			// Завершить поток чтения
@@ -147,7 +153,8 @@ public class MyListTask {
 			for(int i=0; i<this.listLL.size(); i++)
 				pw.println(this.listLL.get(i).getDescription()+","+
 						this.listLL.get(i).getPriority()+","+
-						this.listLL.get(i).getInfluence());
+						this.listLL.get(i).getInfluence()+","+
+						(this.listLL.get(i).isComplete() ? 1 : 0));
 			
 			// Закрытие потока после использования
 			pw.close();

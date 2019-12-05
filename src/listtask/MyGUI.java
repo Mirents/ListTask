@@ -12,6 +12,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JTextPane;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
+import javax.swing.JList;
+import javax.swing.AbstractListModel;
 
 public class MyGUI extends JFrame {
 	private MyListTask listTask; // Список задач
@@ -51,7 +53,7 @@ public class MyGUI extends JFrame {
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//this.setBounds(100, 100, 390, 453);
-		this.setSize(473, 453);
+		this.setSize(512, 453);
 		this.setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -59,7 +61,7 @@ public class MyGUI extends JFrame {
 		this.setContentPane(contentPane);
 		
 		textPane = new JTextPane();
-		textPane.setBounds(12, 43, 218, 368);
+		textPane.setBounds(12, 43, 218, 173);
 		contentPane.add(textPane);
 		
 		numberDeleteTaskTextField = new JTextField();
@@ -91,25 +93,25 @@ public class MyGUI extends JFrame {
 		// 
 		priorityRadioButtonGroup = new ButtonGroup();
 		
-		priorityOneRadioButton = new JRadioButton("Priotity 1");
-		priorityOneRadioButton.setBounds(373, 107, 93, 23);
+		priorityOneRadioButton = new JRadioButton("Важно и срочно");
+		priorityOneRadioButton.setBounds(355, 107, 154, 23);
 		priorityRadioButtonGroup.add(priorityOneRadioButton);
 		contentPane.add(priorityOneRadioButton);
 		priorityOneRadioButton.setSelected(true);
 		priorityAddNewTask = 1;
 		
-		priorityTwoRadioButton = new JRadioButton("Priotity 2");
-		priorityTwoRadioButton.setBounds(373, 137, 93, 23);
+		priorityTwoRadioButton = new JRadioButton("Важно и несрочно");
+		priorityTwoRadioButton.setBounds(355, 137, 154, 23);
 		priorityRadioButtonGroup.add(priorityTwoRadioButton);
 		contentPane.add(priorityTwoRadioButton);
 		
-		priorityThreeRadioButton = new JRadioButton("Priotity 3");
-		priorityThreeRadioButton.setBounds(373, 166, 93, 23);
+		priorityThreeRadioButton = new JRadioButton("Срочно и неважно");
+		priorityThreeRadioButton.setBounds(355, 166, 154, 23);
 		priorityRadioButtonGroup.add(priorityThreeRadioButton);
 		contentPane.add(priorityThreeRadioButton);
 		
-		priorityFourRadioButton = new JRadioButton("Priotity 4");
-		priorityFourRadioButton.setBounds(373, 193, 93, 23);
+		priorityFourRadioButton = new JRadioButton("Срочно и неважно");
+		priorityFourRadioButton.setBounds(355, 193, 154, 23);
 		priorityRadioButtonGroup.add(priorityFourRadioButton);
 		contentPane.add(priorityFourRadioButton);
 		
@@ -117,19 +119,19 @@ public class MyGUI extends JFrame {
 		influenceRadioButtonGroup = new ButtonGroup();
 		
 		influenceOneRadioButton = new JRadioButton("Зависит");
-		influenceOneRadioButton.setBounds(238, 107, 124, 23);
+		influenceOneRadioButton.setBounds(238, 107, 120, 23);
 		influenceRadioButtonGroup.add(influenceOneRadioButton);
 		contentPane.add(influenceOneRadioButton);
 		influenceOneRadioButton.setSelected(true);
 		influenceAddNewTask = 1;
 		
 		influenceTwoRadioButton = new JRadioButton("Мало зависит");
-		influenceTwoRadioButton.setBounds(238, 134, 124, 23);
+		influenceTwoRadioButton.setBounds(238, 134, 120, 23);
 		influenceRadioButtonGroup.add(influenceTwoRadioButton);
 		contentPane.add(influenceTwoRadioButton);
 		
 		influenceTreeRadioButton = new JRadioButton("Не зависит");
-		influenceTreeRadioButton.setBounds(238, 161, 124, 23);
+		influenceTreeRadioButton.setBounds(238, 161, 120, 23);
 		influenceRadioButtonGroup.add(influenceTreeRadioButton);
 		contentPane.add(influenceTreeRadioButton);
 		
@@ -137,7 +139,7 @@ public class MyGUI extends JFrame {
 		listTask = new MyListTask();
 
 		// Заполнение списка
-		listTask.openListTaskFromFile();
+		listTask.openListTaskFromFile(false);
 		textPane.setText(listTask.getAllText());
 		
 		//
@@ -179,8 +181,11 @@ public class MyGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			try {
 			if (e.getSource() == loadFromFileButton) {
+				listTask.openListTaskFromFile(true);
 				listTask.sortTask();
 				textPane.setText(listTask.getAllText());
+				if(listTask.getSortMethod().equals(MyListTask.METHOD_INFLUENCE)) setSortInfluenceRadioButton.setSelected(true);
+				else setSortPriorityRadioButton.setSelected(true);
 			}
 			if (e.getSource() == deleteTaskButton) {
 				int num = Integer.parseInt(numberDeleteTaskTextField.getText());
@@ -191,7 +196,11 @@ public class MyGUI extends JFrame {
 			}
 			if (e.getSource() == addTaskButton) {
 				String description = newTaskDescriptionTextField.getText();
-				if(!description.isEmpty()) listTask.addTask(description, priorityAddNewTask, influenceAddNewTask);
+				if(!description.isEmpty()) {
+					listTask.addTask(description, priorityAddNewTask, influenceAddNewTask, false);
+					JOptionPane.showMessageDialog(null, "Добавлена задача: " + description);
+					newTaskDescriptionTextField.setText("");
+				}
 				else JOptionPane.showMessageDialog(null, "Введите описание задачи");
 				listTask.sortTask();
 				textPane.setText(listTask.getAllText());
