@@ -13,8 +13,6 @@ import javax.swing.JTextPane;
 import javax.swing.Timer;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
-import javax.swing.JList;
-import javax.swing.AbstractListModel;
 import javax.swing.JLabel;
 
 public class MyGUI extends JFrame {
@@ -24,8 +22,9 @@ public class MyGUI extends JFrame {
 	private JButton deleteTaskButton;   // Кнопка удаления задачи из списка
 	private JButton addTaskButton;      // Кнопка добавления задачи в список
 	private JButton startTimerButton;
-	private JButton stopTimerButton;
+	private JButton pauseTimerButton;
 	private JButton safeTaskToFileButton;
+	private JButton resetTimerButton;
 	private JPanel contentPane;  // Основное полотно для элементов управления
 	private ButtonEventListener buttonEventListener; // Обработчик событий нажатия кнопок
 	private JTextField numberDeleteTaskTextField; // Текстовое поле для ввода номера удаляемого поля
@@ -36,7 +35,9 @@ public class MyGUI extends JFrame {
 	
 	JLabel timerLabel;
 	private Timer timer;
-	private int intTimer = 100000;
+	private int countTimerSecond = 0;
+	// Время работы, время короткого перерыва, время длинного перерыва
+	private int[] schemeTimerMinute = {25,5,15};
 	
 	private JRadioButton setSortPriorityRadioButton;
 	private JRadioButton setSortInfluenceRadioButton;
@@ -73,7 +74,7 @@ public class MyGUI extends JFrame {
 		contentPane.add(textPane);
 		
 		numberDeleteTaskTextField = new JTextField();
-		numberDeleteTaskTextField.setBounds(397, 6, 48, 25);
+		numberDeleteTaskTextField.setBounds(452, 6, 48, 25);
 		contentPane.add(numberDeleteTaskTextField);
 		numberDeleteTaskTextField.setColumns(10);
 		
@@ -87,7 +88,7 @@ public class MyGUI extends JFrame {
 		contentPane.add(loadFromFileButton);
 		
 		deleteTaskButton = new JButton("Удалить задачу");
-		deleteTaskButton.setBounds(253, 6, 134, 25);
+		deleteTaskButton.setBounds(253, 6, 187, 25);
 		contentPane.add(deleteTaskButton);
 		
 		addTaskButton  = new JButton("Добавить задачу");
@@ -167,18 +168,26 @@ public class MyGUI extends JFrame {
 		setSortInfluenceRadioButton.setSelected((listTask.getSortMethod().equals(MyListTask.METHOD_INFLUENCE)) ?
 				true : false);
 		
+		// 
 		startTimerButton = new JButton("Start");
-		startTimerButton.setBounds(90, 335, 114, 25);
+		startTimerButton.setBounds(90, 300, 114, 25);
 		contentPane.add(startTimerButton);
 		
-		stopTimerButton = new JButton("Stop");
-		stopTimerButton.setBounds(90, 365, 114, 25);
-		contentPane.add(stopTimerButton);
+		pauseTimerButton = new JButton("Pause");
+		pauseTimerButton.setBounds(90, 335, 114, 25);
+		contentPane.add(pauseTimerButton);
 		
 		timerLabel = new JLabel("New label");
-		timerLabel.setBounds(230, 356, 66, 15);
+		timerLabel.setBounds(230, 356, 120, 15);
 		contentPane.add(timerLabel);
+		
+		resetTimerButton = new JButton("Reset");
+		resetTimerButton.setBounds(90, 372, 114, 25);
+		contentPane.add(resetTimerButton);
 
+		countTimerSecond = schemeTimerMinute[0]*60;
+		timerLabel.setText(minuteToHour(countTimerSecond));
+		
 		// 
 		buttonEventListener = new ButtonEventListener();
 		loadFromFileButton.addActionListener(buttonEventListener);
@@ -195,9 +204,18 @@ public class MyGUI extends JFrame {
 		influenceTwoRadioButton.addActionListener(buttonEventListener);
 		influenceTreeRadioButton.addActionListener(buttonEventListener);
 		startTimerButton.addActionListener(buttonEventListener);
-		stopTimerButton.addActionListener(buttonEventListener);
+		pauseTimerButton.addActionListener(buttonEventListener);
+		resetTimerButton.addActionListener(buttonEventListener);
 		
 		//timer = new Timer(1000, buttonEventListener);
+	}
+	
+	// TODO Сделать более лаконичную формулу
+	public String minuteToHour(int minute) {
+		String s1 = "", s2 = "";
+		if((minute/60)%60<10) s1 = "0";
+		if((minute%60)<10) s2 = "0";
+		return s1+((minute/60)%60)+":"+s2+(minute%60) + " min";
 	}
 	
 	class ButtonEventListener implements ActionListener {
@@ -268,21 +286,21 @@ public class MyGUI extends JFrame {
 					
 				    @Override
 					public void actionPerformed(ActionEvent arg0) {
-						timerLabel.setText(String.valueOf(intTimer));
-						intTimer--;
+						timerLabel.setText(minuteToHour(countTimerSecond));
+						countTimerSecond--;
 					}
 				});
 				timer.start();
 			}
-			if (e.getSource() == stopTimerButton) {
+			if (e.getSource() == resetTimerButton) {
 				timer.stop();
-				intTimer = 100000;
-				timerLabel.setText(String.valueOf(intTimer));
+				countTimerSecond = schemeTimerMinute[0]*60;
+				timerLabel.setText(minuteToHour(countTimerSecond));
 			}
-			/*if (e.getSource() == timer) {
-				timerLabel.setText(String.valueOf(intTimer));
-				intTimer--;
-			}*/
+			if (e.getSource() == pauseTimerButton) {
+				timerLabel.setText("Pause");
+				timer.stop();
+			}
 			
 			} catch(Exception eX) {
 				JOptionPane.showMessageDialog(null, "Error!");				
