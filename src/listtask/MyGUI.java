@@ -13,7 +13,9 @@ import javax.swing.JTextPane;
 import javax.swing.Timer;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JLabel;
+import javax.swing.JScrollBar;
 
 public class MyGUI extends JFrame {
 	private MyListTask listTask; // Список задач
@@ -32,6 +34,7 @@ public class MyGUI extends JFrame {
 	private ButtonGroup methodSortRadioButtonGroup;
 	private ButtonGroup influenceRadioButtonGroup;
 	private ButtonGroup priorityRadioButtonGroup;
+	private JScrollPane jSP;
 	
 	JLabel timerLabel;
 	private Timer timer;
@@ -56,6 +59,7 @@ public class MyGUI extends JFrame {
 	// Переменные для создания новой записи
 	int priorityAddNewTask, influenceAddNewTask;
 	String descriptionAddNewTask = null;
+	private JScrollBar scrollBar;
 	
 	public MyGUI() {		
 		super("Test");
@@ -67,12 +71,13 @@ public class MyGUI extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(null);
-		this.setContentPane(contentPane);
 		
 		textPane = new JTextPane();
-		textPane.setBounds(12, 43, 218, 173);
-		contentPane.add(textPane);
-		
+		//textPane.setBounds(12, 43, 193, 245);
+		JScrollPane textScroll = new JScrollPane(textPane);
+		textScroll.setBounds(12, 43, 193, 245);
+		contentPane.add(textScroll);
+
 		numberDeleteTaskTextField = new JTextField();
 		numberDeleteTaskTextField.setBounds(452, 6, 48, 25);
 		contentPane.add(numberDeleteTaskTextField);
@@ -208,6 +213,7 @@ public class MyGUI extends JFrame {
 		resetTimerButton.addActionListener(buttonEventListener);
 		
 		//timer = new Timer(1000, buttonEventListener);
+		this.setContentPane(contentPane);
 	}
 	
 	// TODO Сделать более лаконичную формулу
@@ -215,7 +221,7 @@ public class MyGUI extends JFrame {
 		String s1 = "", s2 = "";
 		if((minute/60)%60<10) s1 = "0";
 		if((minute%60)<10) s2 = "0";
-		return s1+((minute/60)%60)+":"+s2+(minute%60) + " min";
+		return s1+((minute/60)%60)+":"+s2+(minute%60);
 	}
 	
 	class ButtonEventListener implements ActionListener {
