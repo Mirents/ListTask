@@ -34,7 +34,6 @@ public class MyGUI extends JFrame {
 	private ButtonGroup methodSortRadioButtonGroup;
 	private ButtonGroup influenceRadioButtonGroup;
 	private ButtonGroup priorityRadioButtonGroup;
-	private JScrollPane jSP;
 	
 	JLabel timerLabel;
 	private Timer timer;
@@ -59,73 +58,77 @@ public class MyGUI extends JFrame {
 	// Переменные для создания новой записи
 	int priorityAddNewTask, influenceAddNewTask;
 	String descriptionAddNewTask = null;
-	private JScrollBar scrollBar;
+	private JScrollPane textScroll;
+	private JLabel label_1;
+	private JLabel label_2;
+	private JLabel label_3;
 	
 	public MyGUI() {		
 		super("Test");
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//this.setBounds(100, 100, 390, 453);
-		this.setSize(512, 453);
+		this.setSize(510, 453);
 		this.setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(null);
 		
 		textPane = new JTextPane();
-		//textPane.setBounds(12, 43, 193, 245);
-		JScrollPane textScroll = new JScrollPane(textPane);
-		textScroll.setBounds(12, 43, 193, 245);
+		//textPane.setBounds(5, 30, 500, 150);
+		textScroll = new JScrollPane(textPane);
+		textScroll.setBounds(5, 30, 500, 150);
 		contentPane.add(textScroll);
+		//contentPane.add(textPane);
 
 		numberDeleteTaskTextField = new JTextField();
-		numberDeleteTaskTextField.setBounds(452, 6, 48, 25);
+		numberDeleteTaskTextField.setBounds(435, 215, 48, 25);
 		contentPane.add(numberDeleteTaskTextField);
 		numberDeleteTaskTextField.setColumns(10);
 		
 		newTaskDescriptionTextField = new JTextField();
-		newTaskDescriptionTextField.setBounds(252, 80, 193, 19);
+		newTaskDescriptionTextField.setBounds(5, 215, 303, 25);
 		contentPane.add(newTaskDescriptionTextField);
 		newTaskDescriptionTextField.setColumns(10);
 		
 		loadFromFileButton = new JButton("Загрузить");
-		loadFromFileButton.setBounds(286, 266, 134, 25);
+		loadFromFileButton.setBounds(311, 284, 194, 25);
 		contentPane.add(loadFromFileButton);
 		
 		deleteTaskButton = new JButton("Удалить задачу");
-		deleteTaskButton.setBounds(253, 6, 187, 25);
+		deleteTaskButton.setBounds(311, 185, 194, 25);
 		contentPane.add(deleteTaskButton);
 		
 		addTaskButton  = new JButton("Добавить задачу");
-		addTaskButton.setBounds(253, 43, 192, 25);
+		addTaskButton.setBounds(5, 185, 303, 25);
 		contentPane.add(addTaskButton);
 		
 		safeTaskToFileButton = new JButton("Сохранить");
-		safeTaskToFileButton.setBounds(285, 235, 134, 25);
+		safeTaskToFileButton.setBounds(311, 252, 194, 25);
 		contentPane.add(safeTaskToFileButton);
 
 		// 
 		priorityRadioButtonGroup = new ButtonGroup();
 		
 		priorityOneRadioButton = new JRadioButton("Важно и срочно");
-		priorityOneRadioButton.setBounds(355, 107, 154, 23);
+		priorityOneRadioButton.setBounds(5, 264, 154, 23);
 		priorityRadioButtonGroup.add(priorityOneRadioButton);
 		contentPane.add(priorityOneRadioButton);
 		priorityOneRadioButton.setSelected(true);
 		priorityAddNewTask = 1;
 		
 		priorityTwoRadioButton = new JRadioButton("Важно и несрочно");
-		priorityTwoRadioButton.setBounds(355, 137, 154, 23);
+		priorityTwoRadioButton.setBounds(156, 264, 154, 23);
 		priorityRadioButtonGroup.add(priorityTwoRadioButton);
 		contentPane.add(priorityTwoRadioButton);
 		
 		priorityThreeRadioButton = new JRadioButton("Срочно и неважно");
-		priorityThreeRadioButton.setBounds(355, 166, 154, 23);
+		priorityThreeRadioButton.setBounds(5, 285, 151, 23);
 		priorityRadioButtonGroup.add(priorityThreeRadioButton);
 		contentPane.add(priorityThreeRadioButton);
 		
 		priorityFourRadioButton = new JRadioButton("Срочно и неважно");
-		priorityFourRadioButton.setBounds(355, 193, 154, 23);
+		priorityFourRadioButton.setBounds(156, 285, 154, 23);
 		priorityRadioButtonGroup.add(priorityFourRadioButton);
 		contentPane.add(priorityFourRadioButton);
 		
@@ -133,19 +136,19 @@ public class MyGUI extends JFrame {
 		influenceRadioButtonGroup = new ButtonGroup();
 		
 		influenceOneRadioButton = new JRadioButton("Зависит");
-		influenceOneRadioButton.setBounds(238, 107, 120, 23);
+		influenceOneRadioButton.setBounds(5, 239, 80, 23);
 		influenceRadioButtonGroup.add(influenceOneRadioButton);
 		contentPane.add(influenceOneRadioButton);
 		influenceOneRadioButton.setSelected(true);
 		influenceAddNewTask = 1;
 		
 		influenceTwoRadioButton = new JRadioButton("Мало зависит");
-		influenceTwoRadioButton.setBounds(238, 134, 120, 23);
+		influenceTwoRadioButton.setBounds(84, 239, 119, 23);
 		influenceRadioButtonGroup.add(influenceTwoRadioButton);
 		contentPane.add(influenceTwoRadioButton);
 		
 		influenceTreeRadioButton = new JRadioButton("Не зависит");
-		influenceTreeRadioButton.setBounds(238, 161, 120, 23);
+		influenceTreeRadioButton.setBounds(207, 239, 100, 23);
 		influenceRadioButtonGroup.add(influenceTreeRadioButton);
 		contentPane.add(influenceTreeRadioButton);
 		
@@ -159,15 +162,15 @@ public class MyGUI extends JFrame {
 		//
 		methodSortRadioButtonGroup = new ButtonGroup();
 		
-		setSortPriorityRadioButton = new JRadioButton("Сортировать по важности");
-		setSortPriorityRadioButton.setBounds(8, 0, 218, 23);
+		setSortPriorityRadioButton = new JRadioButton("Важность/срочность");
+		setSortPriorityRadioButton.setBounds(320, 5, 166, 23);
 		methodSortRadioButtonGroup.add(setSortPriorityRadioButton);
 		contentPane.add(setSortPriorityRadioButton);
 		setSortPriorityRadioButton.setSelected((listTask.getSortMethod().equals(MyListTask.METHOD_PRIORITY)) ?
 				true : false);
 		
-		setSortInfluenceRadioButton = new JRadioButton("Сортировать по влиянию");
-		setSortInfluenceRadioButton.setBounds(8, 18, 218, 23);
+		setSortInfluenceRadioButton = new JRadioButton("Влияние");
+		setSortInfluenceRadioButton.setBounds(230, 5, 84, 23);
 		methodSortRadioButtonGroup.add(setSortInfluenceRadioButton);
 		contentPane.add(setSortInfluenceRadioButton);
 		setSortInfluenceRadioButton.setSelected((listTask.getSortMethod().equals(MyListTask.METHOD_INFLUENCE)) ?
@@ -175,19 +178,20 @@ public class MyGUI extends JFrame {
 		
 		// 
 		startTimerButton = new JButton("Start");
-		startTimerButton.setBounds(90, 300, 114, 25);
+		startTimerButton.setBounds(122, 320, 114, 25);
 		contentPane.add(startTimerButton);
 		
 		pauseTimerButton = new JButton("Pause");
-		pauseTimerButton.setBounds(90, 335, 114, 25);
+		pauseTimerButton.setBounds(257, 320, 114, 25);
 		contentPane.add(pauseTimerButton);
 		
 		timerLabel = new JLabel("New label");
-		timerLabel.setBounds(230, 356, 120, 15);
+		timerLabel.setBounds(60, 320, 60, 25);
+		timerLabel.setText("");
 		contentPane.add(timerLabel);
 		
 		resetTimerButton = new JButton("Reset");
-		resetTimerButton.setBounds(90, 372, 114, 25);
+		resetTimerButton.setBounds(391, 320, 114, 25);
 		contentPane.add(resetTimerButton);
 
 		countTimerSecond = schemeTimerMinute[0]*60;
@@ -214,6 +218,22 @@ public class MyGUI extends JFrame {
 		
 		//timer = new Timer(1000, buttonEventListener);
 		this.setContentPane(contentPane);
+		
+		JLabel label = new JLabel("Список задач");
+		label.setBounds(10, 5, 95, 23);
+		contentPane.add(label);
+		
+		label_1 = new JLabel("Сортировка:");
+		label_1.setBounds(140, 5, 95, 23);
+		contentPane.add(label_1);
+		
+		label_2 = new JLabel("Номер задачи:");
+		label_2.setBounds(320, 215, 105, 25);
+		contentPane.add(label_2);
+		
+		label_3 = new JLabel("Таймер");
+		label_3.setBounds(5, 320, 55, 25);
+		contentPane.add(label_3);
 	}
 	
 	// TODO Сделать более лаконичную формулу
@@ -288,12 +308,17 @@ public class MyGUI extends JFrame {
 				influenceAddNewTask = 3;
 			}
 			if (e.getSource() == startTimerButton) {
-				timer = new Timer(1000, new ActionListener() {
+				timer = new Timer(10, new ActionListener() {
 					
 				    @Override
 					public void actionPerformed(ActionEvent arg0) {
 						timerLabel.setText(minuteToHour(countTimerSecond));
 						countTimerSecond--;
+						if(countTimerSecond<=0) {
+							JOptionPane.showMessageDialog(null, "Время работы закончено, пора отдохнуть!!!");
+							countTimerSecond = schemeTimerMinute[0]*60;
+							timerLabel.setText(minuteToHour(countTimerSecond));
+						}
 					}
 				});
 				timer.start();
