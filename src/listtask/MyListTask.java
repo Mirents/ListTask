@@ -115,7 +115,7 @@ public class MyListTask {
 			String line;
 			// Считать данные построчно, выделить строку и две цифры
 			while ((line = reader.readLine()) != null) {
-				String[] mass = line.split(",");
+				String[] mass = line.split("\\|");
 				if(mass[0].trim().equals(METHOD_INFLUENCE))
 					this.setSortMethod(METHOD_INFLUENCE);
 				else if(mass[0].trim().equals(METHOD_PRIORITY))
@@ -151,9 +151,9 @@ public class MyListTask {
 			pw.println(this.getSortMethod()+",,");
 			// Построчная запись данных в файл
 			for(int i=0; i<this.listLL.size(); i++)
-				pw.println(this.listLL.get(i).getDescription()+","+
-						this.listLL.get(i).getPriority()+","+
-						this.listLL.get(i).getInfluence()+","+
+				pw.println(this.listLL.get(i).getDescription()+"|"+
+						this.listLL.get(i).getPriority()+"|"+
+						this.listLL.get(i).getInfluence()+"|"+
 						(this.listLL.get(i).isComplete() ? 1 : 0));
 			
 			// Закрытие потока после использования

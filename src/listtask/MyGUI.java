@@ -40,7 +40,7 @@ public class MyGUI extends JFrame {
 	private Timer timer;
 	private int countTimerSecond = 0;
 	// Время работы, время короткого перерыва, время длинного перерыва
-	private int[] schemeTimerMinute = {5, 5, 5, 3};
+	private int[] schemeTimerMinute = {25, 5, 30, 3};
 	private int thisPeriodTimer = 0;
 	private int circleWorkTimer = 0;
 	private JRadioButton setSortPriorityRadioButton;
@@ -202,6 +202,9 @@ public class MyGUI extends JFrame {
 
 		countTimerSecond = schemeTimerMinute[0]*60;
 		timerLabel.setText(minuteToHour(countTimerSecond));
+		TimerListener timerListener = new TimerListener();
+		timer = new Timer(1000, timerListener);
+		timer.stop();
 		
 		// 
 		buttonEventListener = new ButtonEventListener();
@@ -315,49 +318,7 @@ public class MyGUI extends JFrame {
 				influenceAddNewTask = 3;
 			}
 			if (e.getSource() == startTimerButton) {
-				timer = new Timer(10, new ActionListener() {
-					
-				    @Override
-					public void actionPerformed(ActionEvent arg0) {
-						if(countTimerSecond>0) {
-						countTimerSecond--;
-						timerLabel.setText(minuteToHour(countTimerSecond));
-						} else if(countTimerSecond<=0) {
-							if(circleWorkTimer == schemeTimerMinute[3]-1) {
-								JOptionPane.showMessageDialog(null, "Работа полностью закончена!!!");
-								thisPeriodTimer = 0;
-								circleWorkTimer = 0;
-								countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
-								timerLabel.setText(minuteToHour(countTimerSecond));
-								//timer.stop();
-							} else if(thisPeriodTimer == 1) {
-								JOptionPane.showMessageDialog(null, "Отдых закончен, пора работать!!!");
-								thisPeriodTimer = 0;
-								circleWorkTimer++;
-								countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
-								timerLabel.setText(minuteToHour(countTimerSecond));
-							} else if(thisPeriodTimer == 2) {
-								JOptionPane.showMessageDialog(null, "Большой перерыв закончен!!!");
-								thisPeriodTimer = 0;
-								countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
-								timerLabel.setText(minuteToHour(countTimerSecond));
-							} else if(thisPeriodTimer == 0) {
-								if (circleWorkTimer < schemeTimerMinute[3]) {
-									JOptionPane.showMessageDialog(null, "Работа закончена - небольшой перерыв!!!");
-									thisPeriodTimer = 1;
-									countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
-									timerLabel.setText(minuteToHour(countTimerSecond));
-								} else {
-									JOptionPane.showMessageDialog(null, "Время работы закончено - большой перерыв!!!");
-									thisPeriodTimer = 2;
-									circleWorkTimer = 0;
-									countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
-									timerLabel.setText(minuteToHour(countTimerSecond));
-								}
-							}
-						}
-					}
-				});
+				
 				timer.start();
 			}
 			if (e.getSource() == resetTimerButton) {
@@ -383,4 +344,46 @@ public class MyGUI extends JFrame {
 			}
 		}
 	}
+	
+	class TimerListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(countTimerSecond>0) {
+				countTimerSecond--;
+				timerLabel.setText(minuteToHour(countTimerSecond));
+				} else {
+					if(thisPeriodTimer == 0) {
+						if (circleWorkTimer < schemeTimerMinute[3]-1) {
+							//JOptionPane.showMessageDialog(null, "Работа закончена - небольшой перерыв!!!");
+							System.out.println("Работа закончена - небольшой перерыв!!!");
+							thisPeriodTimer = 1;
+							countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
+							timerLabel.setText(minuteToHour(countTimerSecond));
+						} else {
+							//JOptionPane.showMessageDialog(null, "Работа закончена - большой перерыв!!!");
+							System.out.println("Работа закончена - большой перерыв!!!");
+							thisPeriodTimer = 2;
+							countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
+							timerLabel.setText(minuteToHour(countTimerSecond));
+						}
+						
+					} else if(thisPeriodTimer == 1) {
+						//JOptionPane.showMessageDialog(null, "Небольшой перерыв закончен, пора работать!!!");
+						System.out.println("Небольшой перерыв закончен, пора работать!!!");
+						thisPeriodTimer = 0;
+						circleWorkTimer++;
+						countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
+						timerLabel.setText(minuteToHour(countTimerSecond));
+					} else if(thisPeriodTimer == 2) {
+						//JOptionPane.showMessageDialog(null, "Большой перерыв закончен, пора работать!!!");
+						System.out.println("Большой перерыв закончен!!!");
+						thisPeriodTimer = 0;
+						circleWorkTimer = 0;
+						countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
+						timerLabel.setText(minuteToHour(countTimerSecond));
+					}
+					}
+			}
+	}
+	
 }
