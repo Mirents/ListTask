@@ -61,10 +61,14 @@ public class MyListTask {
 	public String getAllText() {
 		String text = "";
 		for (int i=0; i<this.listLL.size(); i++)
-			text += (i+1) + ". Priority " + this.listLL.get(i).getPriority() +
+			/*text += (i+1) + ". Priority " + this.listLL.get(i).getPriority() +
 					" Influence " + this.listLL.get(i).getInfluence() +
 					" - " + this.listLL.get(i).getDescription() +
-					" - " + this.listLL.get(i).isComplete()+ "\n";
+					(this.listLL.get(i).isComplete() ? (" - YES " + this.listLL.get(i).getTime() + " " +
+							this.listLL.get(i).getDate()) : "NO") + "\n";*/
+			text += (i+1) + ". " + this.listLL.get(i).getDescription() +
+			(this.listLL.get(i).isComplete() ? (" - YES " + this.listLL.get(i).getTime() + " " +
+					this.listLL.get(i).getDate()) : " NO") + "\n";
 		return text;
 	}
 

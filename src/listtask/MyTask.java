@@ -97,4 +97,12 @@ public class MyTask {
 	public String getDateTime() {
 		return this.HH + "/" + this.mm + "/" + this.dd + "/" + this.MM + "/" + this.yy;
 	}
+	
+	public String getDate() {
+		return this.dd + "." + this.MM + "." + this.yy;
+	}
+	
+	public String getTime() {
+		return this.HH + "." + this.mm;
+	}
 }

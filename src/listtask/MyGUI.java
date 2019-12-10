@@ -61,6 +61,7 @@ public class MyGUI extends JFrame {
 	JRadioButton priorityTwoRadioButton;
 	JRadioButton priorityThreeRadioButton;
 	JRadioButton priorityFourRadioButton;
+	JButton setSettingsTimer;
 	
 	// Переменные для создания новой записи
 	int priorityAddNewTask, influenceAddNewTask;
@@ -70,6 +71,11 @@ public class MyGUI extends JFrame {
 	private JLabel label_2;
 	private JLabel label_3;
 	private JTable table;
+	private JTextField textFieldTimerWork;
+	private JTextField textFieldMiniBrake;
+	private JTextField textFieldBigBrake;
+	private JLabel label_7;
+	private JTextField textFieldPeriod;
 	
 	public MyGUI() {		
 		super("ListTask");
@@ -205,6 +211,10 @@ public class MyGUI extends JFrame {
 		completeButton = new JButton("Отметить выполнение");
 		completeButton.setBounds(210, 185, 187, 25);
 		contentPane.add(completeButton);
+		
+		setSettingsTimer = new JButton("Установить");
+		setSettingsTimer.setBounds(218, 383, 114, 25);
+		contentPane.add(setSettingsTimer);
 
 		countTimerSecond = schemeTimerMinute[0]*60;
 		timerLabel.setText(minuteToHour(countTimerSecond));
@@ -231,6 +241,7 @@ public class MyGUI extends JFrame {
 		pauseTimerButton.addActionListener(buttonEventListener);
 		resetTimerButton.addActionListener(buttonEventListener);
 		completeButton.addActionListener(buttonEventListener);
+		setSettingsTimer.addActionListener(buttonEventListener);
 		
 		//timer = new Timer(1000, buttonEventListener);
 		this.setContentPane(contentPane);
@@ -250,6 +261,42 @@ public class MyGUI extends JFrame {
 		label_3 = new JLabel("Таймер");
 		label_3.setBounds(5, 320, 55, 25);
 		contentPane.add(label_3);
+		
+		JLabel label_4 = new JLabel("Время работы:");
+		label_4.setBounds(5, 353, 110, 25);
+		contentPane.add(label_4);
+		
+		JLabel label_5 = new JLabel("Маленький перерыв:");
+		label_5.setBounds(5, 383, 150, 25);
+		contentPane.add(label_5);
+		
+		JLabel label_6 = new JLabel("Большой перерыв:");
+		label_6.setBounds(5, 413, 150, 25);
+		contentPane.add(label_6);
+		
+		textFieldTimerWork = new JTextField();
+		textFieldTimerWork.setColumns(10);
+		textFieldTimerWork.setBounds(156, 357, 48, 25);
+		contentPane.add(textFieldTimerWork);
+		
+		textFieldMiniBrake = new JTextField();
+		textFieldMiniBrake.setColumns(10);
+		textFieldMiniBrake.setBounds(156, 386, 48, 25);
+		contentPane.add(textFieldMiniBrake);
+		
+		textFieldBigBrake = new JTextField();
+		textFieldBigBrake.setColumns(10);
+		textFieldBigBrake.setBounds(156, 416, 48, 25);
+		contentPane.add(textFieldBigBrake);
+		
+		label_7 = new JLabel("Периодов до большого перерыва:");
+		label_7.setBounds(5, 441, 246, 25);
+		contentPane.add(label_7);
+		
+		textFieldPeriod = new JTextField();
+		textFieldPeriod.setColumns(10);
+		textFieldPeriod.setBounds(257, 444, 48, 25);
+		contentPane.add(textFieldPeriod);
 		
 		/*Object[][] array = new String[][] {{ "Сахар" , "кг", "1.5" },
             { "Мука"  , "кг", "4.0" },
@@ -357,6 +404,17 @@ public class MyGUI extends JFrame {
 				SimpleDateFormat formatDate = new SimpleDateFormat("HH/mm/dd/MM/yy");
 				JOptionPane.showMessageDialog(null, listTask.completeTask(num-1, formatDate.format(date)));
 				textPane.setText(listTask.getAllText());
+			}
+			
+			if (e.getSource() == setSettingsTimer) {
+				schemeTimerMinute[0] = Integer.parseInt(textFieldTimerWork.getText());
+				schemeTimerMinute[1] = Integer.parseInt(textFieldMiniBrake.getText());
+				schemeTimerMinute[2] = Integer.parseInt(textFieldBigBrake.getText());
+				schemeTimerMinute[3] = Integer.parseInt(textFieldPeriod.getText());
+				timer.stop();
+				thisPeriodTimer = 0;
+				countTimerSecond = schemeTimerMinute[0]*60;
+				timerLabel.setText(minuteToHour(countTimerSecond));
 			}
 			
 			} catch(Exception eX) {
