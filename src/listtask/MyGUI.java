@@ -34,6 +34,7 @@ public class MyGUI extends JFrame {
 	private ButtonGroup methodSortRadioButtonGroup;
 	private ButtonGroup influenceRadioButtonGroup;
 	private ButtonGroup priorityRadioButtonGroup;
+	JButton completeButton;
 	
 	JLabel timerLabel;
 	private Timer timer;
@@ -128,7 +129,7 @@ public class MyGUI extends JFrame {
 		priorityRadioButtonGroup.add(priorityThreeRadioButton);
 		contentPane.add(priorityThreeRadioButton);
 		
-		priorityFourRadioButton = new JRadioButton("Срочно и неважно");
+		priorityFourRadioButton = new JRadioButton("Несрочно и неважно");
 		priorityFourRadioButton.setBounds(156, 285, 154, 23);
 		priorityRadioButtonGroup.add(priorityFourRadioButton);
 		contentPane.add(priorityFourRadioButton);
@@ -194,6 +195,10 @@ public class MyGUI extends JFrame {
 		resetTimerButton = new JButton("Reset");
 		resetTimerButton.setBounds(391, 320, 114, 25);
 		contentPane.add(resetTimerButton);
+		
+		completeButton = new JButton("Отметить выполнение");
+		completeButton.setBounds(210, 185, 187, 25);
+		contentPane.add(completeButton);
 
 		countTimerSecond = schemeTimerMinute[0]*60;
 		timerLabel.setText(minuteToHour(countTimerSecond));
@@ -216,6 +221,7 @@ public class MyGUI extends JFrame {
 		startTimerButton.addActionListener(buttonEventListener);
 		pauseTimerButton.addActionListener(buttonEventListener);
 		resetTimerButton.addActionListener(buttonEventListener);
+		completeButton.addActionListener(buttonEventListener);
 		
 		//timer = new Timer(1000, buttonEventListener);
 		this.setContentPane(contentPane);
@@ -235,10 +241,6 @@ public class MyGUI extends JFrame {
 		label_3 = new JLabel("Таймер");
 		label_3.setBounds(5, 320, 55, 25);
 		contentPane.add(label_3);
-		
-		JButton completeButton = new JButton("Отметить выполнение");
-		completeButton.setBounds(210, 185, 187, 25);
-		contentPane.add(completeButton);
 	}
 	
 	// TODO Сделать более лаконичную формулу
@@ -367,6 +369,13 @@ public class MyGUI extends JFrame {
 			if (e.getSource() == pauseTimerButton) {
 				timerLabel.setText("Pause");
 				timer.stop();
+			}
+			
+			if (e.getSource() == completeButton) {
+				int num = Integer.parseInt(numberDeleteTaskTextField.getText());
+				JOptionPane.showMessageDialog(null, listTask.completeTask(num-1));
+				numberDeleteTaskTextField.setText("");
+				textPane.setText(listTask.getAllText());
 			}
 			
 			} catch(Exception eX) {

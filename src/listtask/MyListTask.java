@@ -172,4 +172,19 @@ public class MyListTask {
 				return e.toString();
 			}
 	}
+	
+	public String completeTask(int number) {
+		try {
+			    if(!this.listLL.get(number).isComplete()) {
+			    	this.listLL.get(number).setComplete(true);
+			    	return "Задача выполнена";
+			    }
+			    else {
+			    	this.listLL.get(number).setComplete(false);
+			    	return "Задача не выполнена";
+			    }
+			} catch(Exception e) {
+				return e.toString();
+			}
+	}
 }
