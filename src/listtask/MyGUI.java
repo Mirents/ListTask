@@ -39,7 +39,7 @@ public class MyGUI extends JFrame {
 	private Timer timer;
 	private int countTimerSecond = 0;
 	// Время работы, время короткого перерыва, время длинного перерыва
-	private int[] schemeTimerMinute = {15, 7, 12, 2};
+	private int[] schemeTimerMinute = {5, 5, 5, 3};
 	private int thisPeriodTimer = 0;
 	private int circleWorkTimer = 0;
 	private JRadioButton setSortPriorityRadioButton;
@@ -65,11 +65,11 @@ public class MyGUI extends JFrame {
 	private JLabel label_3;
 	
 	public MyGUI() {		
-		super("Test");
+		super("ListTask");
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//this.setBounds(100, 100, 390, 453);
-		this.setSize(510, 453);
+		//this.setBounds(100, 100, 390, 450);
+		this.setSize(510, 380);
 		this.setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -83,12 +83,12 @@ public class MyGUI extends JFrame {
 		//contentPane.add(textPane);
 
 		numberDeleteTaskTextField = new JTextField();
-		numberDeleteTaskTextField.setBounds(435, 215, 48, 25);
+		numberDeleteTaskTextField.setBounds(430, 215, 48, 25);
 		contentPane.add(numberDeleteTaskTextField);
 		numberDeleteTaskTextField.setColumns(10);
 		
 		newTaskDescriptionTextField = new JTextField();
-		newTaskDescriptionTextField.setBounds(5, 215, 303, 25);
+		newTaskDescriptionTextField.setBounds(5, 215, 200, 25);
 		contentPane.add(newTaskDescriptionTextField);
 		newTaskDescriptionTextField.setColumns(10);
 		
@@ -97,11 +97,11 @@ public class MyGUI extends JFrame {
 		contentPane.add(loadFromFileButton);
 		
 		deleteTaskButton = new JButton("Удалить задачу");
-		deleteTaskButton.setBounds(311, 185, 194, 25);
+		deleteTaskButton.setBounds(210, 215, 187, 25);
 		contentPane.add(deleteTaskButton);
 		
 		addTaskButton  = new JButton("Добавить задачу");
-		addTaskButton.setBounds(5, 185, 303, 25);
+		addTaskButton.setBounds(5, 185, 200, 25);
 		contentPane.add(addTaskButton);
 		
 		safeTaskToFileButton = new JButton("Сохранить");
@@ -229,12 +229,16 @@ public class MyGUI extends JFrame {
 		contentPane.add(label_1);
 		
 		label_2 = new JLabel("Номер задачи:");
-		label_2.setBounds(320, 215, 105, 25);
+		label_2.setBounds(400, 185, 105, 25);
 		contentPane.add(label_2);
 		
 		label_3 = new JLabel("Таймер");
 		label_3.setBounds(5, 320, 55, 25);
 		contentPane.add(label_3);
+		
+		JButton completeButton = new JButton("Отметить выполнение");
+		completeButton.setBounds(210, 185, 187, 25);
+		contentPane.add(completeButton);
 	}
 	
 	// TODO Сделать более лаконичную формулу
@@ -313,15 +317,17 @@ public class MyGUI extends JFrame {
 					
 				    @Override
 					public void actionPerformed(ActionEvent arg0) {
-						timerLabel.setText(minuteToHour(countTimerSecond));
+						if(countTimerSecond>0) {
 						countTimerSecond--;
-						if(countTimerSecond<=0) {
+						timerLabel.setText(minuteToHour(countTimerSecond));
+						} else if(countTimerSecond<=0) {
 							if(circleWorkTimer == schemeTimerMinute[3]-1) {
-								JOptionPane.showMessageDialog(null, "Работа закончена!!!");
+								JOptionPane.showMessageDialog(null, "Работа полностью закончена!!!");
 								thisPeriodTimer = 0;
 								circleWorkTimer = 0;
 								countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
 								timerLabel.setText(minuteToHour(countTimerSecond));
+								//timer.stop();
 							} else if(thisPeriodTimer == 1) {
 								JOptionPane.showMessageDialog(null, "Отдых закончен, пора работать!!!");
 								thisPeriodTimer = 0;
@@ -329,42 +335,25 @@ public class MyGUI extends JFrame {
 								countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
 								timerLabel.setText(minuteToHour(countTimerSecond));
 							} else if(thisPeriodTimer == 2) {
-								JOptionPane.showMessageDialog(null, "Большой перерыв закончен - пора работать!!!");
+								JOptionPane.showMessageDialog(null, "Большой перерыв закончен!!!");
 								thisPeriodTimer = 0;
-								circleWorkTimer = 0;
 								countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
 								timerLabel.setText(minuteToHour(countTimerSecond));
 							} else if(thisPeriodTimer == 0) {
 								if (circleWorkTimer < schemeTimerMinute[3]) {
-									JOptionPane.showMessageDialog(null, "Отдых закончен, пора работать!!!");
-									thisPeriodTimer = 0;
-									circleWorkTimer++;
+									JOptionPane.showMessageDialog(null, "Работа закончена - небольшой перерыв!!!");
+									thisPeriodTimer = 1;
 									countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
 									timerLabel.setText(minuteToHour(countTimerSecond));
 								} else {
 									JOptionPane.showMessageDialog(null, "Время работы закончено - большой перерыв!!!");
-									
+									thisPeriodTimer = 2;
+									circleWorkTimer = 0;
+									countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
+									timerLabel.setText(minuteToHour(countTimerSecond));
 								}
 							}
 						}
-						/*if(countTimerSecond<=0 && thisPeriodTimer == 0) {
-							JOptionPane.showMessageDialog(null, "Время работы закончено, пора отдохнуть!!!");
-							thisPeriodTimer++;
-							countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
-							timerLabel.setText(minuteToHour(countTimerSecond));
-						} else if (countTimerSecond<=0 && thisPeriodTimer == 1) {
-							JOptionPane.showMessageDialog(null, "Отдых закончен, пора работать!!!");
-							thisPeriodTimer = 0;
-							circleWorkTimer++;
-							countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
-							timerLabel.setText(minuteToHour(countTimerSecond));
-						} else if (countTimerSecond<=0 && thisPeriodTimer == 2) {
-							JOptionPane.showMessageDialog(null, "Большой перерыв звкончен - пора работать!!!");
-							thisPeriodTimer = 0;
-							circleWorkTimer = 0;
-							countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
-							timerLabel.setText(minuteToHour(countTimerSecond));
-						}*/
 					}
 				});
 				timer.start();
