@@ -2,7 +2,8 @@ package listtask;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -250,7 +251,7 @@ public class MyGUI extends JFrame {
 		label_3.setBounds(5, 320, 55, 25);
 		contentPane.add(label_3);
 		
-		Object[][] array = new String[][] {{ "Сахар" , "кг", "1.5" },
+		/*Object[][] array = new String[][] {{ "Сахар" , "кг", "1.5" },
             { "Мука"  , "кг", "4.0" },
             { "Молоко", "л" , "2.2" }, { "Молоко", "л" , "2.2" }, { "Молоко", "л" , "2.2" },
             { "Молоко", "л" , "2.2" }, { "Молоко", "л" , "2.2" }, { "Молоко", "л" , "2.2" }};
@@ -259,7 +260,7 @@ public class MyGUI extends JFrame {
 		table = new JTable(array, columnsHeader);
 		JScrollPane tableScroll = new JScrollPane(table);
 		tableScroll.setBounds(5, 350, 500, 110);
-		contentPane.add(tableScroll);
+		contentPane.add(tableScroll);*/
 	}
 	
 	// TODO Сделать более лаконичную формулу
@@ -350,8 +351,11 @@ public class MyGUI extends JFrame {
 			
 			if (e.getSource() == completeButton) {
 				int num = Integer.parseInt(numberDeleteTaskTextField.getText());
-				JOptionPane.showMessageDialog(null, listTask.completeTask(num-1));
 				numberDeleteTaskTextField.setText("");
+				// Установка времени выполнения
+				Date date = new Date();
+				SimpleDateFormat formatDate = new SimpleDateFormat("HH/mm/dd/MM/yy");
+				JOptionPane.showMessageDialog(null, listTask.completeTask(num-1, formatDate.format(date)));
 				textPane.setText(listTask.getAllText());
 			}
 			

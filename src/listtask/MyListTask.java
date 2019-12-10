@@ -43,6 +43,11 @@ public class MyListTask {
 		this.listLL.add(new MyTask(description, priority, influence, complete));
 	}
 	
+	public void addTask(String description, int priority,
+			int influence, boolean complete, String dateTime) {
+		this.listLL.add(new MyTask(description, priority, influence, complete, dateTime));
+	}
+	
 	// Вывод всех задач на экран с приоритетным методом сортировки
 	public void showAllTask() {
 		System.out.println("This Sort Method: "+this.getSortMethod());
@@ -124,6 +129,9 @@ public class MyListTask {
 					int priority = Integer.parseInt(mass[1].trim());
 					int influence = Integer.parseInt(mass[2].trim());
 					boolean complete = Integer.parseInt(mass[3].trim()) == 1 ? true : false;
+					if (complete) {
+						this.addTask(mass[0], priority, influence, complete, mass[4]);
+					} else 
 					// Добавить новую задачу
 					this.addTask(mass[0], priority, influence, complete);
 				}
@@ -148,13 +156,13 @@ public class MyListTask {
 			// Создание буфера для записи данных
 			PrintWriter pw = new PrintWriter(file);
 			
-			pw.println(this.getSortMethod()+",,");
+			pw.println(this.getSortMethod()+"||");
 			// Построчная запись данных в файл
 			for(int i=0; i<this.listLL.size(); i++)
 				pw.println(this.listLL.get(i).getDescription()+"|"+
 						this.listLL.get(i).getPriority()+"|"+
 						this.listLL.get(i).getInfluence()+"|"+
-						(this.listLL.get(i).isComplete() ? 1 : 0));
+						(this.listLL.get(i).isComplete() ? (1 + "|" + this.listLL.get(i).getDateTime()) : 0));
 			
 			// Закрытие потока после использования
 			pw.close();
@@ -173,14 +181,16 @@ public class MyListTask {
 			}
 	}
 	
-	public String completeTask(int number) {
+	public String completeTask(int number, String dateTime) {
 		try {
 			    if(!this.listLL.get(number).isComplete()) {
 			    	this.listLL.get(number).setComplete(true);
+			    	this.listLL.get(number).setDateTimeIsComplete(dateTime);
 			    	return "Задача выполнена";
 			    }
 			    else {
 			    	this.listLL.get(number).setComplete(false);
+			    	this.listLL.get(number).clearDateTimeIsComplete();
 			    	return "Задача не выполнена";
 			    }
 			} catch(Exception e) {
