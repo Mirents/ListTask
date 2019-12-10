@@ -16,6 +16,10 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JScrollBar;
+import javax.swing.JTabbedPane;
+import javax.swing.JLayeredPane;
+import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
 
 public class MyGUI extends JFrame {
 	private MyListTask listTask; // Список задач
@@ -64,13 +68,14 @@ public class MyGUI extends JFrame {
 	private JLabel label_1;
 	private JLabel label_2;
 	private JLabel label_3;
+	private JTable table;
 	
 	public MyGUI() {		
 		super("ListTask");
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//this.setBounds(100, 100, 390, 450);
-		this.setSize(510, 380);
+		this.setSize(510, 508);
 		this.setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -244,6 +249,17 @@ public class MyGUI extends JFrame {
 		label_3 = new JLabel("Таймер");
 		label_3.setBounds(5, 320, 55, 25);
 		contentPane.add(label_3);
+		
+		Object[][] array = new String[][] {{ "Сахар" , "кг", "1.5" },
+            { "Мука"  , "кг", "4.0" },
+            { "Молоко", "л" , "2.2" }, { "Молоко", "л" , "2.2" }, { "Молоко", "л" , "2.2" },
+            { "Молоко", "л" , "2.2" }, { "Молоко", "л" , "2.2" }, { "Молоко", "л" , "2.2" }};
+		Object[] columnsHeader = new String[] {"Наименование", "Ед.измерения", 
+        "Количество"};
+		table = new JTable(array, columnsHeader);
+		JScrollPane tableScroll = new JScrollPane(table);
+		tableScroll.setBounds(5, 350, 500, 110);
+		contentPane.add(tableScroll);
 	}
 	
 	// TODO Сделать более лаконичную формулу
@@ -385,5 +401,4 @@ public class MyGUI extends JFrame {
 					}
 			}
 	}
-	
 }
