@@ -59,8 +59,7 @@ public class MyGUI extends JFrame {
 	// Переменные для создания новой записи
 	private JButton addTaskButton;      // Кнопка добавления задачи в список
 	private JTextField newTaskDescriptionTextField; // Текстовое поле для описания новой задачи
-	int priorityAddNewTask, influenceAddNewTask;  // Переменые для переключателей приоритета и зависимости
-	//private String descriptionAddNewTask = null;  // Описание для созания новой задачи
+	private int priorityAddNewTask, influenceAddNewTask;  // Переменые для переключателей приоритета и зависимости
 	private JTextField textFieldTimerWork;  // Текствовое поле настройки таймера - время работы
 	private JTextField textFieldMiniBrake; // Текствовое поле настройки таймера - время короткого перерыва
 	private JTextField textFieldBigBrake; // Текствовое поле настройки таймера - время длинного перерыва
@@ -91,13 +90,12 @@ public class MyGUI extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(null);
+		this.setContentPane(contentPane);
 		
 		textPane = new JTextPane();
-		//textPane.setBounds(5, 30, 500, 150);
 		textScroll = new JScrollPane(textPane);
 		textScroll.setBounds(5, 30, 500, 150);
 		contentPane.add(textScroll);
-		//contentPane.add(textPane);
 
 		completeAndDeleteTaskTextField = new JTextField();
 		completeAndDeleteTaskTextField.setBounds(430, 215, 48, 25);
@@ -125,7 +123,6 @@ public class MyGUI extends JFrame {
 		safeTaskToFileButton.setBounds(311, 252, 194, 25);
 		contentPane.add(safeTaskToFileButton);
 
-		// 
 		priorityRadioButtonGroup = new ButtonGroup();
 		
 		priorityOneRadioButton = new JRadioButton("Важно и срочно");
@@ -150,7 +147,6 @@ public class MyGUI extends JFrame {
 		priorityRadioButtonGroup.add(priorityFourRadioButton);
 		contentPane.add(priorityFourRadioButton);
 		
-		// 
 		influenceRadioButtonGroup = new ButtonGroup();
 		
 		influenceOneRadioButton = new JRadioButton("Зависит");
@@ -177,7 +173,6 @@ public class MyGUI extends JFrame {
 		listTask.openListTaskFromFile(false);
 		textPane.setText(listTask.getAllText());
 		
-		//
 		methodSortRadioButtonGroup = new ButtonGroup();
 		
 		setSortPriorityRadioButton = new JRadioButton("Важность/срочность");
@@ -194,7 +189,6 @@ public class MyGUI extends JFrame {
 		setSortInfluenceRadioButton.setSelected((listTask.getSortMethod().equals(MyListTask.METHOD_INFLUENCE)) ?
 				true : false);
 		
-		// 
 		startTimerButton = new JButton("Start");
 		startTimerButton.setBounds(122, 320, 114, 25);
 		contentPane.add(startTimerButton);
@@ -223,10 +217,9 @@ public class MyGUI extends JFrame {
 		countTimerSecond = schemeTimerMinute[0]*60;
 		timerLabel.setText(minuteToHour(countTimerSecond));
 		timerListener = new TimerListener();
-		timer = new Timer(1000, timerListener);
+		timer = new Timer(10, timerListener);
 		timer.stop();
 		
-		// 
 		workEventListener = new ButtonEventListener();
 		loadFromFileButton.addActionListener(workEventListener);
 		deleteTaskButton.addActionListener(workEventListener);
@@ -248,7 +241,6 @@ public class MyGUI extends JFrame {
 		setSettingsTimer.addActionListener(workEventListener);
 		
 		//timer = new Timer(1000, buttonEventListener);
-		this.setContentPane(contentPane);
 		
 		JLabel label = new JLabel("Список задач");
 		label.setBounds(10, 5, 95, 23);
