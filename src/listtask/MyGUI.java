@@ -27,56 +27,57 @@ public class MyGUI extends JFrame {
 	private JPanel contentPane;  // Основное полотно для элементов управления
 	private JTextPane textPane;  // Текстовое поле для вывода списка
 	private JScrollPane textScroll; // Правый скролл прокрутки текстового поля с выводом списка
+	
+	private JButton safeTaskToFileButton;   // Кнопка сохранения задач в файл
 	private JButton loadFromFileButton; // Кнопка загрузки списка из файла
 	private JButton deleteTaskButton;   // Кнопка удаления задачи из списка
 	private JButton addTaskButton;      // Кнопка добавления задачи в список
 	private JButton startTimerButton;   // Кнопка старта таймера
 	private JButton pauseTimerButton;   // Кнопка паузы таймера
-	private JButton safeTaskToFileButton; 
+	private JButton setSettingsTimer;  // Кнопка настройки таймера
 	private JButton resetTimerButton;   // Кнопка сброса и остановки таймера
 	private JButton completeButton;  // Кнопка смены отметки выполнения задачи
 	private ButtonEventListener buttonEventListener; // Обработчик событий нажатия кнопок
+	
 	private JTextField numberDeleteTaskTextField; // Текстовое поле для ввода номера удаляемого поля
 	private JTextField newTaskDescriptionTextField; // Текстовое поле для описания новой задачи
-	private ButtonGroup methodSortRadioButtonGroup; // Группа переключателей для установки метода сортировки
-	private ButtonGroup influenceRadioButtonGroup;  // Группа переключателей для установки зависимостри при создании новой задачи
-	private ButtonGroup priorityRadioButtonGroup;   // Группа переключателей для установки приоритета при создании новой задачи
 	
-	private JLabel timerLabel;
-	private Timer timer;
-	TimerListener timerListener;
-	private int countTimerSecond = 0;
-	// Время работы, время короткого перерыва, время длинного перерыва
-	private int[] schemeTimerMinute = {25, 5, 30, 3};
-	private int thisPeriodTimer = 0;
-	private int circleWorkTimer = 0;
-	private JRadioButton setSortPriorityRadioButton;
-	private JRadioButton setSortInfluenceRadioButton;
+	private JLabel timerLabel;  // Надпись времени
+	private Timer timer;  // Таймер
+	private TimerListener timerListener;  // Слушатель событий таймера
+	private int countTimerSecond = 0;  // Счетчик времени в секундах
+	private int[] schemeTimerMinute = {25, 5, 30, 3}; // Время работы, время короткого перерыва, время длинного перерыва
+	private int thisPeriodTimer = 0; // Текущий период таймера (работа, короткий перерыв или длинный перерыв)
+	private int circleWorkTimer = 0;  // Счетчик циклов до большого перерыва
+
+	private ButtonGroup methodSortRadioButtonGroup; // Группа переключателей для установки метода сортировки
+	private JRadioButton setSortPriorityRadioButton;  // Переключатель установки сортировки по приоритету
+	private JRadioButton setSortInfluenceRadioButton;  // Переключатель установки сортировки по влиянию
 	
 	// Группа переключателей для выбора параметра Intluence
+	private ButtonGroup influenceRadioButtonGroup; // Группа переключателей для установки зависимостри при создании новой задачи
 	private JRadioButton influenceOneRadioButton;
 	private JRadioButton influenceTwoRadioButton;
 	private JRadioButton influenceTreeRadioButton;
 	
 	// Группа переключателей для выбора параметра Priority
+	private ButtonGroup priorityRadioButtonGroup; // Группа переключателей для установки приоритета при создании новой задачи
 	private JRadioButton priorityOneRadioButton;
 	private JRadioButton priorityTwoRadioButton;
 	private JRadioButton priorityThreeRadioButton;
 	private JRadioButton priorityFourRadioButton;
-	private JButton setSettingsTimer;
 	
 	// Переменные для создания новой записи
 	int priorityAddNewTask, influenceAddNewTask;  // Переменые для переключателей приоритета и зависимости
 	private String descriptionAddNewTask = null;  // Описание для созания новой задачи
+	private JTextField textFieldTimerWork;  // Текствовое поле настройки таймера - время работы
+	private JTextField textFieldMiniBrake; // Текствовое поле настройки таймера - время короткого перерыва
+	private JTextField textFieldBigBrake; // Текствовое поле настройки таймера - время длинного перерыва
+	private JTextField textFieldPeriod;  // Текствовое поле настройки таймера - количество рабочих периодов до боььшого перерыва
 	private JLabel label_1;
 	private JLabel label_2;
 	private JLabel label_3;
-	//private JTable table;
-	private JTextField textFieldTimerWork;
-	private JTextField textFieldMiniBrake;
-	private JTextField textFieldBigBrake;
 	private JLabel label_7;
-	private JTextField textFieldPeriod;
 	
 	public MyGUI() {		
 		super("ListTask");
