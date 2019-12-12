@@ -24,25 +24,27 @@ import javax.swing.ScrollPaneConstants;
 
 public class MyGUI extends JFrame {
 	private MyListTask listTask; // Список задач
+	private JPanel contentPane;  // Основное полотно для элементов управления
 	private JTextPane textPane;  // Текстовое поле для вывода списка
+	private JScrollPane textScroll; // Правый скролл прокрутки текстового поля с выводом списка
 	private JButton loadFromFileButton; // Кнопка загрузки списка из файла
 	private JButton deleteTaskButton;   // Кнопка удаления задачи из списка
 	private JButton addTaskButton;      // Кнопка добавления задачи в список
-	private JButton startTimerButton;
-	private JButton pauseTimerButton;
-	private JButton safeTaskToFileButton;
-	private JButton resetTimerButton;
-	private JPanel contentPane;  // Основное полотно для элементов управления
+	private JButton startTimerButton;   // Кнопка старта таймера
+	private JButton pauseTimerButton;   // Кнопка паузы таймера
+	private JButton safeTaskToFileButton; 
+	private JButton resetTimerButton;   // Кнопка сброса и остановки таймера
+	private JButton completeButton;  // Кнопка смены отметки выполнения задачи
 	private ButtonEventListener buttonEventListener; // Обработчик событий нажатия кнопок
 	private JTextField numberDeleteTaskTextField; // Текстовое поле для ввода номера удаляемого поля
 	private JTextField newTaskDescriptionTextField; // Текстовое поле для описания новой задачи
-	private ButtonGroup methodSortRadioButtonGroup;
-	private ButtonGroup influenceRadioButtonGroup;
-	private ButtonGroup priorityRadioButtonGroup;
-	JButton completeButton;
+	private ButtonGroup methodSortRadioButtonGroup; // Группа переключателей для установки метода сортировки
+	private ButtonGroup influenceRadioButtonGroup;  // Группа переключателей для установки зависимостри при создании новой задачи
+	private ButtonGroup priorityRadioButtonGroup;   // Группа переключателей для установки приоритета при создании новой задачи
 	
-	JLabel timerLabel;
+	private JLabel timerLabel;
 	private Timer timer;
+	TimerListener timerListener;
 	private int countTimerSecond = 0;
 	// Время работы, время короткого перерыва, время длинного перерыва
 	private int[] schemeTimerMinute = {25, 5, 30, 3};
@@ -52,25 +54,24 @@ public class MyGUI extends JFrame {
 	private JRadioButton setSortInfluenceRadioButton;
 	
 	// Группа переключателей для выбора параметра Intluence
-	JRadioButton influenceOneRadioButton;
-	JRadioButton influenceTwoRadioButton;
-	JRadioButton influenceTreeRadioButton;
+	private JRadioButton influenceOneRadioButton;
+	private JRadioButton influenceTwoRadioButton;
+	private JRadioButton influenceTreeRadioButton;
 	
 	// Группа переключателей для выбора параметра Priority
-	JRadioButton priorityOneRadioButton;
-	JRadioButton priorityTwoRadioButton;
-	JRadioButton priorityThreeRadioButton;
-	JRadioButton priorityFourRadioButton;
-	JButton setSettingsTimer;
+	private JRadioButton priorityOneRadioButton;
+	private JRadioButton priorityTwoRadioButton;
+	private JRadioButton priorityThreeRadioButton;
+	private JRadioButton priorityFourRadioButton;
+	private JButton setSettingsTimer;
 	
 	// Переменные для создания новой записи
-	int priorityAddNewTask, influenceAddNewTask;
-	String descriptionAddNewTask = null;
-	private JScrollPane textScroll;
+	int priorityAddNewTask, influenceAddNewTask;  // Переменые для переключателей приоритета и зависимости
+	private String descriptionAddNewTask = null;  // Описание для созания новой задачи
 	private JLabel label_1;
 	private JLabel label_2;
 	private JLabel label_3;
-	private JTable table;
+	//private JTable table;
 	private JTextField textFieldTimerWork;
 	private JTextField textFieldMiniBrake;
 	private JTextField textFieldBigBrake;
@@ -218,7 +219,7 @@ public class MyGUI extends JFrame {
 
 		countTimerSecond = schemeTimerMinute[0]*60;
 		timerLabel.setText(minuteToHour(countTimerSecond));
-		TimerListener timerListener = new TimerListener();
+		timerListener = new TimerListener();
 		timer = new Timer(1000, timerListener);
 		timer.stop();
 		
