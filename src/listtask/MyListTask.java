@@ -71,13 +71,6 @@ public class MyListTask {
 					this.listLL.get(i).getDate()) : " NO") + "\n";
 		return text;
 	}
-
-	// Смена задач местами для метода сортировки
-	/*public void swapTask(MyTask TaskOne, MyTask TaskTwo) {
-		MyTask TaskTemp = new MyTask(TaskOne);
-		TaskOne.setAll(TaskTwo);
-		TaskTwo.setAll(TaskTemp);
-	}*/
 	
 	// Сортировка задач
 	public void sortTask() {
