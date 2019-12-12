@@ -27,21 +27,18 @@ public class MyGUI extends JFrame {
 	private JPanel contentPane;  // Основное полотно для элементов управления
 	private JTextPane textPane;  // Текстовое поле для вывода списка
 	private JScrollPane textScroll; // Правый скролл прокрутки текстового поля с выводом списка
+	private ButtonEventListener workEventListener; // Обработчик событий нажатия кнопок и переключателей
 	
+	// Загрузка и сохранение списка задач из файла
 	private JButton safeTaskToFileButton;   // Кнопка сохранения задач в файл
 	private JButton loadFromFileButton; // Кнопка загрузки списка из файла
+	
+	// Удаление и пометка выполнения задачи
 	private JButton deleteTaskButton;   // Кнопка удаления задачи из списка
-	private JButton addTaskButton;      // Кнопка добавления задачи в список
-	private JButton startTimerButton;   // Кнопка старта таймера
-	private JButton pauseTimerButton;   // Кнопка паузы таймера
-	private JButton setSettingsTimer;  // Кнопка настройки таймера
-	private JButton resetTimerButton;   // Кнопка сброса и остановки таймера
 	private JButton completeButton;  // Кнопка смены отметки выполнения задачи
-	private ButtonEventListener buttonEventListener; // Обработчик событий нажатия кнопок
+	private JTextField completeAndDeleteTaskTextField; // Текстовое поле для ввода номера удаляемого поля или поля установки выполнения
 	
-	private JTextField numberDeleteTaskTextField; // Текстовое поле для ввода номера удаляемого поля
-	private JTextField newTaskDescriptionTextField; // Текстовое поле для описания новой задачи
-	
+	// Переменные и элементы управления для работы таймера
 	private JLabel timerLabel;  // Надпись времени
 	private Timer timer;  // Таймер
 	private TimerListener timerListener;  // Слушатель событий таймера
@@ -49,27 +46,21 @@ public class MyGUI extends JFrame {
 	private int[] schemeTimerMinute = {25, 5, 30, 3}; // Время работы, время короткого перерыва, время длинного перерыва
 	private int thisPeriodTimer = 0; // Текущий период таймера (работа, короткий перерыв или длинный перерыв)
 	private int circleWorkTimer = 0;  // Счетчик циклов до большого перерыва
+	private JButton startTimerButton;   // Кнопка старта таймера
+	private JButton pauseTimerButton;   // Кнопка паузы таймера
+	private JButton resetTimerButton;   // Кнопка сброса и остановки таймера
+	private JButton setSettingsTimer;  // Кнопка настройки таймера
 
+	// Сортировка задач
 	private ButtonGroup methodSortRadioButtonGroup; // Группа переключателей для установки метода сортировки
 	private JRadioButton setSortPriorityRadioButton;  // Переключатель установки сортировки по приоритету
 	private JRadioButton setSortInfluenceRadioButton;  // Переключатель установки сортировки по влиянию
 	
-	// Группа переключателей для выбора параметра Intluence
-	private ButtonGroup influenceRadioButtonGroup; // Группа переключателей для установки зависимостри при создании новой задачи
-	private JRadioButton influenceOneRadioButton;
-	private JRadioButton influenceTwoRadioButton;
-	private JRadioButton influenceTreeRadioButton;
-	
-	// Группа переключателей для выбора параметра Priority
-	private ButtonGroup priorityRadioButtonGroup; // Группа переключателей для установки приоритета при создании новой задачи
-	private JRadioButton priorityOneRadioButton;
-	private JRadioButton priorityTwoRadioButton;
-	private JRadioButton priorityThreeRadioButton;
-	private JRadioButton priorityFourRadioButton;
-	
 	// Переменные для создания новой записи
+	private JButton addTaskButton;      // Кнопка добавления задачи в список
+	private JTextField newTaskDescriptionTextField; // Текстовое поле для описания новой задачи
 	int priorityAddNewTask, influenceAddNewTask;  // Переменые для переключателей приоритета и зависимости
-	private String descriptionAddNewTask = null;  // Описание для созания новой задачи
+	//private String descriptionAddNewTask = null;  // Описание для созания новой задачи
 	private JTextField textFieldTimerWork;  // Текствовое поле настройки таймера - время работы
 	private JTextField textFieldMiniBrake; // Текствовое поле настройки таймера - время короткого перерыва
 	private JTextField textFieldBigBrake; // Текствовое поле настройки таймера - время длинного перерыва
@@ -78,6 +69,17 @@ public class MyGUI extends JFrame {
 	private JLabel label_2;
 	private JLabel label_3;
 	private JLabel label_7;
+	// Группа переключателей для выбора параметра Intluence при добавлении задачи
+	private ButtonGroup influenceRadioButtonGroup; // Группа переключателей для установки зависимостри при создании новой задачи
+	private JRadioButton influenceOneRadioButton;
+	private JRadioButton influenceTwoRadioButton;
+	private JRadioButton influenceTreeRadioButton;
+	// Группа переключателей для выбора параметра Priority при добавлении задачи
+	private ButtonGroup priorityRadioButtonGroup; // Группа переключателей для установки приоритета при создании новой задачи
+	private JRadioButton priorityOneRadioButton;
+	private JRadioButton priorityTwoRadioButton;
+	private JRadioButton priorityThreeRadioButton;
+	private JRadioButton priorityFourRadioButton;
 	
 	public MyGUI() {		
 		super("ListTask");
@@ -97,10 +99,10 @@ public class MyGUI extends JFrame {
 		contentPane.add(textScroll);
 		//contentPane.add(textPane);
 
-		numberDeleteTaskTextField = new JTextField();
-		numberDeleteTaskTextField.setBounds(430, 215, 48, 25);
-		contentPane.add(numberDeleteTaskTextField);
-		numberDeleteTaskTextField.setColumns(10);
+		completeAndDeleteTaskTextField = new JTextField();
+		completeAndDeleteTaskTextField.setBounds(430, 215, 48, 25);
+		contentPane.add(completeAndDeleteTaskTextField);
+		completeAndDeleteTaskTextField.setColumns(10);
 		
 		newTaskDescriptionTextField = new JTextField();
 		newTaskDescriptionTextField.setBounds(5, 215, 200, 25);
@@ -225,25 +227,25 @@ public class MyGUI extends JFrame {
 		timer.stop();
 		
 		// 
-		buttonEventListener = new ButtonEventListener();
-		loadFromFileButton.addActionListener(buttonEventListener);
-		deleteTaskButton.addActionListener(buttonEventListener);
-		addTaskButton.addActionListener(buttonEventListener);
-		safeTaskToFileButton.addActionListener(buttonEventListener);
-		setSortPriorityRadioButton.addActionListener(buttonEventListener);
-		setSortInfluenceRadioButton.addActionListener(buttonEventListener);
-		priorityOneRadioButton.addActionListener(buttonEventListener);
-		priorityTwoRadioButton.addActionListener(buttonEventListener);
-		priorityThreeRadioButton.addActionListener(buttonEventListener);
-		priorityFourRadioButton.addActionListener(buttonEventListener);
-		influenceOneRadioButton.addActionListener(buttonEventListener);
-		influenceTwoRadioButton.addActionListener(buttonEventListener);
-		influenceTreeRadioButton.addActionListener(buttonEventListener);
-		startTimerButton.addActionListener(buttonEventListener);
-		pauseTimerButton.addActionListener(buttonEventListener);
-		resetTimerButton.addActionListener(buttonEventListener);
-		completeButton.addActionListener(buttonEventListener);
-		setSettingsTimer.addActionListener(buttonEventListener);
+		workEventListener = new ButtonEventListener();
+		loadFromFileButton.addActionListener(workEventListener);
+		deleteTaskButton.addActionListener(workEventListener);
+		addTaskButton.addActionListener(workEventListener);
+		safeTaskToFileButton.addActionListener(workEventListener);
+		setSortPriorityRadioButton.addActionListener(workEventListener);
+		setSortInfluenceRadioButton.addActionListener(workEventListener);
+		priorityOneRadioButton.addActionListener(workEventListener);
+		priorityTwoRadioButton.addActionListener(workEventListener);
+		priorityThreeRadioButton.addActionListener(workEventListener);
+		priorityFourRadioButton.addActionListener(workEventListener);
+		influenceOneRadioButton.addActionListener(workEventListener);
+		influenceTwoRadioButton.addActionListener(workEventListener);
+		influenceTreeRadioButton.addActionListener(workEventListener);
+		startTimerButton.addActionListener(workEventListener);
+		pauseTimerButton.addActionListener(workEventListener);
+		resetTimerButton.addActionListener(workEventListener);
+		completeButton.addActionListener(workEventListener);
+		setSettingsTimer.addActionListener(workEventListener);
 		
 		//timer = new Timer(1000, buttonEventListener);
 		this.setContentPane(contentPane);
@@ -332,9 +334,9 @@ public class MyGUI extends JFrame {
 				else setSortPriorityRadioButton.setSelected(true);
 			}
 			if (e.getSource() == deleteTaskButton) {
-				int num = Integer.parseInt(numberDeleteTaskTextField.getText());
+				int num = Integer.parseInt(completeAndDeleteTaskTextField.getText());
 				JOptionPane.showMessageDialog(null, listTask.deleteTask(num-1));
-				numberDeleteTaskTextField.setText("");
+				completeAndDeleteTaskTextField.setText("");
 				listTask.sortTask();
 				textPane.setText(listTask.getAllText());
 			}
@@ -399,8 +401,8 @@ public class MyGUI extends JFrame {
 			}
 			
 			if (e.getSource() == completeButton) {
-				int num = Integer.parseInt(numberDeleteTaskTextField.getText());
-				numberDeleteTaskTextField.setText("");
+				int num = Integer.parseInt(completeAndDeleteTaskTextField.getText());
+				completeAndDeleteTaskTextField.setText("");
 				// Установка времени выполнения
 				Date date = new Date();
 				SimpleDateFormat formatDate = new SimpleDateFormat("HH/mm/dd/MM/yy");
