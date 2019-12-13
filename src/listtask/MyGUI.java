@@ -16,13 +16,9 @@ import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
-import javax.swing.JScrollBar;
-import javax.swing.JTabbedPane;
-import javax.swing.JLayeredPane;
-import javax.swing.JTable;
-import javax.swing.ScrollPaneConstants;
 
 public class MyGUI extends JFrame {
+	private static final long serialVersionUID = 1L;
 	private MyListTask listTask; // Список задач
 	private JPanel contentPane;  // Основное полотно для элементов управления
 	private JTextPane textPane;  // Текстовое поле для вывода списка
