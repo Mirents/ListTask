@@ -1,5 +1,6 @@
 package listtask;
 
+import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -290,7 +291,7 @@ public class MyGUI extends JFrame {
 		textFieldPeriod.setBounds(257, 444, 48, 25);
 		contentPane.add(textFieldPeriod);
 		
-		JButton button = new JButton("Reset");
+		JButton button = new JButton("Настройки");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JFrame jF = new JFrame();
@@ -298,7 +299,16 @@ public class MyGUI extends JFrame {
 				jF.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				jF.setBounds(100, 100, 390, 450);
 				jF.setLocationRelativeTo(null);
+				jF.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
 				jF.setVisible(true);
+				
+				JButton button = new JButton("Op!");
+				button.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						jF.setVisible(false);
+					}
+				});
+				button.setBounds(100, 100, 114, 25);
 			}
 		});
 		button.setBounds(344, 400, 114, 25);
