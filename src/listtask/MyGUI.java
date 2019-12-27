@@ -290,6 +290,20 @@ public class MyGUI extends JFrame {
 		textFieldPeriod.setBounds(257, 444, 48, 25);
 		contentPane.add(textFieldPeriod);
 		
+		JButton button = new JButton("Reset");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFrame jF = new JFrame();
+				jF.setResizable(false);
+				jF.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				jF.setBounds(100, 100, 390, 450);
+				jF.setLocationRelativeTo(null);
+				jF.setVisible(true);
+			}
+		});
+		button.setBounds(344, 400, 114, 25);
+		contentPane.add(button);
+		
 		/*Object[][] array = new String[][] {{ "Сахар" , "кг", "1.5" },
             { "Мука"  , "кг", "4.0" },
             { "Молоко", "л" , "2.2" }, { "Молоко", "л" , "2.2" }, { "Молоко", "л" , "2.2" },
@@ -380,7 +394,7 @@ public class MyGUI extends JFrame {
 			if (e.getSource() == resetTimerButton) {
 				timer.stop();
 				thisPeriodTimer = 0;
-				countTimerSecond = schemeTimerMinute[0]*60;
+				countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
 				timerLabel.setText(minuteToHour(countTimerSecond));
 			}
 			if (e.getSource() == pauseTimerButton) {
