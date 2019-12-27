@@ -294,21 +294,15 @@ public class MyGUI extends JFrame {
 		JButton button = new JButton("Настройки");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JFrame jF = new JFrame();
-				jF.setResizable(false);
-				jF.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-				jF.setBounds(100, 100, 390, 450);
-				jF.setLocationRelativeTo(null);
-				jF.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
-				jF.setVisible(true);
+				MyGUISettings jF = new MyGUISettings();
 				
-				JButton button = new JButton("Op!");
+				/*JButton button = new JButton("Op!");
 				button.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						jF.setVisible(false);
+						jF.setVisible(true);
 					}
 				});
-				button.setBounds(100, 100, 114, 25);
+				button.setBounds(100, 100, 114, 25);*/
 			}
 		});
 		button.setBounds(344, 400, 114, 25);
