@@ -213,7 +213,7 @@ public class MyGUI extends JFrame {
 		countTimerSecond = schemeTimerMinute[0]*60;
 		timerLabel.setText(minuteToHour(countTimerSecond));
 		timerListener = new TimerListener();
-		timer = new Timer(10, timerListener);
+		timer = new Timer(1000, timerListener);
 		timer.stop();
 		
 		workEventListener = new ButtonEventListener();
@@ -424,13 +424,13 @@ public class MyGUI extends JFrame {
 				} else {
 					if(thisPeriodTimer == 0) {
 						if (circleWorkTimer < schemeTimerMinute[3]-1) {
-							//JOptionPane.showMessageDialog(null, "Работа закончена - небольшой перерыв!!!");
+							JOptionPane.showMessageDialog(null, "Работа закончена - небольшой перерыв!!!");
 							System.out.println("Работа закончена - небольшой перерыв!!!");
 							thisPeriodTimer = 1;
 							countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
 							timerLabel.setText(minuteToHour(countTimerSecond));
 						} else {
-							//JOptionPane.showMessageDialog(null, "Работа закончена - большой перерыв!!!");
+							JOptionPane.showMessageDialog(null, "Работа закончена - большой перерыв!!!");
 							System.out.println("Работа закончена - большой перерыв!!!");
 							thisPeriodTimer = 2;
 							countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
@@ -438,14 +438,14 @@ public class MyGUI extends JFrame {
 						}
 						
 					} else if(thisPeriodTimer == 1) {
-						//JOptionPane.showMessageDialog(null, "Небольшой перерыв закончен, пора работать!!!");
+						JOptionPane.showMessageDialog(null, "Небольшой перерыв закончен, пора работать!!!");
 						System.out.println("Небольшой перерыв закончен, пора работать!!!");
 						thisPeriodTimer = 0;
 						circleWorkTimer++;
 						countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
 						timerLabel.setText(minuteToHour(countTimerSecond));
 					} else if(thisPeriodTimer == 2) {
-						//JOptionPane.showMessageDialog(null, "Большой перерыв закончен, пора работать!!!");
+						JOptionPane.showMessageDialog(null, "Большой перерыв закончен, пора работать!!!");
 						System.out.println("Большой перерыв закончен!!!");
 						thisPeriodTimer = 0;
 						circleWorkTimer = 0;
