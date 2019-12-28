@@ -2,6 +2,8 @@ package listtask;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.ButtonGroup;
@@ -24,10 +26,6 @@ public class MyGUI extends JFrame {
 	private JTextPane textPane;  // Текстовое поле для вывода списка
 	private JScrollPane textScroll; // Правый скролл прокрутки текстового поля с выводом списка
 	private ButtonEventListener workEventListener; // Обработчик событий нажатия кнопок и переключателей
-	
-	// Загрузка и сохранение списка задач из файла
-	private JButton safeTaskToFileButton;   // Кнопка сохранения задач в файл
-	private JButton loadFromFileButton; // Кнопка загрузки списка из файла
 	
 	// Удаление и пометка выполнения задачи
 	private JButton deleteTaskButton;   // Кнопка удаления задачи из списка
@@ -83,8 +81,23 @@ public class MyGUI extends JFrame {
 	public MyGUI() {		
 		super("ListTask");
 		this.setResizable(false);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//this.setBounds(100, 100, 390, 450);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+	    
+	    // Вопрос при выходе и сохранение данных в файле
+	    addWindowListener(new WindowAdapter(){
+	        public void windowClosing(WindowEvent evt){
+	        	/*int result = JOptionPane.showConfirmDialog(null,
+	        			"Закрыть программу и сохранить данные?", "Выход из программы", 
+	        			JOptionPane.YES_NO_OPTION, 
+	        			JOptionPane.QUESTION_MESSAGE); */
+	        	/*if (result == JOptionPane.YES_OPTION) { 
+	        		listTask.safeListTaskInFile();
+	        		System.exit(1);
+	          }*/
+	        	listTask.safeListTaskInFile();
+	        	System.exit(1);
+	        }
+	    });
 		this.setSize(510, 508);
 		this.setLocationRelativeTo(null);
 		contentPane = new JPanel();
@@ -107,10 +120,6 @@ public class MyGUI extends JFrame {
 		contentPane.add(newTaskDescriptionTextField);
 		newTaskDescriptionTextField.setColumns(10);
 		
-		loadFromFileButton = new JButton("Загрузить");
-		loadFromFileButton.setBounds(311, 284, 194, 25);
-		contentPane.add(loadFromFileButton);
-		
 		deleteTaskButton = new JButton("Удалить задачу");
 		deleteTaskButton.setBounds(210, 215, 187, 25);
 		contentPane.add(deleteTaskButton);
@@ -118,10 +127,6 @@ public class MyGUI extends JFrame {
 		addTaskButton  = new JButton("Добавить задачу");
 		addTaskButton.setBounds(5, 185, 200, 25);
 		contentPane.add(addTaskButton);
-		
-		safeTaskToFileButton = new JButton("Сохранить");
-		safeTaskToFileButton.setBounds(311, 252, 194, 25);
-		contentPane.add(safeTaskToFileButton);
 
 		priorityRadioButtonGroup = new ButtonGroup();
 		
@@ -221,10 +226,8 @@ public class MyGUI extends JFrame {
 		timer.stop();
 		
 		workEventListener = new ButtonEventListener();
-		loadFromFileButton.addActionListener(workEventListener);
 		deleteTaskButton.addActionListener(workEventListener);
 		addTaskButton.addActionListener(workEventListener);
-		safeTaskToFileButton.addActionListener(workEventListener);
 		setSortPriorityRadioButton.addActionListener(workEventListener);
 		setSortInfluenceRadioButton.addActionListener(workEventListener);
 		priorityOneRadioButton.addActionListener(workEventListener);
@@ -307,22 +310,14 @@ public class MyGUI extends JFrame {
 			}
 		});
 		button.setBounds(344, 400, 114, 25);
+		
+		listTask.openListTaskFromFile(true);
+		listTask.sortTask();
+		textPane.setText(listTask.getAllText());
+		if(listTask.getSortMethod().equals(MyListTask.METHOD_INFLUENCE)) setSortInfluenceRadioButton.setSelected(true);
+		else setSortPriorityRadioButton.setSelected(true);
+		
 		contentPane.add(button);
-		
-		/*Object[][] array = new String[][] {{ "Сахар" , "кг", "1.5" },
-            { "Мука"  , "кг", "4.0" },
-            { "Молоко", "л" , "2.2" }, { "Молоко", "л" , "2.2" }, { "Молоко", "л" , "2.2" },
-            { "Молоко", "л" , "2.2" }, { "Молоко", "л" , "2.2" }, { "Молоко", "л" , "2.2" }};
-		Object[] columnsHeader = new String[] {"Наименование", "Ед.измерения", 
-        "Количество"};
-		table = new JTable(array, columnsHeader);
-		JScrollPane tableScroll = new JScrollPane(table);
-		tableScroll.setBounds(5, 350, 500, 110);
-		contentPane.add(tableScroll);*/
-		
-		// Установка времени из дополнительного окна с насройками
-		//schemeTimerMinute = myGUISettings.getSchemeTimerMinute();
-		
 	}
 	
 	// TODO Сделать более лаконичную формулу
@@ -337,13 +332,6 @@ public class MyGUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			try {
-			if (e.getSource() == loadFromFileButton) {
-				listTask.openListTaskFromFile(true);
-				listTask.sortTask();
-				textPane.setText(listTask.getAllText());
-				if(listTask.getSortMethod().equals(MyListTask.METHOD_INFLUENCE)) setSortInfluenceRadioButton.setSelected(true);
-				else setSortPriorityRadioButton.setSelected(true);
-			}
 			if (e.getSource() == deleteTaskButton) {
 				int num = Integer.parseInt(completeAndDeleteTaskTextField.getText());
 				JOptionPane.showMessageDialog(null, listTask.deleteTask(num-1));
@@ -361,9 +349,6 @@ public class MyGUI extends JFrame {
 				else JOptionPane.showMessageDialog(null, "Введите описание задачи");
 				listTask.sortTask();
 				textPane.setText(listTask.getAllText());
-			}
-			if (e.getSource() == safeTaskToFileButton) {
-				listTask.safeListTaskInFile();
 			}
 			if (e.getSource() == setSortPriorityRadioButton) {
 				listTask.setSortMethod(MyListTask.METHOD_PRIORITY);

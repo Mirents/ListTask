@@ -8,6 +8,7 @@ import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -24,7 +25,6 @@ public class MyGUISettings extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setSize(100, 100);
 		setLocationRelativeTo(null);
-		setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
 		this.setResizable(false);
 		setVisible(true);
 		
@@ -62,10 +62,15 @@ public class MyGUISettings extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				schemeTimerMinute[0] = Integer.parseInt(textFieldTimerWork.getText());
-				schemeTimerMinute[1] = Integer.parseInt(textFieldMiniBrake.getText());
-				schemeTimerMinute[2] = Integer.parseInt(textFieldBigBrake.getText());
-				schemeTimerMinute[3] = Integer.parseInt(textFieldPeriod.getText());
+				try {
+					schemeTimerMinute[0] = Integer.parseInt(textFieldTimerWork.getText());
+					schemeTimerMinute[1] = Integer.parseInt(textFieldMiniBrake.getText());
+					schemeTimerMinute[2] = Integer.parseInt(textFieldBigBrake.getText());
+					schemeTimerMinute[3] = Integer.parseInt(textFieldPeriod.getText());
+					dispose();
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Error input number!");		
+				}
 			}
 		});
 		box5.add(okButton);
@@ -74,7 +79,7 @@ public class MyGUISettings extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-
+				dispose();
 			}
 		});
 		box5.add(cancelButton);
