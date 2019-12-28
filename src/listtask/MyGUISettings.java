@@ -23,7 +23,7 @@ public class MyGUISettings extends JFrame {
 	public MyGUISettings() {
 		super("Настройки");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setSize(100, 100);
+		//this.setSize(100, 100);
 		setLocationRelativeTo(null);
 		this.setResizable(false);
 		setVisible(true);
@@ -32,32 +32,36 @@ public class MyGUISettings extends JFrame {
 		JLabel label_4 = new JLabel("Время работы:");
 		box1.add(label_4);
 		textFieldTimerWork = new JTextField();
-		textFieldTimerWork.setColumns(10);
+		textFieldTimerWork.setColumns(2);
+		textFieldTimerWork.setText(String.valueOf(schemeTimerMinute[0]));
 		box1.add(textFieldTimerWork);
 		
 		Box box2 = Box.createHorizontalBox();
 		JLabel label_5 = new JLabel("Маленький перерыв:");
 		box2.add(label_5);
 		textFieldMiniBrake = new JTextField();
-		textFieldMiniBrake.setColumns(10);
+		textFieldMiniBrake.setColumns(2);
+		textFieldMiniBrake.setText(String.valueOf(schemeTimerMinute[1]));
 		box2.add(textFieldMiniBrake);
 		
 		Box box3 = Box.createHorizontalBox();
 		JLabel label_6 = new JLabel("Большой перерыв:");
 		box3.add(label_6);
 		textFieldBigBrake = new JTextField();
-		textFieldBigBrake.setColumns(10);
+		textFieldBigBrake.setColumns(2);
+		textFieldBigBrake.setText(String.valueOf(schemeTimerMinute[2]));
 		box3.add(textFieldBigBrake);
 		
 		Box box4 = Box.createHorizontalBox();
 		JLabel label_7 = new JLabel("Периодов до большого перерыва:");
 		box4.add(label_7);
 		textFieldPeriod = new JTextField();
-		textFieldPeriod.setColumns(10);
+		textFieldPeriod.setColumns(2);
+		textFieldPeriod.setText(String.valueOf(schemeTimerMinute[3]));
 		box4.add(textFieldPeriod);
 		
 		Box box5 = Box.createHorizontalBox();
-		JButton okButton = new JButton("ОК");
+		JButton okButton = new JButton("  ОК  ");
 		okButton.addActionListener(new ActionListener() {
 			
 			@Override
