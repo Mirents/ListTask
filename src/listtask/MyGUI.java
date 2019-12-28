@@ -1,6 +1,5 @@
 package listtask;
 
-import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -65,17 +64,21 @@ public class MyGUI extends JFrame {
 	private JLabel label_2;
 	private JLabel label_3;
 	private JLabel label_7;
+	
 	// Группа переключателей для выбора параметра Intluence при добавлении задачи
 	private ButtonGroup influenceRadioButtonGroup; // Группа переключателей для установки зависимостри при создании новой задачи
 	private JRadioButton influenceOneRadioButton;
 	private JRadioButton influenceTwoRadioButton;
 	private JRadioButton influenceTreeRadioButton;
+	
 	// Группа переключателей для выбора параметра Priority при добавлении задачи
 	private ButtonGroup priorityRadioButtonGroup; // Группа переключателей для установки приоритета при создании новой задачи
 	private JRadioButton priorityOneRadioButton;
 	private JRadioButton priorityTwoRadioButton;
 	private JRadioButton priorityThreeRadioButton;
 	private JRadioButton priorityFourRadioButton;
+	
+	MyGUISettings myGUISettings;
 	
 	public MyGUI() {		
 		super("ListTask");
@@ -294,15 +297,13 @@ public class MyGUI extends JFrame {
 		JButton button = new JButton("Настройки");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				MyGUISettings jF = new MyGUISettings();
+				myGUISettings = new MyGUISettings();
+				schemeTimerMinute = myGUISettings.getSchemeTimerMinute();
 				
-				/*JButton button = new JButton("Op!");
-				button.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						jF.setVisible(true);
-					}
-				});
-				button.setBounds(100, 100, 114, 25);*/
+				timer.stop();
+				thisPeriodTimer = 0;
+				countTimerSecond = schemeTimerMinute[0]*60;
+				timerLabel.setText(minuteToHour(countTimerSecond));
 			}
 		});
 		button.setBounds(344, 400, 114, 25);
@@ -318,6 +319,10 @@ public class MyGUI extends JFrame {
 		JScrollPane tableScroll = new JScrollPane(table);
 		tableScroll.setBounds(5, 350, 500, 110);
 		contentPane.add(tableScroll);*/
+		
+		// Установка времени из дополнительного окна с насройками
+		//schemeTimerMinute = myGUISettings.getSchemeTimerMinute();
+		
 	}
 	
 	// TODO Сделать более лаконичную формулу
@@ -417,10 +422,12 @@ public class MyGUI extends JFrame {
 			}
 			
 			if (e.getSource() == setSettingsTimer) {
-				schemeTimerMinute[0] = Integer.parseInt(textFieldTimerWork.getText());
+				/*schemeTimerMinute[0] = Integer.parseInt(textFieldTimerWork.getText());
 				schemeTimerMinute[1] = Integer.parseInt(textFieldMiniBrake.getText());
 				schemeTimerMinute[2] = Integer.parseInt(textFieldBigBrake.getText());
-				schemeTimerMinute[3] = Integer.parseInt(textFieldPeriod.getText());
+				schemeTimerMinute[3] = Integer.parseInt(textFieldPeriod.getText());*/
+
+				schemeTimerMinute = myGUISettings.getSchemeTimerMinute();
 				timer.stop();
 				thisPeriodTimer = 0;
 				countTimerSecond = schemeTimerMinute[0]*60;

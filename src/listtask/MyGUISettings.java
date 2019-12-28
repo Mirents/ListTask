@@ -16,6 +16,8 @@ public class MyGUISettings extends JFrame {
 	JTextField textFieldMiniBrake;
 	JTextField textFieldBigBrake;
 	JTextField textFieldPeriod;
+	public int[] schemeTimerMinute = {25, 5, 30, 3};
+	boolean returnSettings = false;
 	
 	public MyGUISettings() {
 		super("Настройки");
@@ -60,8 +62,10 @@ public class MyGUISettings extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				
+				schemeTimerMinute[0] = Integer.parseInt(textFieldTimerWork.getText());
+				schemeTimerMinute[1] = Integer.parseInt(textFieldMiniBrake.getText());
+				schemeTimerMinute[2] = Integer.parseInt(textFieldBigBrake.getText());
+				schemeTimerMinute[3] = Integer.parseInt(textFieldPeriod.getText());
 			}
 		});
 		box5.add(okButton);
@@ -70,8 +74,7 @@ public class MyGUISettings extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				
+
 			}
 		});
 		box5.add(cancelButton);
@@ -90,5 +93,9 @@ public class MyGUISettings extends JFrame {
 		this.setContentPane(mailBox);
 		
 		pack();
+	}
+	
+	public int[] getSchemeTimerMinute() {
+		return schemeTimerMinute;
 	}
 }
