@@ -6,6 +6,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -43,6 +45,7 @@ public class MyGUI extends JFrame implements ActionListener {
 	private JButton startTimerButton;   // Кнопка старта таймера
 	private JButton pauseTimerButton;   // Кнопка паузы таймера
 	private JButton resetTimerButton;   // Кнопка сброса и остановки таймера
+	private JButton settingsTimerButton;
 
 	// Сортировка задач
 	private ButtonGroup methodSortRadioButtonGroup; // Группа переключателей для установки метода сортировки
@@ -79,7 +82,7 @@ public class MyGUI extends JFrame implements ActionListener {
 	        	System.exit(1);
 	        }
 	    });
-		this.setSize(510, 380);
+		this.setSize(510, 310);
 		this.setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -90,19 +93,30 @@ public class MyGUI extends JFrame implements ActionListener {
 		textScroll = new JScrollPane(textPane);
 		textScroll.setBounds(5, 30, 500, 150);
 		contentPane.add(textScroll);
-
+		
+		//Box box1 = Box.createHorizontalBox();
+		
 		completeAndDeleteTaskTextField = new JTextField();
-		completeAndDeleteTaskTextField.setBounds(430, 215, 48, 25);
+		completeAndDeleteTaskTextField.setBounds(122, 215, 48, 25);
 		contentPane.add(completeAndDeleteTaskTextField);
 		completeAndDeleteTaskTextField.setColumns(10);
+		//box1.add(completeAndDeleteTaskTextField);
+		
+		completeButton = new JButton("Выполнить");
+		completeButton.setBounds(173, 215, 135, 25);
+		contentPane.add(completeButton);
+		//box1.add(completeButton);
 		
 		deleteTaskButton = new JButton("Удалить задачу");
-		deleteTaskButton.setBounds(210, 215, 187, 25);
+		deleteTaskButton.setBounds(318, 215, 187, 25);
 		contentPane.add(deleteTaskButton);
+		//box1.add(deleteTaskButton);
 		
 		addTaskButton  = new JButton("Добавить задачу");
 		addTaskButton.setBounds(5, 185, 200, 25);
 		contentPane.add(addTaskButton);
+		//box1.add(addTaskButton);
+		//contentPane.add(box1);
 		
 		// Создание списка задач
 		listTask = new MyListTask();
@@ -128,26 +142,21 @@ public class MyGUI extends JFrame implements ActionListener {
 				true : false);
 		
 		startTimerButton = new JButton("Start");
-		startTimerButton.setBounds(122, 320, 114, 25);
+		startTimerButton.setBounds(122, 250, 114, 25);
 		contentPane.add(startTimerButton);
 		
 		pauseTimerButton = new JButton("Pause");
-		pauseTimerButton.setBounds(257, 320, 114, 25);
+		pauseTimerButton.setBounds(257, 250, 114, 25);
 		contentPane.add(pauseTimerButton);
 		
 		timerLabel = new JLabel("New label");
-		timerLabel.setBounds(60, 320, 60, 25);
+		timerLabel.setBounds(60, 250, 60, 25);
 		timerLabel.setText("");
 		contentPane.add(timerLabel);
 		
 		resetTimerButton = new JButton("Reset");
-		resetTimerButton.setBounds(391, 320, 114, 25);
+		resetTimerButton.setBounds(391, 250, 114, 25);
 		contentPane.add(resetTimerButton);
-		
-		completeButton = new JButton("Отметить выполнение");
-		completeButton.setBounds(210, 185, 187, 25);
-		contentPane.add(completeButton);
-		
 
 		countTimerSecond = schemeTimerMinute[0]*60;
 		timerLabel.setText(minuteToHour(countTimerSecond));
@@ -155,6 +164,10 @@ public class MyGUI extends JFrame implements ActionListener {
 		timer = new Timer(1000, timerListener);
 		timer.stop();
 		
+		// TODO Установки работают неправильно, срабатывают только после нажатия на "Reset"
+		settingsTimerButton = new JButton("Настройки");
+		settingsTimerButton.setBounds(372, 178, 114, 25);
+				
 		//workEventListener = new ButtonEventListener();
 		deleteTaskButton.addActionListener(this);
 		addTaskButton.addActionListener(this);
@@ -164,8 +177,7 @@ public class MyGUI extends JFrame implements ActionListener {
 		pauseTimerButton.addActionListener(this);
 		resetTimerButton.addActionListener(this);
 		completeButton.addActionListener(this);
-		
-		//timer = new Timer(1000, buttonEventListener);
+		settingsTimerButton.addActionListener(this);
 		
 		JLabel label = new JLabel("Список задач");
 		label.setBounds(10, 5, 95, 23);
@@ -176,27 +188,12 @@ public class MyGUI extends JFrame implements ActionListener {
 		contentPane.add(label_1);
 		
 		label_2 = new JLabel("Номер задачи:");
-		label_2.setBounds(400, 185, 105, 25);
+		label_2.setBounds(15, 215, 105, 25);
 		contentPane.add(label_2);
 		
 		label_3 = new JLabel("Таймер");
-		label_3.setBounds(5, 320, 55, 25);
+		label_3.setBounds(5, 250, 55, 25);
 		contentPane.add(label_3);
-		
-		// TODO Установки работают неправильно, срабатывают только после нажатия на "Reset"
-		JButton button = new JButton("Настройки");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				myGUISettings = new MyGUISettings();
-				schemeTimerMinute = myGUISettings.getSchemeTimerMinute();
-				
-				timer.stop();
-				thisPeriodTimer = 0;
-				countTimerSecond = schemeTimerMinute[0]*60;
-				timerLabel.setText(minuteToHour(countTimerSecond));
-			}
-		});
-		button.setBounds(364, 263, 114, 25);
 		
 		listTask.openListTaskFromFile(true);
 		listTask.sortTask();
@@ -204,7 +201,8 @@ public class MyGUI extends JFrame implements ActionListener {
 		if(listTask.getSortMethod().equals(MyListTask.METHOD_INFLUENCE)) setSortInfluenceRadioButton.setSelected(true);
 		else setSortPriorityRadioButton.setSelected(true);
 		
-		contentPane.add(button);
+		contentPane.add(settingsTimerButton);
+		//pack();
 	}
 	
 	// TODO Сделать более лаконичную формулу
@@ -267,7 +265,6 @@ public class MyGUI extends JFrame implements ActionListener {
 			textPane.setText(listTask.getAllText());
 		}
 		if (e.getSource() == addTaskButton) {
-			// TODO Добавление задачи не работает!
 			myGUIAddTask = new MyGUIAddTask(this);
 		}
 		if (e.getSource() == setSortPriorityRadioButton) {
@@ -304,6 +301,15 @@ public class MyGUI extends JFrame implements ActionListener {
 			SimpleDateFormat formatDate = new SimpleDateFormat("HH/mm/dd/MM/yy");
 			JOptionPane.showMessageDialog(null, listTask.completeTask(num-1, formatDate.format(date)));
 			textPane.setText(listTask.getAllText());
+		}
+		if (e.getSource() == settingsTimerButton) {
+			myGUISettings = new MyGUISettings();
+			schemeTimerMinute = myGUISettings.getSchemeTimerMinute();
+			
+			timer.stop();
+			thisPeriodTimer = 0;
+			countTimerSecond = schemeTimerMinute[0]*60;
+			timerLabel.setText(minuteToHour(countTimerSecond));
 		}
 		} catch(Exception eX) {
 			JOptionPane.showMessageDialog(null, "Error!");				
