@@ -19,13 +19,13 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 
-public class MyGUI extends JFrame {
+public class MyGUI extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	private MyListTask listTask; // Список задач
+	protected MyListTask listTask; // Список задач
 	private JPanel contentPane;  // Основное полотно для элементов управления
-	private JTextPane textPane;  // Текстовое поле для вывода списка
+	protected JTextPane textPane;  // Текстовое поле для вывода списка
 	private JScrollPane textScroll; // Правый скролл прокрутки текстового поля с выводом списка
-	private ButtonEventListener workEventListener; // Обработчик событий нажатия кнопок и переключателей
+	//private ButtonEventListener workEventListener; // Обработчик событий нажатия кнопок и переключателей
 	
 	// Удаление и пометка выполнения задачи
 	private JButton deleteTaskButton;   // Кнопка удаления задачи из списка
@@ -51,24 +51,10 @@ public class MyGUI extends JFrame {
 	
 	// Переменные для создания новой записи
 	private JButton addTaskButton;      // Кнопка добавления задачи в список
-	private JTextField newTaskDescriptionTextField; // Текстовое поле для описания новой задачи
-	private int priorityAddNewTask, influenceAddNewTask;  // Переменые для переключателей приоритета и зависимости
+	protected int priorityAddNewTask, influenceAddNewTask;  // Переменые для переключателей приоритета и зависимости
 	private JLabel label_1;
 	private JLabel label_2;
 	private JLabel label_3;
-	
-	// Группа переключателей для выбора параметра Intluence при добавлении задачи
-	private ButtonGroup influenceRadioButtonGroup; // Группа переключателей для установки зависимостри при создании новой задачи
-	private JRadioButton influenceOneRadioButton;
-	private JRadioButton influenceTwoRadioButton;
-	private JRadioButton influenceTreeRadioButton;
-	
-	// Группа переключателей для выбора параметра Priority при добавлении задачи
-	private ButtonGroup priorityRadioButtonGroup; // Группа переключателей для установки приоритета при создании новой задачи
-	private JRadioButton priorityOneRadioButton;
-	private JRadioButton priorityTwoRadioButton;
-	private JRadioButton priorityThreeRadioButton;
-	private JRadioButton priorityFourRadioButton;
 	
 	MyGUISettings myGUISettings;
 	MyGUIAddTask myGUIAddTask;
@@ -110,11 +96,6 @@ public class MyGUI extends JFrame {
 		contentPane.add(completeAndDeleteTaskTextField);
 		completeAndDeleteTaskTextField.setColumns(10);
 		
-		newTaskDescriptionTextField = new JTextField();
-		newTaskDescriptionTextField.setBounds(5, 215, 200, 25);
-		contentPane.add(newTaskDescriptionTextField);
-		newTaskDescriptionTextField.setColumns(10);
-		
 		deleteTaskButton = new JButton("Удалить задачу");
 		deleteTaskButton.setBounds(210, 215, 187, 25);
 		contentPane.add(deleteTaskButton);
@@ -122,49 +103,6 @@ public class MyGUI extends JFrame {
 		addTaskButton  = new JButton("Добавить задачу");
 		addTaskButton.setBounds(5, 185, 200, 25);
 		contentPane.add(addTaskButton);
-
-		priorityRadioButtonGroup = new ButtonGroup();
-		
-		priorityOneRadioButton = new JRadioButton("Важно и срочно");
-		priorityOneRadioButton.setBounds(5, 264, 154, 23);
-		priorityRadioButtonGroup.add(priorityOneRadioButton);
-		contentPane.add(priorityOneRadioButton);
-		priorityOneRadioButton.setSelected(true);
-		priorityAddNewTask = 1;
-		
-		priorityTwoRadioButton = new JRadioButton("Важно и несрочно");
-		priorityTwoRadioButton.setBounds(156, 264, 154, 23);
-		priorityRadioButtonGroup.add(priorityTwoRadioButton);
-		contentPane.add(priorityTwoRadioButton);
-		
-		priorityThreeRadioButton = new JRadioButton("Срочно и неважно");
-		priorityThreeRadioButton.setBounds(5, 285, 151, 23);
-		priorityRadioButtonGroup.add(priorityThreeRadioButton);
-		contentPane.add(priorityThreeRadioButton);
-		
-		priorityFourRadioButton = new JRadioButton("Несрочно и неважно");
-		priorityFourRadioButton.setBounds(156, 285, 154, 23);
-		priorityRadioButtonGroup.add(priorityFourRadioButton);
-		contentPane.add(priorityFourRadioButton);
-		
-		influenceRadioButtonGroup = new ButtonGroup();
-		
-		influenceOneRadioButton = new JRadioButton("Зависит");
-		influenceOneRadioButton.setBounds(5, 239, 80, 23);
-		influenceRadioButtonGroup.add(influenceOneRadioButton);
-		contentPane.add(influenceOneRadioButton);
-		influenceOneRadioButton.setSelected(true);
-		influenceAddNewTask = 1;
-		
-		influenceTwoRadioButton = new JRadioButton("Мало зависит");
-		influenceTwoRadioButton.setBounds(84, 239, 119, 23);
-		influenceRadioButtonGroup.add(influenceTwoRadioButton);
-		contentPane.add(influenceTwoRadioButton);
-		
-		influenceTreeRadioButton = new JRadioButton("Не зависит");
-		influenceTreeRadioButton.setBounds(207, 239, 100, 23);
-		influenceRadioButtonGroup.add(influenceTreeRadioButton);
-		contentPane.add(influenceTreeRadioButton);
 		
 		// Создание списка задач
 		listTask = new MyListTask();
@@ -217,22 +155,15 @@ public class MyGUI extends JFrame {
 		timer = new Timer(1000, timerListener);
 		timer.stop();
 		
-		workEventListener = new ButtonEventListener();
-		deleteTaskButton.addActionListener(workEventListener);
-		addTaskButton.addActionListener(workEventListener);
-		setSortPriorityRadioButton.addActionListener(workEventListener);
-		setSortInfluenceRadioButton.addActionListener(workEventListener);
-		priorityOneRadioButton.addActionListener(workEventListener);
-		priorityTwoRadioButton.addActionListener(workEventListener);
-		priorityThreeRadioButton.addActionListener(workEventListener);
-		priorityFourRadioButton.addActionListener(workEventListener);
-		influenceOneRadioButton.addActionListener(workEventListener);
-		influenceTwoRadioButton.addActionListener(workEventListener);
-		influenceTreeRadioButton.addActionListener(workEventListener);
-		startTimerButton.addActionListener(workEventListener);
-		pauseTimerButton.addActionListener(workEventListener);
-		resetTimerButton.addActionListener(workEventListener);
-		completeButton.addActionListener(workEventListener);
+		//workEventListener = new ButtonEventListener();
+		deleteTaskButton.addActionListener(this);
+		addTaskButton.addActionListener(this);
+		setSortPriorityRadioButton.addActionListener(this);
+		setSortInfluenceRadioButton.addActionListener(this);
+		startTimerButton.addActionListener(this);
+		pauseTimerButton.addActionListener(this);
+		resetTimerButton.addActionListener(this);
+		completeButton.addActionListener(this);
 		
 		//timer = new Timer(1000, buttonEventListener);
 		
@@ -284,99 +215,6 @@ public class MyGUI extends JFrame {
 		return s1+((minute/60)%60)+":"+s2+(minute%60);
 	}
 	
-	class ButtonEventListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			try {
-			if (e.getSource() == deleteTaskButton) {
-				int num = Integer.parseInt(completeAndDeleteTaskTextField.getText());
-				JOptionPane.showMessageDialog(null, listTask.deleteTask(num-1));
-				completeAndDeleteTaskTextField.setText("");
-				listTask.sortTask();
-				textPane.setText(listTask.getAllText());
-			}
-			if (e.getSource() == addTaskButton) {
-				// TODO Добавление задачи не работает!
-				myGUIAddTask = new MyGUIAddTask();
-				if(myGUIAddTask.getIsReturn()) {
-					String description = myGUIAddTask.getDescription();
-					listTask.addTask(description, priorityAddNewTask, influenceAddNewTask, false);
-					JOptionPane.showMessageDialog(null, "Добавлена задача: " + description);
-					newTaskDescriptionTextField.setText("");
-				}
-				
-				/*String description = newTaskDescriptionTextField.getText();
-				if(!description.isEmpty()) {
-					listTask.addTask(description, priorityAddNewTask, influenceAddNewTask, false);
-					JOptionPane.showMessageDialog(null, "Добавлена задача: " + description);
-					newTaskDescriptionTextField.setText("");
-				}
-				else JOptionPane.showMessageDialog(null, "Введите описание задачи");*/
-				listTask.sortTask();
-				textPane.setText(listTask.getAllText());
-			}
-			if (e.getSource() == setSortPriorityRadioButton) {
-				listTask.setSortMethod(MyListTask.METHOD_PRIORITY);
-				listTask.sortTask();
-				textPane.setText(listTask.getAllText());
-			}
-			if (e.getSource() == setSortInfluenceRadioButton) {
-				listTask.setSortMethod(MyListTask.METHOD_INFLUENCE);
-				listTask.sortTask();
-				textPane.setText(listTask.getAllText());
-			}
-			if (e.getSource() == priorityOneRadioButton) {
-				priorityAddNewTask = 1;
-			}
-			if (e.getSource() == priorityTwoRadioButton) {
-				priorityAddNewTask = 2;
-			}
-			if (e.getSource() == priorityThreeRadioButton) {
-				priorityAddNewTask = 3;
-			}
-			if (e.getSource() == priorityFourRadioButton) {
-				priorityAddNewTask = 4;
-			}
-			if (e.getSource() == influenceOneRadioButton) {
-				influenceAddNewTask = 1;
-			}
-			if (e.getSource() == influenceTwoRadioButton) {
-				influenceAddNewTask = 2;
-			}
-			if (e.getSource() == influenceTreeRadioButton) {
-				influenceAddNewTask = 3;
-			}
-			if (e.getSource() == startTimerButton) {
-				
-				timer.start();
-			}
-			if (e.getSource() == resetTimerButton) {
-				timer.stop();
-				thisPeriodTimer = 0;
-				schemeTimerMinute = myGUISettings.getSchemeTimerMinute();
-				countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
-				timerLabel.setText(minuteToHour(countTimerSecond));
-			}
-			if (e.getSource() == pauseTimerButton) {
-				timerLabel.setText("Pause");
-				timer.stop();
-			}
-			
-			if (e.getSource() == completeButton) {
-				int num = Integer.parseInt(completeAndDeleteTaskTextField.getText());
-				completeAndDeleteTaskTextField.setText("");
-				// Установка времени выполнения
-				Date date = new Date();
-				SimpleDateFormat formatDate = new SimpleDateFormat("HH/mm/dd/MM/yy");
-				JOptionPane.showMessageDialog(null, listTask.completeTask(num-1, formatDate.format(date)));
-				textPane.setText(listTask.getAllText());
-			}
-			} catch(Exception eX) {
-				JOptionPane.showMessageDialog(null, "Error!");				
-			}
-		}
-	}
-	
 	class TimerListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -416,5 +254,59 @@ public class MyGUI extends JFrame {
 					}
 					}
 			}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		try {
+		if (e.getSource() == deleteTaskButton) {
+			int num = Integer.parseInt(completeAndDeleteTaskTextField.getText());
+			JOptionPane.showMessageDialog(null, listTask.deleteTask(num-1));
+			completeAndDeleteTaskTextField.setText("");
+			listTask.sortTask();
+			textPane.setText(listTask.getAllText());
+		}
+		if (e.getSource() == addTaskButton) {
+			// TODO Добавление задачи не работает!
+			myGUIAddTask = new MyGUIAddTask(this);
+		}
+		if (e.getSource() == setSortPriorityRadioButton) {
+			listTask.setSortMethod(MyListTask.METHOD_PRIORITY);
+			listTask.sortTask();
+			textPane.setText(listTask.getAllText());
+		}
+		if (e.getSource() == setSortInfluenceRadioButton) {
+			listTask.setSortMethod(MyListTask.METHOD_INFLUENCE);
+			listTask.sortTask();
+			textPane.setText(listTask.getAllText());
+		}
+		if (e.getSource() == startTimerButton) {
+			
+			timer.start();
+		}
+		if (e.getSource() == resetTimerButton) {
+			timer.stop();
+			thisPeriodTimer = 0;
+			schemeTimerMinute = myGUISettings.getSchemeTimerMinute();
+			countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
+			timerLabel.setText(minuteToHour(countTimerSecond));
+		}
+		if (e.getSource() == pauseTimerButton) {
+			timerLabel.setText("Pause");
+			timer.stop();
+		}
+		
+		if (e.getSource() == completeButton) {
+			int num = Integer.parseInt(completeAndDeleteTaskTextField.getText());
+			completeAndDeleteTaskTextField.setText("");
+			// Установка времени выполнения
+			Date date = new Date();
+			SimpleDateFormat formatDate = new SimpleDateFormat("HH/mm/dd/MM/yy");
+			JOptionPane.showMessageDialog(null, listTask.completeTask(num-1, formatDate.format(date)));
+			textPane.setText(listTask.getAllText());
+		}
+		} catch(Exception eX) {
+			JOptionPane.showMessageDialog(null, "Error!");				
+		}
 	}
 }

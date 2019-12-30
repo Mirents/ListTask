@@ -26,7 +26,7 @@ public class ProgramListTask {
 			public void run() {
 				try {
 					MyGUI app = new MyGUI();
-			app.setVisible(true);
+					app.setVisible(true);
 				} catch (Exception e) {
 					//e.printStackTrace();
 					System.out.println("Error " + e);

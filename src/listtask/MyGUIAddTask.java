@@ -2,6 +2,8 @@ package listtask;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
@@ -9,13 +11,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-public class MyGUIAddTask extends JFrame {
+public class MyGUIAddTask extends JFrame implements ComponentListener {
 	private static final long serialVersionUID = 1L;
+	MyGUI myGUI;
 	
 	private JTextField newTaskDescriptionTextField; // Текстовое поле для описания новой задачи
 	private int priorityAddNewTask, influenceAddNewTask;  // Переменые для переключателей приоритета и зависимости
@@ -34,14 +36,13 @@ public class MyGUIAddTask extends JFrame {
 	private JRadioButton priorityThreeRadioButton;
 	private JRadioButton priorityFourRadioButton;
 	
-	private boolean isReturn = false;
-	
-	public MyGUIAddTask() {
+	public MyGUIAddTask(MyGUI myGUI) {
 		super("Добавить задачу");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		this.setResizable(false);
 		setVisible(true);
+		this.myGUI = myGUI;
 		
 		Box box1 = Box.createVerticalBox();
 		JLabel label_4 = new JLabel("Описание задачи:");
@@ -149,7 +150,10 @@ public class MyGUIAddTask extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				String s = newTaskDescriptionTextField.getText();
 				if(!s.isEmpty()) {
-					isReturn = true;
+					myGUI.listTask.addTask(s, priorityAddNewTask, influenceAddNewTask, false);
+					JOptionPane.showMessageDialog(null, "Добавлена задача: " + s);
+					myGUI.listTask.sortTask();
+					myGUI.textPane.setText(myGUI.listTask.getAllText());
 					dispose();
 				} else JOptionPane.showMessageDialog(null, "Введите описание задачи");				
 			}
@@ -174,22 +178,30 @@ public class MyGUIAddTask extends JFrame {
 		this.setContentPane(mailBox);
 		
 		pack();
+		addComponentListener(this);
 	}
-	
-	public boolean getIsReturn() {
-		if(isReturn) {
-			isReturn = false;
-			return true;
-		}
-		else return false;
+
+	@Override
+	public void componentHidden(ComponentEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
-	
-	public int[] getReturn() {
-		int[] ret = {priorityAddNewTask, influenceAddNewTask};
-		return ret;
+
+	@Override
+	public void componentMoved(ComponentEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
-	
-	public String getDescription() {
-		return description;
+
+	@Override
+	public void componentResized(ComponentEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentShown(ComponentEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }
