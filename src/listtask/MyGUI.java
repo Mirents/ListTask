@@ -252,6 +252,7 @@ public class MyGUI extends JFrame {
 		label_3.setBounds(5, 320, 55, 25);
 		contentPane.add(label_3);
 		
+		// TODO Установки работают неправильно, срабатывают только после нажатия на "Reset"
 		JButton button = new JButton("Настройки");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -295,6 +296,7 @@ public class MyGUI extends JFrame {
 				textPane.setText(listTask.getAllText());
 			}
 			if (e.getSource() == addTaskButton) {
+				// TODO Добавление задачи не работает!
 				myGUIAddTask = new MyGUIAddTask();
 				if(myGUIAddTask.getIsReturn()) {
 					String description = myGUIAddTask.getDescription();
