@@ -71,6 +71,7 @@ public class MyGUI extends JFrame {
 	private JRadioButton priorityFourRadioButton;
 	
 	MyGUISettings myGUISettings;
+	MyGUIAddTask myGUIAddTask;
 	
 	public MyGUI() {		
 		super("ListTask");
@@ -294,13 +295,21 @@ public class MyGUI extends JFrame {
 				textPane.setText(listTask.getAllText());
 			}
 			if (e.getSource() == addTaskButton) {
-				String description = newTaskDescriptionTextField.getText();
+				myGUIAddTask = new MyGUIAddTask();
+				if(myGUIAddTask.getIsReturn()) {
+					String description = myGUIAddTask.getDescription();
+					listTask.addTask(description, priorityAddNewTask, influenceAddNewTask, false);
+					JOptionPane.showMessageDialog(null, "Добавлена задача: " + description);
+					newTaskDescriptionTextField.setText("");
+				}
+				
+				/*String description = newTaskDescriptionTextField.getText();
 				if(!description.isEmpty()) {
 					listTask.addTask(description, priorityAddNewTask, influenceAddNewTask, false);
 					JOptionPane.showMessageDialog(null, "Добавлена задача: " + description);
 					newTaskDescriptionTextField.setText("");
 				}
-				else JOptionPane.showMessageDialog(null, "Введите описание задачи");
+				else JOptionPane.showMessageDialog(null, "Введите описание задачи");*/
 				listTask.sortTask();
 				textPane.setText(listTask.getAllText());
 			}
