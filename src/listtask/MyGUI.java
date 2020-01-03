@@ -7,7 +7,6 @@ import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -35,12 +34,12 @@ public class MyGUI extends JFrame implements ActionListener {
 	private JTextField completeAndDeleteTaskTextField; // Текстовое поле для ввода номера удаляемого поля или поля установки выполнения
 	
 	// Переменные и элементы управления для работы таймера
-	private JLabel timerLabel;  // Надпись времени
-	private Timer timer;  // Таймер
+	protected JLabel timerLabel;  // Надпись времени
+	protected Timer timer;  // Таймер
 	private TimerListener timerListener;  // Слушатель событий таймера
-	private int countTimerSecond = 0;  // Счетчик времени в секундах
-	private int[] schemeTimerMinute = {25, 5, 30, 3}; // Время работы, время короткого перерыва, время длинного перерыва
-	private int thisPeriodTimer = 0; // Текущий период таймера (работа, короткий перерыв или длинный перерыв)
+	protected int countTimerSecond = 0;  // Счетчик времени в секундах
+	protected int[] schemeTimerMinute = {25, 5, 30, 3}; // Время работы, время короткого перерыва, время длинного перерыва
+	protected int thisPeriodTimer = 0; // Текущий период таймера (работа, короткий перерыв или длинный перерыв)
 	private int circleWorkTimer = 0;  // Счетчик циклов до большого перерыва
 	private JButton startTimerButton;   // Кнопка старта таймера
 	private JButton pauseTimerButton;   // Кнопка паузы таймера
@@ -97,23 +96,23 @@ public class MyGUI extends JFrame implements ActionListener {
 		//Box box1 = Box.createHorizontalBox();
 		
 		completeAndDeleteTaskTextField = new JTextField();
-		completeAndDeleteTaskTextField.setBounds(122, 215, 48, 25);
+		completeAndDeleteTaskTextField.setBounds(110, 183, 30, 25);
 		contentPane.add(completeAndDeleteTaskTextField);
 		completeAndDeleteTaskTextField.setColumns(10);
 		//box1.add(completeAndDeleteTaskTextField);
 		
 		completeButton = new JButton("Выполнить");
-		completeButton.setBounds(173, 215, 135, 25);
+		completeButton.setBounds(142, 183, 110, 25);
 		contentPane.add(completeButton);
 		//box1.add(completeButton);
 		
 		deleteTaskButton = new JButton("Удалить задачу");
-		deleteTaskButton.setBounds(318, 215, 187, 25);
+		deleteTaskButton.setBounds(255, 183, 150, 25);
 		contentPane.add(deleteTaskButton);
 		//box1.add(deleteTaskButton);
 		
 		addTaskButton  = new JButton("Добавить задачу");
-		addTaskButton.setBounds(5, 185, 200, 25);
+		addTaskButton.setBounds(5, 215, 200, 25);
 		contentPane.add(addTaskButton);
 		//box1.add(addTaskButton);
 		//contentPane.add(box1);
@@ -166,7 +165,7 @@ public class MyGUI extends JFrame implements ActionListener {
 		
 		// TODO Установки работают неправильно, срабатывают только после нажатия на "Reset"
 		settingsTimerButton = new JButton("Настройки");
-		settingsTimerButton.setBounds(372, 178, 114, 25);
+		settingsTimerButton.setBounds(372, 215, 114, 25);
 				
 		//workEventListener = new ButtonEventListener();
 		deleteTaskButton.addActionListener(this);
@@ -188,7 +187,7 @@ public class MyGUI extends JFrame implements ActionListener {
 		contentPane.add(label_1);
 		
 		label_2 = new JLabel("Номер задачи:");
-		label_2.setBounds(15, 215, 105, 25);
+		label_2.setBounds(5, 183, 105, 25);
 		contentPane.add(label_2);
 		
 		label_3 = new JLabel("Таймер");
@@ -206,7 +205,7 @@ public class MyGUI extends JFrame implements ActionListener {
 	}
 	
 	// TODO Сделать более лаконичную формулу
-	public String minuteToHour(int minute) {
+	protected String minuteToHour(int minute) {
 		String s1 = "", s2 = "";
 		if((minute/60)%60<10) s1 = "0";
 		if((minute%60)<10) s2 = "0";
@@ -278,13 +277,11 @@ public class MyGUI extends JFrame implements ActionListener {
 			textPane.setText(listTask.getAllText());
 		}
 		if (e.getSource() == startTimerButton) {
-			
 			timer.start();
 		}
 		if (e.getSource() == resetTimerButton) {
 			timer.stop();
 			thisPeriodTimer = 0;
-			schemeTimerMinute = myGUISettings.getSchemeTimerMinute();
 			countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
 			timerLabel.setText(minuteToHour(countTimerSecond));
 		}
@@ -303,13 +300,7 @@ public class MyGUI extends JFrame implements ActionListener {
 			textPane.setText(listTask.getAllText());
 		}
 		if (e.getSource() == settingsTimerButton) {
-			myGUISettings = new MyGUISettings();
-			schemeTimerMinute = myGUISettings.getSchemeTimerMinute();
-			
-			timer.stop();
-			thisPeriodTimer = 0;
-			countTimerSecond = schemeTimerMinute[0]*60;
-			timerLabel.setText(minuteToHour(countTimerSecond));
+			myGUISettings = new MyGUISettings(this);
 		}
 		} catch(Exception eX) {
 			JOptionPane.showMessageDialog(null, "Error!");				
