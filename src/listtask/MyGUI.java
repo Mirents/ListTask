@@ -97,17 +97,19 @@ public class MyGUI extends JFrame implements ActionListener {
 		listTask.openListTaskFromFile(true);
 		listTask.sortTask();
 				
-		Box box1 = Box.createHorizontalBox();
+		Box box1 = Box.createVerticalBox();
+		Box box11 = Box.createHorizontalBox();
+		Box box12 = Box.createHorizontalBox();
 		
-		JLabel label = new JLabel("Список задач              ");
+		JLabel label = new JLabel("Список задач");
 		label.setBounds(10, 5, 95, 23);
 		//contentPane.add(label);
-		box1.add(label);
+		box11.add(label);
 		
 		label_1 = new JLabel("Сортировка:");
 		label_1.setBounds(140, 5, 95, 23);
 		//contentPane.add(label_1);
-		box1.add(label_1);
+		box12.add(label_1);
 		
 		methodSortRadioButtonGroup = new ButtonGroup();
 		
@@ -117,7 +119,10 @@ public class MyGUI extends JFrame implements ActionListener {
 		//contentPane.add(setSortPriorityRadioButton);
 		setSortPriorityRadioButton.setSelected((listTask.getSortMethod().equals(MyListTask.METHOD_PRIORITY)) ?
 				true : false);
-		box1.add(setSortPriorityRadioButton);
+		box12.add(setSortPriorityRadioButton);
+		
+		box1.add(box11);
+		box1.add(box12);
 		
 		setSortInfluenceRadioButton = new JRadioButton("Влияние");
 		//setSortInfluenceRadioButton.setBounds(230, 5, 84, 23);
@@ -125,7 +130,7 @@ public class MyGUI extends JFrame implements ActionListener {
 		//contentPane.add(setSortInfluenceRadioButton);
 		setSortInfluenceRadioButton.setSelected((listTask.getSortMethod().equals(MyListTask.METHOD_INFLUENCE)) ?
 				true : false);
-		box1.add(setSortInfluenceRadioButton);
+		box12.add(setSortInfluenceRadioButton);
 		
 		Box box2 = Box.createHorizontalBox();
 
@@ -203,7 +208,7 @@ public class MyGUI extends JFrame implements ActionListener {
 		box4.add(box42);
 
 		countTimerSecond = schemeTimerMinute[0]*60;
-		timerLabel.setText(minuteToHour(countTimerSecond));
+		timerLabel.setText(setTextTimer());
 		timerListener = new TimerListener();
 		timer = new Timer(1000, timerListener);
 		timer.stop();
@@ -222,12 +227,13 @@ public class MyGUI extends JFrame implements ActionListener {
 		//contentPane.add(settingsTimerButton);
 		
 		Box mailBox = Box.createVerticalBox();
+		mailBox.setBorder(new EmptyBorder(12, 12, 12, 12));
 		mailBox.add(box1);
-		mailBox.setBorder(new EmptyBorder(12, 12, 12, 12));
+		mailBox.add(Box.createVerticalStrut(12));
 		mailBox.add(box2);
-		mailBox.setBorder(new EmptyBorder(12, 12, 12, 12));
+		mailBox.add(Box.createVerticalStrut(12));
 		mailBox.add(box3);
-		mailBox.setBorder(new EmptyBorder(12, 12, 12, 12));
+		mailBox.add(Box.createVerticalStrut(12));
 		mailBox.add(box4);
 		this.setContentPane(mailBox);
 		pack();
@@ -241,12 +247,28 @@ public class MyGUI extends JFrame implements ActionListener {
 		return s1+((minute/60)%60)+":"+s2+(minute%60);
 	}
 	
+	protected String setTextTimer() {
+		String text = "";
+		switch (thisPeriodTimer) {
+		case 0:
+			text = "Работа, период " + (thisPeriodTimer+1) + " из " + schemeTimerMinute[3];
+			break;
+		case 1:
+			text = "Небольшой перерыв";
+			break;
+		case 2:
+			text = "Большой перерыв";
+			break;
+		}
+		return text + " " + minuteToHour(countTimerSecond);
+	}
+	
 	class TimerListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(countTimerSecond>0) {
 				countTimerSecond--;
-				timerLabel.setText(minuteToHour(countTimerSecond));
+				timerLabel.setText(setTextTimer());
 				} else {
 					if(thisPeriodTimer == 0) {
 						if (circleWorkTimer < schemeTimerMinute[3]-1) {
@@ -254,13 +276,13 @@ public class MyGUI extends JFrame implements ActionListener {
 							System.out.println("Работа закончена - небольшой перерыв!!!");
 							thisPeriodTimer = 1;
 							countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
-							timerLabel.setText(minuteToHour(countTimerSecond));
+							timerLabel.setText(setTextTimer());
 						} else {
 							JOptionPane.showMessageDialog(null, "Работа закончена - большой перерыв!!!");
 							System.out.println("Работа закончена - большой перерыв!!!");
 							thisPeriodTimer = 2;
 							countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
-							timerLabel.setText(minuteToHour(countTimerSecond));
+							timerLabel.setText(setTextTimer());
 						}
 						
 					} else if(thisPeriodTimer == 1) {
@@ -269,14 +291,14 @@ public class MyGUI extends JFrame implements ActionListener {
 						thisPeriodTimer = 0;
 						circleWorkTimer++;
 						countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
-						timerLabel.setText(minuteToHour(countTimerSecond));
+						timerLabel.setText(setTextTimer());
 					} else if(thisPeriodTimer == 2) {
 						JOptionPane.showMessageDialog(null, "Большой перерыв закончен, пора работать!!!");
 						System.out.println("Большой перерыв закончен!!!");
 						thisPeriodTimer = 0;
 						circleWorkTimer = 0;
 						countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
-						timerLabel.setText(minuteToHour(countTimerSecond));
+						timerLabel.setText(setTextTimer());
 					}
 					}
 			}
@@ -312,7 +334,7 @@ public class MyGUI extends JFrame implements ActionListener {
 			timer.stop();
 			thisPeriodTimer = 0;
 			countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
-			timerLabel.setText(minuteToHour(countTimerSecond));
+			timerLabel.setText(setTextTimer());
 		}
 		if (e.getSource() == pauseTimerButton) {
 			timerLabel.setText("Pause");

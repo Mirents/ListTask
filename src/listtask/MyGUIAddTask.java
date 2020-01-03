@@ -170,10 +170,11 @@ public class MyGUIAddTask extends JFrame implements ComponentListener {
 		box3.add(cancelButton);
 		
 		Box mailBox = Box.createVerticalBox();
+		mailBox.setBorder(new EmptyBorder(12, 12, 12, 12));
 		mailBox.add(box1);
-		mailBox.setBorder(new EmptyBorder(12, 12, 12, 12));
+		mailBox.add(Box.createVerticalStrut(12));
 		mailBox.add(box2);
-		mailBox.setBorder(new EmptyBorder(12, 12, 12, 12));
+		mailBox.add(Box.createVerticalStrut(12));
 		mailBox.add(box3);
 		this.setContentPane(mailBox);
 		
