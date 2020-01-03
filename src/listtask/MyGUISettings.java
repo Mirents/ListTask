@@ -21,7 +21,7 @@ public class MyGUISettings extends JFrame implements ComponentListener {
 	JTextField textFieldPeriod;
 	
 	public MyGUISettings(MyGUI myGUI) {
-		super("Настройки");
+		super("Настройки таймера");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		//this.setSize(100, 100);
 		setLocationRelativeTo(null);
@@ -75,7 +75,7 @@ public class MyGUISettings extends JFrame implements ComponentListener {
 					myGUI.timer.stop();
 					myGUI.thisPeriodTimer = 0;
 					myGUI.countTimerSecond = myGUI.schemeTimerMinute[0]*60;
-					myGUI.timerLabel.setText(myGUI.minuteToHour(myGUI.countTimerSecond));
+					myGUI.timerLabel.setText(myGUI.setTextTimer());
 					
 					dispose();
 				} catch (Exception e) {

@@ -138,74 +138,86 @@ public class MyGUI extends JFrame implements ActionListener {
 		textScroll = new JScrollPane(textPane);
 		//textScroll.setBounds(5, 30, 500, 150);
 		//contentPane.add(textScroll);
-		textPane.setText(listTask.getAllText());
+		textPane.setText("111111111111111111111111111111111111\n\n\n\n\n\n\n\n\n");
 		box2.add(textScroll);
 		
-		Box box31 = Box.createVerticalBox();
 		Box box3 = Box.createHorizontalBox();
-		
-		label_2 = new JLabel("Номер задачи:");
-		label_2.setBounds(5, 183, 105, 25);
-		//contentPane.add(label_2);
-		box3.add(label_2);
-		
-		completeAndDeleteTaskTextField = new JTextField();
-		//completeAndDeleteTaskTextField.setBounds(110, 183, 30, 25);
-		//contentPane.add(completeAndDeleteTaskTextField);
-		completeAndDeleteTaskTextField.setColumns(2);
-		box3.add(completeAndDeleteTaskTextField);
-		
-		Box box32 = Box.createVerticalBox();
+		Box box31 = Box.createHorizontalBox();
+		Box box32 = Box.createHorizontalBox();
+		Box box33 = Box.createVerticalBox();
+		//box32.add(box31);
 		
 		completeButton = new JButton("Выполнить");
 		//completeButton.setBounds(142, 183, 110, 25);
 		//contentPane.add(completeButton);
-		box3.add(completeButton);
+		box32.add(completeButton);
 		
 		deleteTaskButton = new JButton("Удалить задачу");
 		//deleteTaskButton.setBounds(255, 183, 150, 25);
 		//contentPane.add(deleteTaskButton);
-		box3.add(deleteTaskButton);
+		box32.add(deleteTaskButton);
 		
 		//box3.add(box31);
 		//box3.add(box32);
 		addTaskButton  = new JButton("Добавить задачу");
 		//addTaskButton.setBounds(5, 215, 200, 25);
 		//contentPane.add(addTaskButton);
-		box3.add(addTaskButton);
 		//contentPane.add(box1);
+		
+		label_2 = new JLabel("Номер задачи:");
+		label_2.setBounds(5, 183, 105, 25);
+		//contentPane.add(label_2);
+		box31.add(label_2);
+		
+		completeAndDeleteTaskTextField = new JTextField();
+		//completeAndDeleteTaskTextField.setBounds(110, 183, 30, 25);
+		//contentPane.add(completeAndDeleteTaskTextField);
+		completeAndDeleteTaskTextField.setColumns(2);
+		box31.add(completeAndDeleteTaskTextField);
+		
+		box33.add(box31);
+		box33.add(box32);
+		box3.add(box33);
+		box3.add(Box.createHorizontalStrut(12));
+		box3.add(addTaskButton);
 		
 		Box box4 = Box.createHorizontalBox();
 		Box box41 = Box.createHorizontalBox();
-		Box box42 = Box.createHorizontalBox();
+		Box box42 = Box.createVerticalBox();
+		Box box43 = Box.createHorizontalBox();
+		Box box44 = Box.createHorizontalBox();
 		
-		timerLabel = new JLabel("New label");
+		timerLabel = new JLabel("");
 		//timerLabel.setBounds(60, 250, 60, 25);
-		timerLabel.setText("");
+		//timerLabel.setText("");
 		//contentPane.add(timerLabel);
-		box41.add(timerLabel);
+		box44.add(timerLabel);
 		
-		startTimerButton = new JButton("Start");
+		startTimerButton = new JButton("Старт");
 		//startTimerButton.setBounds(122, 250, 114, 25);
 		//contentPane.add(startTimerButton);
-		box42.add(startTimerButton);
+		box41.add(startTimerButton);
 		
-		pauseTimerButton = new JButton("Pause");
+		pauseTimerButton = new JButton("Пауза");
 		//pauseTimerButton.setBounds(257, 250, 114, 25);
 		//contentPane.add(pauseTimerButton);
-		box42.add(pauseTimerButton);
+		box41.add(pauseTimerButton);
 		
-		resetTimerButton = new JButton("Reset");
+		resetTimerButton = new JButton("Сбросить");
 		//resetTimerButton.setBounds(391, 250, 114, 25);
 		//contentPane.add(resetTimerButton);
-		box42.add(resetTimerButton);
+		box41.add(resetTimerButton);
+		box42.add(box44);
+		box42.add(box41);
 		
-		settingsTimerButton = new JButton("Настройки");
+		settingsTimerButton = new JButton("Настройки таймера");
 		//settingsTimerButton.setBounds(372, 215, 114, 25);
-		box42.add(settingsTimerButton);
+		box43.add(settingsTimerButton);
 		
-		box4.add(box41);
+		//box4.add(box41);
 		box4.add(box42);
+		box4.add(Box.createHorizontalStrut(12));
+		box4.add(box43);
 
 		countTimerSecond = schemeTimerMinute[0]*60;
 		timerLabel.setText(setTextTimer());
@@ -213,7 +225,6 @@ public class MyGUI extends JFrame implements ActionListener {
 		timer = new Timer(1000, timerListener);
 		timer.stop();
 
-				
 		deleteTaskButton.addActionListener(this);
 		addTaskButton.addActionListener(this);
 		setSortPriorityRadioButton.addActionListener(this);
@@ -227,7 +238,7 @@ public class MyGUI extends JFrame implements ActionListener {
 		//contentPane.add(settingsTimerButton);
 		
 		Box mailBox = Box.createVerticalBox();
-		mailBox.setBorder(new EmptyBorder(12, 12, 12, 12));
+		mailBox.setBorder(new EmptyBorder(0, 12, 12, 12));
 		mailBox.add(box1);
 		mailBox.add(Box.createVerticalStrut(12));
 		mailBox.add(box2);
@@ -236,7 +247,9 @@ public class MyGUI extends JFrame implements ActionListener {
 		mailBox.add(Box.createVerticalStrut(12));
 		mailBox.add(box4);
 		this.setContentPane(mailBox);
+		
 		pack();
+		textPane.setText(listTask.getAllText());
 	}
 	
 	// TODO Сделать более лаконичную формулу

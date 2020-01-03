@@ -177,7 +177,6 @@ public class MyGUIAddTask extends JFrame implements ComponentListener {
 		mailBox.add(Box.createVerticalStrut(12));
 		mailBox.add(box3);
 		this.setContentPane(mailBox);
-		
 		pack();
 		addComponentListener(this);
 	}
