@@ -7,6 +7,7 @@ import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -23,7 +24,7 @@ import javax.swing.JLabel;
 public class MyGUI extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	protected MyListTask listTask; // Список задач
-	private JPanel contentPane;  // Основное полотно для элементов управления
+	//private JPanel contentPane;  // Основное полотно для элементов управления
 	protected JTextPane textPane;  // Текстовое поле для вывода списка
 	private JScrollPane textScroll; // Правый скролл прокрутки текстового поля с выводом списка
 	//private ButtonEventListener workEventListener; // Обработчик событий нажатия кнопок и переключателей
@@ -81,93 +82,133 @@ public class MyGUI extends JFrame implements ActionListener {
 	        	System.exit(1);
 	        }
 	    });
-		this.setSize(510, 310);
+		//this.setSize(510, 310);
 		this.setLocationRelativeTo(null);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(null);
-		this.setContentPane(contentPane);
-		
-		textPane = new JTextPane();
-		textScroll = new JScrollPane(textPane);
-		textScroll.setBounds(5, 30, 500, 150);
-		contentPane.add(textScroll);
-		
-		//Box box1 = Box.createHorizontalBox();
-		
-		completeAndDeleteTaskTextField = new JTextField();
-		completeAndDeleteTaskTextField.setBounds(110, 183, 30, 25);
-		contentPane.add(completeAndDeleteTaskTextField);
-		completeAndDeleteTaskTextField.setColumns(10);
-		//box1.add(completeAndDeleteTaskTextField);
-		
-		completeButton = new JButton("Выполнить");
-		completeButton.setBounds(142, 183, 110, 25);
-		contentPane.add(completeButton);
-		//box1.add(completeButton);
-		
-		deleteTaskButton = new JButton("Удалить задачу");
-		deleteTaskButton.setBounds(255, 183, 150, 25);
-		contentPane.add(deleteTaskButton);
-		//box1.add(deleteTaskButton);
-		
-		addTaskButton  = new JButton("Добавить задачу");
-		addTaskButton.setBounds(5, 215, 200, 25);
-		contentPane.add(addTaskButton);
-		//box1.add(addTaskButton);
-		//contentPane.add(box1);
+		//contentPane = new JPanel();
+		//contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		//contentPane.setLayout(null);
+		//this.setContentPane(contentPane);
 		
 		// Создание списка задач
 		listTask = new MyListTask();
-
 		// Заполнение списка
 		listTask.openListTaskFromFile(false);
-		textPane.setText(listTask.getAllText());
+				
+		listTask.openListTaskFromFile(true);
+		listTask.sortTask();
+				
+		Box box1 = Box.createHorizontalBox();
+		
+		JLabel label = new JLabel("Список задач              ");
+		label.setBounds(10, 5, 95, 23);
+		//contentPane.add(label);
+		box1.add(label);
+		
+		label_1 = new JLabel("Сортировка:");
+		label_1.setBounds(140, 5, 95, 23);
+		//contentPane.add(label_1);
+		box1.add(label_1);
 		
 		methodSortRadioButtonGroup = new ButtonGroup();
 		
 		setSortPriorityRadioButton = new JRadioButton("Важность/срочность");
-		setSortPriorityRadioButton.setBounds(320, 5, 166, 23);
+		//setSortPriorityRadioButton.setBounds(320, 5, 166, 23);
 		methodSortRadioButtonGroup.add(setSortPriorityRadioButton);
-		contentPane.add(setSortPriorityRadioButton);
+		//contentPane.add(setSortPriorityRadioButton);
 		setSortPriorityRadioButton.setSelected((listTask.getSortMethod().equals(MyListTask.METHOD_PRIORITY)) ?
 				true : false);
+		box1.add(setSortPriorityRadioButton);
 		
 		setSortInfluenceRadioButton = new JRadioButton("Влияние");
-		setSortInfluenceRadioButton.setBounds(230, 5, 84, 23);
+		//setSortInfluenceRadioButton.setBounds(230, 5, 84, 23);
 		methodSortRadioButtonGroup.add(setSortInfluenceRadioButton);
-		contentPane.add(setSortInfluenceRadioButton);
+		//contentPane.add(setSortInfluenceRadioButton);
 		setSortInfluenceRadioButton.setSelected((listTask.getSortMethod().equals(MyListTask.METHOD_INFLUENCE)) ?
 				true : false);
+		box1.add(setSortInfluenceRadioButton);
 		
-		startTimerButton = new JButton("Start");
-		startTimerButton.setBounds(122, 250, 114, 25);
-		contentPane.add(startTimerButton);
+		Box box2 = Box.createHorizontalBox();
+
+		textPane = new JTextPane();
+		textScroll = new JScrollPane(textPane);
+		//textScroll.setBounds(5, 30, 500, 150);
+		//contentPane.add(textScroll);
+		textPane.setText(listTask.getAllText());
+		box2.add(textScroll);
 		
-		pauseTimerButton = new JButton("Pause");
-		pauseTimerButton.setBounds(257, 250, 114, 25);
-		contentPane.add(pauseTimerButton);
+		Box box31 = Box.createVerticalBox();
+		Box box3 = Box.createHorizontalBox();
+		
+		label_2 = new JLabel("Номер задачи:");
+		label_2.setBounds(5, 183, 105, 25);
+		//contentPane.add(label_2);
+		box3.add(label_2);
+		
+		completeAndDeleteTaskTextField = new JTextField();
+		//completeAndDeleteTaskTextField.setBounds(110, 183, 30, 25);
+		//contentPane.add(completeAndDeleteTaskTextField);
+		completeAndDeleteTaskTextField.setColumns(2);
+		box3.add(completeAndDeleteTaskTextField);
+		
+		Box box32 = Box.createVerticalBox();
+		
+		completeButton = new JButton("Выполнить");
+		//completeButton.setBounds(142, 183, 110, 25);
+		//contentPane.add(completeButton);
+		box3.add(completeButton);
+		
+		deleteTaskButton = new JButton("Удалить задачу");
+		//deleteTaskButton.setBounds(255, 183, 150, 25);
+		//contentPane.add(deleteTaskButton);
+		box3.add(deleteTaskButton);
+		
+		//box3.add(box31);
+		//box3.add(box32);
+		addTaskButton  = new JButton("Добавить задачу");
+		//addTaskButton.setBounds(5, 215, 200, 25);
+		//contentPane.add(addTaskButton);
+		box3.add(addTaskButton);
+		//contentPane.add(box1);
+		
+		Box box4 = Box.createHorizontalBox();
+		Box box41 = Box.createHorizontalBox();
+		Box box42 = Box.createHorizontalBox();
 		
 		timerLabel = new JLabel("New label");
-		timerLabel.setBounds(60, 250, 60, 25);
+		//timerLabel.setBounds(60, 250, 60, 25);
 		timerLabel.setText("");
-		contentPane.add(timerLabel);
+		//contentPane.add(timerLabel);
+		box41.add(timerLabel);
+		
+		startTimerButton = new JButton("Start");
+		//startTimerButton.setBounds(122, 250, 114, 25);
+		//contentPane.add(startTimerButton);
+		box42.add(startTimerButton);
+		
+		pauseTimerButton = new JButton("Pause");
+		//pauseTimerButton.setBounds(257, 250, 114, 25);
+		//contentPane.add(pauseTimerButton);
+		box42.add(pauseTimerButton);
 		
 		resetTimerButton = new JButton("Reset");
-		resetTimerButton.setBounds(391, 250, 114, 25);
-		contentPane.add(resetTimerButton);
+		//resetTimerButton.setBounds(391, 250, 114, 25);
+		//contentPane.add(resetTimerButton);
+		box42.add(resetTimerButton);
+		
+		settingsTimerButton = new JButton("Настройки");
+		//settingsTimerButton.setBounds(372, 215, 114, 25);
+		box42.add(settingsTimerButton);
+		
+		box4.add(box41);
+		box4.add(box42);
 
 		countTimerSecond = schemeTimerMinute[0]*60;
 		timerLabel.setText(minuteToHour(countTimerSecond));
 		timerListener = new TimerListener();
 		timer = new Timer(1000, timerListener);
 		timer.stop();
-		
-		// TODO Установки работают неправильно, срабатывают только после нажатия на "Reset"
-		settingsTimerButton = new JButton("Настройки");
-		settingsTimerButton.setBounds(372, 215, 114, 25);
+
 				
-		//workEventListener = new ButtonEventListener();
 		deleteTaskButton.addActionListener(this);
 		addTaskButton.addActionListener(this);
 		setSortPriorityRadioButton.addActionListener(this);
@@ -178,30 +219,18 @@ public class MyGUI extends JFrame implements ActionListener {
 		completeButton.addActionListener(this);
 		settingsTimerButton.addActionListener(this);
 		
-		JLabel label = new JLabel("Список задач");
-		label.setBounds(10, 5, 95, 23);
-		contentPane.add(label);
+		//contentPane.add(settingsTimerButton);
 		
-		label_1 = new JLabel("Сортировка:");
-		label_1.setBounds(140, 5, 95, 23);
-		contentPane.add(label_1);
-		
-		label_2 = new JLabel("Номер задачи:");
-		label_2.setBounds(5, 183, 105, 25);
-		contentPane.add(label_2);
-		
-		label_3 = new JLabel("Таймер");
-		label_3.setBounds(5, 250, 55, 25);
-		contentPane.add(label_3);
-		
-		listTask.openListTaskFromFile(true);
-		listTask.sortTask();
-		textPane.setText(listTask.getAllText());
-		if(listTask.getSortMethod().equals(MyListTask.METHOD_INFLUENCE)) setSortInfluenceRadioButton.setSelected(true);
-		else setSortPriorityRadioButton.setSelected(true);
-		
-		contentPane.add(settingsTimerButton);
-		//pack();
+		Box mailBox = Box.createVerticalBox();
+		mailBox.add(box1);
+		mailBox.setBorder(new EmptyBorder(12, 12, 12, 12));
+		mailBox.add(box2);
+		mailBox.setBorder(new EmptyBorder(12, 12, 12, 12));
+		mailBox.add(box3);
+		mailBox.setBorder(new EmptyBorder(12, 12, 12, 12));
+		mailBox.add(box4);
+		this.setContentPane(mailBox);
+		pack();
 	}
 	
 	// TODO Сделать более лаконичную формулу
