@@ -12,7 +12,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextPane;
 import javax.swing.Timer;
@@ -57,7 +56,6 @@ public class MyGUI extends JFrame implements ActionListener {
 	protected int priorityAddNewTask, influenceAddNewTask;  // Переменые для переключателей приоритета и зависимости
 	private JLabel label_1;
 	private JLabel label_2;
-	private JLabel label_3;
 	
 	MyGUISettings myGUISettings;
 	MyGUIAddTask myGUIAddTask;
