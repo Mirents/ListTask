@@ -1,4 +1,4 @@
-package listtask;
+package ru.listtask.window;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,14 +13,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-public class MyGUISettings extends JFrame implements ComponentListener {
+public class SettingsWindow extends JFrame implements ComponentListener {
 	private static final long serialVersionUID = 1L;
 	JTextField textFieldTimerWork;
 	JTextField textFieldMiniBrake;
 	JTextField textFieldBigBrake;
 	JTextField textFieldPeriod;
 	
-	public MyGUISettings(MyGUI myGUI) {
+	public SettingsWindow(AppWindow myGUI) {
 		super("Настройки таймера");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		//this.setSize(100, 100);

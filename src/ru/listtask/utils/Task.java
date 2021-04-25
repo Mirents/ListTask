@@ -1,6 +1,6 @@
-package listtask;
+package ru.listtask.utils;
 
-public class MyTask {
+public class Task {
 	private String description; // Описание задачи
 	private int priority;       // Приоритет: от 1 до 4
 	private int influence;      // Влияние: от 1 до 3
@@ -8,14 +8,14 @@ public class MyTask {
 	private int HH=0, mm=0, dd=0, MM=0, yy=0;
 	
 	// Конструктор класса с параметрами
-	MyTask(String description, int priority, int influence, boolean complete) {
+	Task(String description, int priority, int influence, boolean complete) {
 		this.setDescription(description);
 		this.setPriority(priority);
 		this.setInfluence(influence);
 		this.setComplete(complete);
 	}
 	
-	MyTask(String description, int priority, int influence, boolean complete, String dateTime) {
+	Task(String description, int priority, int influence, boolean complete, String dateTime) {
 		this.setDescription(description);
 		this.setPriority(priority);
 		this.setInfluence(influence);
@@ -24,14 +24,14 @@ public class MyTask {
 	}
 
 	// Конструктор класса без параметров
-	MyTask() {
+	Task() {
 		this.setDescription("");
 		this.setPriority(0);
 		this.setInfluence(0);
 		this.setComplete(false);
 	}
 
-	MyTask(MyTask taskTemp) {
+	Task(Task taskTemp) {
 		this.setDescription(taskTemp.getDescription());
 		this.setInfluence(taskTemp.getInfluence());
 		this.setPriority(taskTemp.getPriority());
@@ -70,7 +70,7 @@ public class MyTask {
 		this.complete = complete;
 	}
 	
-	public void setAll(MyTask taskTemp) {
+	public void setAll(Task taskTemp) {
 		this.setDescription(taskTemp.getDescription());
 		this.setInfluence(taskTemp.getInfluence());
 		this.setPriority(taskTemp.getPriority());

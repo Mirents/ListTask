@@ -1,18 +1,12 @@
-package listtask;
+package ru.listtask.window;
 
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -25,19 +19,20 @@ import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
-import java.io.File;
+import ru.listtask.utils.GongPlayer;
+import ru.listtask.utils.ListTask;
 
-public class MyGUI extends JFrame implements ActionListener {
+public class AppWindow extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	protected MyListTask listTask; // Список задач
+	protected ListTask listTask; // Список задач
 	protected JTextPane textPane;  // Текстовое поле для вывода списка
 	private JScrollPane textScroll; // Правый скролл прокрутки текстового поля с выводом списка
-	
+
 	// Удаление и пометка выполнения задачи
 	private JButton deleteTaskButton;   // Кнопка удаления задачи из списка
 	private JButton completeButton;  // Кнопка смены отметки выполнения задачи
 	private JTextField completeAndDeleteTaskTextField; // Текстовое поле для ввода номера удаляемого поля или поля установки выполнения
-	
+
 	// Переменные и элементы управления для работы таймера
 	protected JLabel timerLabel;  // Надпись времени
 	protected Timer timer;  // Таймер
@@ -50,7 +45,6 @@ public class MyGUI extends JFrame implements ActionListener {
 	private JButton pauseTimerButton;   // Кнопка паузы таймера
 	private JButton resetTimerButton;   // Кнопка сброса и остановки таймера
 	private JButton settingsTimerButton;  // Кнопка настройки таймера
-	Clip gongSound;
 
 	// Сортировка задач
 	private ButtonGroup methodSortRadioButtonGroup; // Группа переключателей для установки метода сортировки
@@ -63,24 +57,32 @@ public class MyGUI extends JFrame implements ActionListener {
 	private JLabel label_1;
 	private JLabel label_2;
 	
-	MyGUISettings myGUISettings;  // Окно настроек таймера
-	MyGUIAddTask myGUIAddTask;  // Окно добавления задачи
+	SettingsWindow myGUISettings;  // Окно настроек таймера
+	AddTaskWindow myGUIAddTask;  // Окно добавления задачи
+        
+        GongPlayer gongPlayer;
 	
-	public MyGUI() {		
+	public AppWindow() {		
 		super("ListTask");  // Название окна
 		this.setResizable(false);  // Запрет на изменение размера
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // Сохранение данных при закрытии программы
-	    addWindowListener(new WindowAdapter(){
-	        public void windowClosing(WindowEvent evt){
-	        	listTask.safeListTaskInFile();  // Сохранение списка в файл
-	        	System.exit(1);  // Выход из программы
-	        }
-	    });
+                
+                addWindowListener(new WindowAdapter(){
+                    @Override
+                    public void windowClosing(WindowEvent evt){
+                            listTask.safeListTaskInFile();  // Сохранение списка в файл
+                            System.exit(1);  // Выход из программы
+                    }
+                });
 	    
-		this.setLocationRelativeTo(null);  // Положение в середине рабочего стола
+                // Установка положения при загрузке - в середине рабочего стола
+		this.setLocationRelativeTo(null);
 		
+                // Создание элемента воспроизведения звука
+                gongPlayer = new GongPlayer("gong.wav");
+                
 		// Создание списка задач
-		listTask = new MyListTask();
+		listTask = new ListTask();
 		// Заполнение списка
 		listTask.openListTaskFromFile(false);
 				
@@ -105,8 +107,7 @@ public class MyGUI extends JFrame implements ActionListener {
 		
 		setSortPriorityRadioButton = new JRadioButton("Важность/срочность");
 		methodSortRadioButtonGroup.add(setSortPriorityRadioButton);
-		setSortPriorityRadioButton.setSelected((listTask.getSortMethod().equals(MyListTask.METHOD_PRIORITY)) ?
-				true : false);
+		setSortPriorityRadioButton.setSelected((listTask.getSortMethod().equals(ListTask.METHOD_PRIORITY)));
 		box12.add(setSortPriorityRadioButton);
 		
 		box1.add(box11);
@@ -114,8 +115,7 @@ public class MyGUI extends JFrame implements ActionListener {
 		
 		setSortInfluenceRadioButton = new JRadioButton("Влияние");
 		methodSortRadioButtonGroup.add(setSortInfluenceRadioButton);
-		setSortInfluenceRadioButton.setSelected((listTask.getSortMethod().equals(MyListTask.METHOD_INFLUENCE)) ?
-				true : false);
+		setSortInfluenceRadioButton.setSelected((listTask.getSortMethod().equals(ListTask.METHOD_INFLUENCE)));
 		box12.add(setSortInfluenceRadioButton);
 		
 		Box box2 = Box.createHorizontalBox();
@@ -219,29 +219,6 @@ public class MyGUI extends JFrame implements ActionListener {
 		return s1+((minute/60)%60)+":"+s2+(minute%60);
 	}
 	
-	private void PlayGond(String file) {
-		gongSound = null;
-		try {
-			File f = new File(file);
-			AudioFileFormat aff = AudioSystem.getAudioFileFormat(f);
-			AudioFormat af = aff.getFormat();
-			DataLine.Info info = new DataLine.Info(Clip.class, af);
-			if(AudioSystem.isLineSupported(info)) {
-				gongSound = (Clip) AudioSystem.getLine(info);
-				AudioInputStream ais = AudioSystem.getAudioInputStream(f);
-				gongSound.open(ais);
-				gongSound.start();
-				Thread.sleep(1500);
-				gongSound.stop();
-				gongSound.close();
-			} else {
-				System.out.println("This sound file doesnt support!");
-			}
-		} catch (Exception e) {
-			System.out.println("Error sound!");
-		}
-	}
-	
 	protected String setTextTimer() {
 		String text = "";
 		switch (thisPeriodTimer) {
@@ -267,14 +244,14 @@ public class MyGUI extends JFrame implements ActionListener {
 				} else {
 					if(thisPeriodTimer == 0) {
 						if (circleWorkTimer < schemeTimerMinute[3]-1) {
-							PlayGond("gong.wav");
+							gongPlayer.play();
 							JOptionPane.showMessageDialog(null, "Работа закончена - небольшой перерыв!!!");
 							System.out.println("Работа закончена - небольшой перерыв!!!");
 							thisPeriodTimer = 1;
 							countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
 							timerLabel.setText(setTextTimer());
 						} else {
-							PlayGond("gong.wav");
+							gongPlayer.play();
 							JOptionPane.showMessageDialog(null, "Работа закончена - большой перерыв!!!");
 							System.out.println("Работа закончена - большой перерыв!!!");
 							thisPeriodTimer = 2;
@@ -283,7 +260,7 @@ public class MyGUI extends JFrame implements ActionListener {
 						}
 						
 					} else if(thisPeriodTimer == 1) {
-						PlayGond("gong.wav");
+						gongPlayer.play();
 						JOptionPane.showMessageDialog(null, "Небольшой перерыв закончен, пора работать!!!");
 						System.out.println("Небольшой перерыв закончен, пора работать!!!");
 						thisPeriodTimer = 0;
@@ -291,7 +268,7 @@ public class MyGUI extends JFrame implements ActionListener {
 						countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
 						timerLabel.setText(setTextTimer());
 					} else if(thisPeriodTimer == 2) {
-						PlayGond("gong.wav");
+						gongPlayer.play();
 						JOptionPane.showMessageDialog(null, "Большой перерыв закончен, пора работать!!!");
 						System.out.println("Большой перерыв закончен!!!");
 						thisPeriodTimer = 0;
@@ -314,15 +291,15 @@ public class MyGUI extends JFrame implements ActionListener {
 			textPane.setText(listTask.getAllText());
 		}
 		if (e.getSource() == addTaskButton) {
-			myGUIAddTask = new MyGUIAddTask(this);
+			myGUIAddTask = new AddTaskWindow(this);
 		}
 		if (e.getSource() == setSortPriorityRadioButton) {
-			listTask.setSortMethod(MyListTask.METHOD_PRIORITY);
+			listTask.setSortMethod(ListTask.METHOD_PRIORITY);
 			listTask.sortTask();
 			textPane.setText(listTask.getAllText());
 		}
 		if (e.getSource() == setSortInfluenceRadioButton) {
-			listTask.setSortMethod(MyListTask.METHOD_INFLUENCE);
+			listTask.setSortMethod(ListTask.METHOD_INFLUENCE);
 			listTask.sortTask();
 			textPane.setText(listTask.getAllText());
 		}
@@ -350,9 +327,9 @@ public class MyGUI extends JFrame implements ActionListener {
 			textPane.setText(listTask.getAllText());
 		}
 		if (e.getSource() == settingsTimerButton) {
-			myGUISettings = new MyGUISettings(this);
+			myGUISettings = new SettingsWindow(this);
 		}
-		} catch(Exception eX) {
+		} catch(HeadlessException | NumberFormatException ex) {
 			JOptionPane.showMessageDialog(null, "Error!");				
 		}
 	}

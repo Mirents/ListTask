@@ -1,4 +1,4 @@
-package listtask;
+package ru.listtask.window;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,9 +15,9 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-public class MyGUIAddTask extends JFrame implements ComponentListener {
+public class AddTaskWindow extends JFrame implements ComponentListener {
 	private static final long serialVersionUID = 1L;
-	MyGUI myGUI;
+	AppWindow myGUI;
 	
 	private JTextField newTaskDescriptionTextField; // Текстовое поле для описания новой задачи
 	private int priorityAddNewTask, influenceAddNewTask;  // Переменые для переключателей приоритета и зависимости
@@ -36,7 +36,7 @@ public class MyGUIAddTask extends JFrame implements ComponentListener {
 	private JRadioButton priorityThreeRadioButton;
 	private JRadioButton priorityFourRadioButton;
 	
-	public MyGUIAddTask(MyGUI myGUI) {
+	public AddTaskWindow(AppWindow myGUI) {
 		super("Добавить задачу");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);

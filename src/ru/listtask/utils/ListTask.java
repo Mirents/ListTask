@@ -1,4 +1,4 @@
-package listtask;
+package ru.listtask.utils;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,8 +13,8 @@ import java.io.FileReader;
  * Функция сортировки использует ключевые слова - по приоритете или влиянию.
  * В этой версии программы чтение и запись данных задач производится из файла.*/
 
-public class MyListTask {
-	private LinkedList<MyTask> listLL;
+public class ListTask {
+	private LinkedList<Task> listTask;
 	private String sortMethod;
 	
     final public static String METHOD_PRIORITY = "METHOD_PRIORITY";
@@ -22,10 +22,8 @@ public class MyListTask {
     final private String FILE_LIST_TASK = "fileListTask.txt"; // Константа файла с данными задач
     
     // Конструктор класса, создающий начальный массив из max количества элементов
-    MyListTask() {
-    	//this.setSortMethod(METHOD_INFLUENCE);
-    	this.listLL = new LinkedList<MyTask>();
-    	//this.openListTaskFromFile();
+    public ListTask() {
+    	this.listTask = new LinkedList<>();
     }
 
     // Геттеры и Сеттеры переменной sortMethod
@@ -40,61 +38,56 @@ public class MyListTask {
 	// Добавление новой задачи
 	public void addTask(String description, int priority,
 			int influence, boolean complete) {
-		this.listLL.add(new MyTask(description, priority, influence, complete));
+		this.listTask.add(new Task(description, priority, influence, complete));
 	}
 	
 	public void addTask(String description, int priority,
 			int influence, boolean complete, String dateTime) {
-		this.listLL.add(new MyTask(description, priority, influence, complete, dateTime));
+		this.listTask.add(new Task(description, priority, influence, complete, dateTime));
 	}
 	
 	// Вывод всех задач на экран с приоритетным методом сортировки
 	public void showAllTask() {
 		System.out.println("This Sort Method: "+this.getSortMethod());
-		for (int i=0; i<this.listLL.size(); i++)
-			System.out.println("Priority " + this.listLL.get(i).getPriority() +
-					" Influence " + this.listLL.get(i).getInfluence() +
-					" - " + this.listLL.get(i).getDescription() +
-					" - " + this.listLL.get(i).isComplete());
+		for (int i=0; i<this.listTask.size(); i++)
+			System.out.println("Priority " + this.listTask.get(i).getPriority() +
+					" Influence " + this.listTask.get(i).getInfluence() +
+					" - " + this.listTask.get(i).getDescription() +
+					" - " + this.listTask.get(i).isComplete());
 	}
 
 	public String getAllText() {
 		String text = "";
-		for (int i=0; i<this.listLL.size(); i++)
-			/*text += (i+1) + ". Priority " + this.listLL.get(i).getPriority() +
-					" Influence " + this.listLL.get(i).getInfluence() +
-					" - " + this.listLL.get(i).getDescription() +
-					(this.listLL.get(i).isComplete() ? (" - YES " + this.listLL.get(i).getTime() + " " +
-							this.listLL.get(i).getDate()) : "NO") + "\n";*/
-			text += (i+1) + ". " + this.listLL.get(i).getDescription() +
-			(this.listLL.get(i).isComplete() ? (" - YES " + this.listLL.get(i).getTime() + " " +
-					this.listLL.get(i).getDate()) : " NO") + "\n";
+		for (int i=0; i<this.listTask.size(); i++)
+			text += (i+1) + ". " + this.listTask.get(i).getDescription() +
+			(this.listTask.get(i).isComplete() ? (" - YES " + this.listTask.get(i).getTime() + " " +
+					this.listTask.get(i).getDate()) : " NO") + "\n";
 		return text;
 	}
 	
 	// Сортировка задач
 	public void sortTask() {
 		// Дополнительная сортировка, непонятно для чего нужна, без нее первый раз неправильно сортирует
-		Collections.sort(listLL, new Comparator<MyTask>() {
+		Collections.sort(listTask, new Comparator<Task>() {
 			@Override
-			public int compare(MyTask T1, MyTask T2)
+			public int compare(Task T1, Task T2)
 			{
 				return T1.getPriority() - T2.getPriority();
 			}
 	    });
-		// Сортировка первым и вторым методом
+        // Сортировка первым и вторым методом
     	if (this.getSortMethod() == METHOD_PRIORITY) {
-    		Collections.sort(listLL, new Comparator<MyTask>() {
+    		Collections.sort(listTask, new Comparator<Task>() {
     			@Override
-    			public int compare(MyTask T1, MyTask T2)
+    			public int compare(Task T1, Task T2)
     			{
     				return T1.getPriority() - T2.getPriority();
     			}
     	    });
 		} else if(this.getSortMethod() == METHOD_INFLUENCE) {
-			Collections.sort(listLL, new Comparator<MyTask>() {
+			Collections.sort(listTask, new Comparator<Task>() {
 				@Override
-				public int compare(MyTask T1, MyTask T2)
+				public int compare(Task T1, Task T2)
 				{
 					return T1.getInfluence() - T2.getInfluence();
 				}
@@ -110,7 +103,7 @@ public class MyListTask {
 			File file = new File(this.FILE_LIST_TASK);
 			if (file.exists()) file.createNewFile();
 
-			if(isReopen) this.listLL.clear();
+			if(isReopen) this.listTask.clear();
 			
 			// Если файл существует
 			reader = new BufferedReader(new FileReader(this.FILE_LIST_TASK));
@@ -139,7 +132,7 @@ public class MyListTask {
 			// TODO В случае изменения файла не обрабатывается это исключение,
 			// а сразу выходит на исключение в файле ProgramListTask.java
 			
-			// В случае возникноения ошибки вывести ее в консоль
+			// В случае возникновения ошибки вывести ее в консоль
 			System.out.println("Error " + e);
 		}
 	}
@@ -155,11 +148,11 @@ public class MyListTask {
 			
 			pw.println(this.getSortMethod()+"||");
 			// Построчная запись данных в файл
-			for(int i=0; i<this.listLL.size(); i++)
-				pw.println(this.listLL.get(i).getDescription()+"|"+
-						this.listLL.get(i).getPriority()+"|"+
-						this.listLL.get(i).getInfluence()+"|"+
-						(this.listLL.get(i).isComplete() ? (1 + "|" + this.listLL.get(i).getDateTime()) : 0));
+			for(int i=0; i<this.listTask.size(); i++)
+				pw.println(this.listTask.get(i).getDescription()+"|"+
+						this.listTask.get(i).getPriority()+"|"+
+						this.listTask.get(i).getInfluence()+"|"+
+						(this.listTask.get(i).isComplete() ? (1 + "|" + this.listTask.get(i).getDateTime()) : 0));
 			
 			// Закрытие потока после использования
 			pw.close();
@@ -172,7 +165,7 @@ public class MyListTask {
 	
 	public String deleteTask(int number) {
 		try {
-				return "Задача удалена: " + this.listLL.remove(number).getDescription();
+				return "Задача удалена: " + this.listTask.remove(number).getDescription();
 			} catch(Exception e) {
 				return e.toString();
 			}
@@ -180,14 +173,14 @@ public class MyListTask {
 	
 	public String completeTask(int number, String dateTime) {
 		try {
-			    if(!this.listLL.get(number).isComplete()) {
-			    	this.listLL.get(number).setComplete(true);
-			    	this.listLL.get(number).setDateTimeIsComplete(dateTime);
+			    if(!this.listTask.get(number).isComplete()) {
+			    	this.listTask.get(number).setComplete(true);
+			    	this.listTask.get(number).setDateTimeIsComplete(dateTime);
 			    	return "Задача выполнена";
 			    }
 			    else {
-			    	this.listLL.get(number).setComplete(false);
-			    	this.listLL.get(number).clearDateTimeIsComplete();
+			    	this.listTask.get(number).setComplete(false);
+			    	this.listTask.get(number).clearDateTimeIsComplete();
 			    	return "Задача не выполнена";
 			    }
 			} catch(Exception e) {
