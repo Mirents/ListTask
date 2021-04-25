@@ -1,4 +1,4 @@
-package ru.listtask.utils;
+package ru.listtask.utils.managers;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import static ru.listtask.utils.ConfProperties.getConfProperties;
+import static ru.listtask.utils.managers.ConfProperties.getConfProperties;
 import static ru.listtask.utils.PropertiesConstant.*;
 
 public class GongPlayer {

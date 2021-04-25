@@ -23,8 +23,8 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
-import static ru.listtask.utils.ConfProperties.getConfProperties;
-import ru.listtask.utils.GongPlayer;
+import static ru.listtask.utils.managers.ConfProperties.getConfProperties;
+import ru.listtask.utils.managers.GongPlayer;
 import ru.listtask.utils.ListTask;
 import ru.listtask.utils.PropertiesConstant;
 

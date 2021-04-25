@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import static ru.listtask.utils.ConfProperties.getConfProperties;
+import static ru.listtask.utils.managers.ConfProperties.getConfProperties;
 import ru.listtask.utils.PropertiesConstant;
 
 public class SettingsWindow extends JFrame implements ComponentListener {
