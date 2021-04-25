@@ -10,23 +10,16 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import static ru.listtask.utils.ConfProperties.getConfProperties;
+import static ru.listtask.utils.PropertiesConstant.*;
 
-/**
- *
- * @author vadim
- */
 public class GongPlayer {
     private Clip gongSound;
-    private String filename;
-    
-    public GongPlayer(String filename) {
-        this.filename = filename;
-    }
     
     public void play() {
 		gongSound = null;
 		try {
-			File f = new File(filename);
+			File f = new File(getConfProperties().getProperty(FILE_NAME_MUSIC));
 			AudioFileFormat aff = AudioSystem.getAudioFileFormat(f);
 			AudioFormat af = aff.getFormat();
 			DataLine.Info info = new DataLine.Info(Clip.class, af);
@@ -39,11 +32,11 @@ public class GongPlayer {
 				gongSound.stop();
 				gongSound.close();
 			} else {
-				System.out.println("This sound file doesnt support!");
+				System.out.println("Формат музыкального файла не поддерживается!");
 			}
 		} catch (IOException | InterruptedException | LineUnavailableException
                         | UnsupportedAudioFileException e) {
-			System.out.println("Error play sound!");
+			System.out.println("Ошибка востпроизведения звука!");
 		}
 	}
 }

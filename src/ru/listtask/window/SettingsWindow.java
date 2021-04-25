@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import static ru.listtask.utils.ConfProperties.getConfProperties;
+import ru.listtask.utils.PropertiesConstant;
 
 public class SettingsWindow extends JFrame implements ComponentListener {
 	private static final long serialVersionUID = 1L;
@@ -29,32 +31,32 @@ public class SettingsWindow extends JFrame implements ComponentListener {
 		setVisible(true);
 		
 		Box box1 = Box.createHorizontalBox();
-		JLabel label_4 = new JLabel("Время работы:");
-		box1.add(label_4);
+		JLabel labelTime = new JLabel("Время работы:");
+		box1.add(labelTime);
 		textFieldTimerWork = new JTextField();
 		textFieldTimerWork.setColumns(2);
 		textFieldTimerWork.setText(String.valueOf(parentWindow.schemeTimerMinute[0]));
 		box1.add(textFieldTimerWork);
 		
 		Box box2 = Box.createHorizontalBox();
-		JLabel label_5 = new JLabel("Маленький перерыв:");
-		box2.add(label_5);
+		JLabel labelMiniBreak = new JLabel("Маленький перерыв:");
+		box2.add(labelMiniBreak);
 		textFieldMiniBrake = new JTextField();
 		textFieldMiniBrake.setColumns(2);
 		textFieldMiniBrake.setText(String.valueOf(parentWindow.schemeTimerMinute[1]));
 		box2.add(textFieldMiniBrake);
 		
 		Box box3 = Box.createHorizontalBox();
-		JLabel label_6 = new JLabel("Большой перерыв:");
-		box3.add(label_6);
+		JLabel labelBigbreak = new JLabel("Большой перерыв:");
+		box3.add(labelBigbreak);
 		textFieldBigBrake = new JTextField();
 		textFieldBigBrake.setColumns(2);
 		textFieldBigBrake.setText(String.valueOf(parentWindow.schemeTimerMinute[2]));
 		box3.add(textFieldBigBrake);
 		
 		Box box4 = Box.createHorizontalBox();
-		JLabel label_7 = new JLabel("Периодов до большого перерыва:");
-		box4.add(label_7);
+		JLabel labelCountPeriod = new JLabel("Периодов до большого перерыва:");
+		box4.add(labelCountPeriod);
 		textFieldPeriod = new JTextField();
 		textFieldPeriod.setColumns(2);
 		textFieldPeriod.setText(String.valueOf(parentWindow.schemeTimerMinute[3]));
@@ -71,6 +73,11 @@ public class SettingsWindow extends JFrame implements ComponentListener {
 					parentWindow.schemeTimerMinute[1] = Integer.parseInt(textFieldMiniBrake.getText());
 					parentWindow.schemeTimerMinute[2] = Integer.parseInt(textFieldBigBrake.getText());
 					parentWindow.schemeTimerMinute[3] = Integer.parseInt(textFieldPeriod.getText());
+                                        
+                                        getConfProperties().setProperty(PropertiesConstant.TIME_WORK, textFieldTimerWork.getText());
+                                        getConfProperties().setProperty(PropertiesConstant.TIME_LITTLE_BREAK, textFieldMiniBrake.getText());
+                                        getConfProperties().setProperty(PropertiesConstant.TIME_BIG_BREAK, textFieldBigBrake.getText());
+                                        getConfProperties().setProperty(PropertiesConstant.TIME_PERIODS, textFieldPeriod.getText());
 					
 					parentWindow.timer.stop();
 					parentWindow.thisPeriodTimer = 0;
@@ -112,26 +119,14 @@ public class SettingsWindow extends JFrame implements ComponentListener {
 	}
 
         @Override
-	public void componentHidden(ComponentEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void componentHidden(ComponentEvent arg0) {}
+        
+	@Override
+	public void componentMoved(ComponentEvent arg0) {}
 
 	@Override
-	public void componentMoved(ComponentEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void componentResized(ComponentEvent arg0) {}
 
 	@Override
-	public void componentResized(ComponentEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void componentShown(ComponentEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void componentShown(ComponentEvent arg0) {}
 }

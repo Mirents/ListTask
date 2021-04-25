@@ -21,11 +21,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import static ru.listtask.utils.ConfProperties.getConfProperties;
 import ru.listtask.utils.GongPlayer;
 import ru.listtask.utils.ListTask;
+import ru.listtask.utils.PropertiesConstant;
 
 public class AppWindow extends JFrame implements ActionListener {
     private static final long serialVersionUID = 1L;
@@ -39,7 +40,7 @@ public class AppWindow extends JFrame implements ActionListener {
     protected Timer timer;  // Таймер
     private TimerListener timerListener;  // Слушатель событий таймера
     protected int countTimerSecond = 0;  // Счетчик времени в секундах
-    protected int[] schemeTimerMinute = {25, 5, 30, 3}; // Время работы, время короткого перерыва, время длинного перерыва
+    protected int[] schemeTimerMinute = {30, 5, 25, 7}; // Время работы, время короткого перерыва, время длинного перерыва
     protected int thisPeriodTimer = 0; // Текущий период таймера (работа, короткий перерыв или длинный перерыв)
     private int circleWorkTimer = 0;  // Счетчик циклов до большого перерыва
     private JButton startTimerButton;   // Кнопка старта таймера
@@ -55,7 +56,7 @@ public class AppWindow extends JFrame implements ActionListener {
     // Переменные для создания новой записи
     private JButton addTaskButton;      // Кнопка добавления задачи в список
     protected int priorityAddNewTask, influenceAddNewTask;  // Переменые для переключателей приоритета и зависимости
-    private JLabel label_sort;
+    private JLabel labelSort;
     private JLabel labelList;
 
     private SettingsWindow settingsWindow;  // Окно настроек таймера
@@ -76,14 +77,20 @@ public class AppWindow extends JFrame implements ActionListener {
             @Override
             public void windowClosing(WindowEvent evt){
                 listTask.safeListTaskInFile();  // Сохранение списка в файл
+                getConfProperties().savePropertyToFile();
                 System.exit(1);  // Выход из программы
             }
         });
         this.setBounds(0, 0, 600, 400);
 
         // Создание элемента воспроизведения звука
-        gongPlayer = new GongPlayer("gong.wav");
-
+        gongPlayer = new GongPlayer();
+        
+        schemeTimerMinute[0] = getConfProperties().getPropertyInt(PropertiesConstant.TIME_WORK);
+        schemeTimerMinute[1] = getConfProperties().getPropertyInt(PropertiesConstant.TIME_LITTLE_BREAK);
+        schemeTimerMinute[2] = getConfProperties().getPropertyInt(PropertiesConstant.TIME_BIG_BREAK);
+        schemeTimerMinute[3] = getConfProperties().getPropertyInt(PropertiesConstant.TIME_PERIODS);
+                                        
         // Создание списка задач
         listTask = new ListTask();
         // Заполнение списка
@@ -101,11 +108,11 @@ public class AppWindow extends JFrame implements ActionListener {
             switch (num) {
             case 0:
                 column.setMinWidth(220);
-                column.setMaxWidth(270);
+                column.setMaxWidth(320);
                 break;
             case 1:
                 column.setMinWidth(20);
-                column.setMaxWidth(150);
+                column.setMaxWidth(80);
                 break;
             case 2:
                 column.setMinWidth(20);
@@ -141,9 +148,9 @@ public class AppWindow extends JFrame implements ActionListener {
         box11.add(labelList);
         box1.add(Box.createVerticalStrut(10));
 
-        label_sort = new JLabel("Сортировка:");
-        label_sort.setBounds(140, 5, 95, 23);
-        box12.add(label_sort);
+        labelSort = new JLabel("Сортировка:");
+        labelSort.setBounds(140, 5, 95, 23);
+        box12.add(labelSort);
 
         methodSortRadioButtonGroup = new ButtonGroup();
 
@@ -195,6 +202,10 @@ public class AppWindow extends JFrame implements ActionListener {
         box43.add(settingsTimerButton);
         
         checkBoxMute = new JCheckBox("Без звука");
+        if("on".equals(getConfProperties().getProperty(PropertiesConstant.MUTE)))
+            checkBoxMute.setSelected(true);
+        else
+            checkBoxMute.setSelected(false);
         box43.add(checkBoxMute);
         
         box4.add(box42);
@@ -263,42 +274,42 @@ public class AppWindow extends JFrame implements ActionListener {
             } else {
                 if(thisPeriodTimer == 0) {
                     if (circleWorkTimer < schemeTimerMinute[3]-1) {
-                        if(!checkBoxMute.isEnabled())
+                        if(!checkBoxMute.isSelected())
                             gongPlayer.play();
-                        JOptionPane.showMessageDialog(null, "Работа закончена - небольшой перерыв!!!");
+                        JOptionPane.showMessageDialog(null, "Работа закончена - небольшой перерыв!");
                         System.out.println("Работа закончена - небольшой перерыв!!!");
                         thisPeriodTimer = 1;
                         countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
                         timerLabel.setText(setTextTimer());
                     } else {
-                        if(!checkBoxMute.isEnabled())
+                        if(!checkBoxMute.isSelected())
                             gongPlayer.play();
-                        JOptionPane.showMessageDialog(null, "Работа закончена - большой перерыв!!!");
+                        JOptionPane.showMessageDialog(null, "Работа закончена - большой перерыв!");
                         System.out.println("Работа закончена - большой перерыв!!!");
                         thisPeriodTimer = 2;
                         countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
                         timerLabel.setText(setTextTimer());
                     }
                 } else if(thisPeriodTimer == 1) {
-                    if(!checkBoxMute.isEnabled())
+                    if(!checkBoxMute.isSelected())
                         gongPlayer.play();
-                    JOptionPane.showMessageDialog(null, "Небольшой перерыв закончен, пора работать!!!");
+                    JOptionPane.showMessageDialog(null, "Небольшой перерыв закончен, пора работать!");
                     System.out.println("Небольшой перерыв закончен, пора работать!!!");
                     thisPeriodTimer = 0;
                     circleWorkTimer++;
                     countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
                     timerLabel.setText(setTextTimer());
                 } else if(thisPeriodTimer == 2) {
-                    if(!checkBoxMute.isEnabled())
+                    if(!checkBoxMute.isSelected())
                         gongPlayer.play();
-                    JOptionPane.showMessageDialog(null, "Большой перерыв закончен, пора работать!!!");
+                    JOptionPane.showMessageDialog(null, "Большой перерыв закончен, пора работать!");
                     System.out.println("Большой перерыв закончен!!!");
                     thisPeriodTimer = 0;
                     circleWorkTimer = 0;
                     countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
                     timerLabel.setText(setTextTimer());
                 }
-                }
+            }
         }
     }
 
@@ -306,8 +317,7 @@ public class AppWindow extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         try {
         if (e.getSource() == deleteTaskButton) {
-                JOptionPane.showMessageDialog(null,
-                        listTask.deleteTask(table.getSelectedRow()));
+                listTask.deleteTask(table.getSelectedRow());
         }
         if (e.getSource() == addTaskButton) {
                 AddTaskWindow = new AddTaskWindow(this);
@@ -329,19 +339,17 @@ public class AppWindow extends JFrame implements ActionListener {
                 countTimerSecond = schemeTimerMinute[thisPeriodTimer]*60;
                 timerLabel.setText(setTextTimer());
         }
+        if (e.getSource() == checkBoxMute) {
+            if(checkBoxMute.isSelected())
+                getConfProperties().setProperty(PropertiesConstant.MUTE, "on");
+            else
+                getConfProperties().setProperty(PropertiesConstant.MUTE, "off");
+                    
+        }
         if (e.getSource() == pauseTimerButton) {
                 timerLabel.setText("Pause");
                 timer.stop();
         }
-
-    //		if (e.getSource() == completeButton) {
-    ////			int num = Integer.parseInt(completeAndDeleteTaskTextField.getText());
-    ////			completeAndDeleteTaskTextField.setText("");
-    //			// Установка времени выполнения
-    //			Date date = new Date();
-    //			SimpleDateFormat formatDate = new SimpleDateFormat("HH/mm/dd/MM/yy");
-    ////			JOptionPane.showMessageDialog(null, listTask.completeTask(num-1, formatDate.format(date)));
-    //		}
         if (e.getSource() == settingsTimerButton) {
                 settingsWindow = new SettingsWindow(this);
         }

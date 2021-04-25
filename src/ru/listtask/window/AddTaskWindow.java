@@ -143,7 +143,6 @@ public class AddTaskWindow extends JFrame implements ComponentListener {
                 String s = newTaskDescriptionTextField.getText();
                 if(!s.isEmpty()) {
                     parentWindow.listTask.addTask(s, priorityAddNewTask, influenceAddNewTask, false);
-                    JOptionPane.showMessageDialog(null, "Добавлена задача: " + s);
                     dispose();
                 } else JOptionPane.showMessageDialog(null, "Введите описание задачи");				
             }

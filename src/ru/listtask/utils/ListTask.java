@@ -22,8 +22,8 @@ public class ListTask extends AbstractTableModel {
     final public static String METHOD_INFLUENCE = "METHOD_INFLUENCE";
     final private String FILE_LIST_TASK = "fileListTask.txt"; // Константа файла с данными задач
     
-    private final Object[] columnsHeader = new String[] {"Наименование", "Важность/срочность", 
-                                                   "Влияние", "Выполнение"};
+    private final Object[] columnsHeader = new String[] {"Наименование", "Влияние",
+                                                   "Важность/срочность",  "Выполнение"};
     
     // Конструктор класса, создающий начальный массив из max количества элементов
     public ListTask() {
@@ -56,11 +56,11 @@ public class ListTask extends AbstractTableModel {
     public void sortTask() {
         // Дополнительная сортировка, непонятно для чего нужна, без нее первый раз неправильно сортирует
         Collections.sort(linkedListTask, new Comparator<Task>() {
-                @Override
-                public int compare(Task T1, Task T2)
-                {
-                    return T1.getPriority() - T2.getPriority();
-                }
+            @Override
+            public int compare(Task T1, Task T2)
+            {
+                return T1.getPriority() - T2.getPriority();
+            }
         });
         // Сортировка первым и вторым методом
         if (this.getSortMethod() == METHOD_PRIORITY) {
@@ -140,7 +140,8 @@ public class ListTask extends AbstractTableModel {
                 pw.println(this.linkedListTask.get(i).getDescription()+"|"+
                                 this.linkedListTask.get(i).getPriority()+"|"+
                                 this.linkedListTask.get(i).getInfluence()+"|"+
-                                (this.linkedListTask.get(i).getComplete() ? (1 + "|" + this.linkedListTask.get(i).getDateTime()) : 0));
+                                (this.linkedListTask.get(i).getComplete() ? (1 +
+                                        "|" + this.linkedListTask.get(i).getDateTime()) : 0));
 
             // Закрытие потока после использования
             pw.close();
@@ -152,8 +153,8 @@ public class ListTask extends AbstractTableModel {
 
     public String deleteTask(int rowIndex) {
         try {
-            String message = "Задача удалена: " + this.linkedListTask.remove(rowIndex).getDescription();
-//            fireTableRowsUpdated(0, this.getRowCount());
+            String message = "Задача удалена: " +
+                    this.linkedListTask.remove(rowIndex).getDescription();
             sortTask();
             return message;
         } catch(Exception e) {
