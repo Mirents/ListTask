@@ -20,7 +20,7 @@ public class SettingsWindow extends JFrame implements ComponentListener {
 	JTextField textFieldBigBrake;
 	JTextField textFieldPeriod;
 	
-	public SettingsWindow(AppWindow myGUI) {
+	public SettingsWindow(AppWindow parentWindow) {
 		super("Настройки таймера");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		//this.setSize(100, 100);
@@ -33,7 +33,7 @@ public class SettingsWindow extends JFrame implements ComponentListener {
 		box1.add(label_4);
 		textFieldTimerWork = new JTextField();
 		textFieldTimerWork.setColumns(2);
-		textFieldTimerWork.setText(String.valueOf(myGUI.schemeTimerMinute[0]));
+		textFieldTimerWork.setText(String.valueOf(parentWindow.schemeTimerMinute[0]));
 		box1.add(textFieldTimerWork);
 		
 		Box box2 = Box.createHorizontalBox();
@@ -41,7 +41,7 @@ public class SettingsWindow extends JFrame implements ComponentListener {
 		box2.add(label_5);
 		textFieldMiniBrake = new JTextField();
 		textFieldMiniBrake.setColumns(2);
-		textFieldMiniBrake.setText(String.valueOf(myGUI.schemeTimerMinute[1]));
+		textFieldMiniBrake.setText(String.valueOf(parentWindow.schemeTimerMinute[1]));
 		box2.add(textFieldMiniBrake);
 		
 		Box box3 = Box.createHorizontalBox();
@@ -49,7 +49,7 @@ public class SettingsWindow extends JFrame implements ComponentListener {
 		box3.add(label_6);
 		textFieldBigBrake = new JTextField();
 		textFieldBigBrake.setColumns(2);
-		textFieldBigBrake.setText(String.valueOf(myGUI.schemeTimerMinute[2]));
+		textFieldBigBrake.setText(String.valueOf(parentWindow.schemeTimerMinute[2]));
 		box3.add(textFieldBigBrake);
 		
 		Box box4 = Box.createHorizontalBox();
@@ -57,7 +57,7 @@ public class SettingsWindow extends JFrame implements ComponentListener {
 		box4.add(label_7);
 		textFieldPeriod = new JTextField();
 		textFieldPeriod.setColumns(2);
-		textFieldPeriod.setText(String.valueOf(myGUI.schemeTimerMinute[3]));
+		textFieldPeriod.setText(String.valueOf(parentWindow.schemeTimerMinute[3]));
 		box4.add(textFieldPeriod);
 		
 		Box box5 = Box.createHorizontalBox();
@@ -67,15 +67,15 @@ public class SettingsWindow extends JFrame implements ComponentListener {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					myGUI.schemeTimerMinute[0] = Integer.parseInt(textFieldTimerWork.getText());
-					myGUI.schemeTimerMinute[1] = Integer.parseInt(textFieldMiniBrake.getText());
-					myGUI.schemeTimerMinute[2] = Integer.parseInt(textFieldBigBrake.getText());
-					myGUI.schemeTimerMinute[3] = Integer.parseInt(textFieldPeriod.getText());
+					parentWindow.schemeTimerMinute[0] = Integer.parseInt(textFieldTimerWork.getText());
+					parentWindow.schemeTimerMinute[1] = Integer.parseInt(textFieldMiniBrake.getText());
+					parentWindow.schemeTimerMinute[2] = Integer.parseInt(textFieldBigBrake.getText());
+					parentWindow.schemeTimerMinute[3] = Integer.parseInt(textFieldPeriod.getText());
 					
-					myGUI.timer.stop();
-					myGUI.thisPeriodTimer = 0;
-					myGUI.countTimerSecond = myGUI.schemeTimerMinute[0]*60;
-					myGUI.timerLabel.setText(myGUI.setTextTimer());
+					parentWindow.timer.stop();
+					parentWindow.thisPeriodTimer = 0;
+					parentWindow.countTimerSecond = parentWindow.schemeTimerMinute[0]*60;
+					parentWindow.timerLabel.setText(parentWindow.setTextTimer());
 					
 					dispose();
 				} catch (Exception e) {

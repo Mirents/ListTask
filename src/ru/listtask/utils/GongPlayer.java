@@ -43,7 +43,7 @@ public class GongPlayer {
 			}
 		} catch (IOException | InterruptedException | LineUnavailableException
                         | UnsupportedAudioFileException e) {
-			System.out.println("Error sound!");
+			System.out.println("Error play sound!");
 		}
 	}
 }

@@ -1,6 +1,5 @@
 METHOD_INFLUENCE||
-Go to the grocery store|2|1|0
-Clean the apartment|2|1|0
-Sketch a picture|2|1|0
-Plastering the walls in the hallway|1|2|0
-Invite friends to play board games|4|2|0
+Open window|1|1|0
+CloseWindow|2|1|0
+Start play|0|2|0
+Strop play|2|2|0
